@@ -1,0 +1,12 @@
+# frozen_string_literal: true
+
+# Example class
+class User
+  attr_reader :email
+
+  def initialize(email)
+    @email = email
+  end
+end
+
+p User.new("a@exmple.com").email
