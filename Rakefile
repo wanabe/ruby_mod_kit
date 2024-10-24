@@ -4,18 +4,24 @@ require "bundler/setup"
 require "bundler/gem_tasks"
 require "rake/testtask"
 
+require "rubocop/rake_task"
+require "steep/rake_task"
+require "rbs/inline"
+require "rbs/inline/cli"
+
 Rake::TestTask.new(:test) do |t|
   t.libs << "test"
   t.libs << "lib"
   t.test_files = FileList["test/**/*_test.rb"]
 end
 
-require "rubocop/rake_task"
-
 RuboCop::RakeTask.new
-
-require "steep/rake_task"
 
 Steep::RakeTask.new
 
-task default: %i[test rubocop steep:check]
+desc "Generate RBS files from annotations"
+task :rbs_inline do
+  RBS::Inline::CLI.new.run(%w[--output lib])
+end
+
+task default: %i[test rbs_inline rubocop steep:check]

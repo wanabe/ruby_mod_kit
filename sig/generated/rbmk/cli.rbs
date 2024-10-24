@@ -1,0 +1,10 @@
+# Generated from lib/rbmk/cli.rb with RBS::Inline
+
+module Rbmk
+  # This class provides CLI commands of rbmk.
+  class CLI < Thor
+    # @rbs *args: String
+    # @rbs return: void
+    def exec: (*String args) -> void
+  end
+end

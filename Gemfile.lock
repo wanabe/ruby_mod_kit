@@ -41,6 +41,7 @@ GEM
       ast (~> 2.4.1)
       racc
     power_assert (2.0.4)
+    prism (1.0.0)
     racc (1.8.1)
     rainbow (3.1.1)
     rake (13.2.1)
@@ -49,6 +50,9 @@ GEM
       ffi (~> 1.0)
     rbs (3.6.1)
       logger
+    rbs-inline (0.9.0)
+      prism (>= 0.29, < 1.1)
+      rbs (>= 3.5.0)
     regexp_parser (2.9.2)
     rubocop (1.67.0)
       json (~> 2.3)
@@ -102,6 +106,7 @@ PLATFORMS
 DEPENDENCIES
   rake (~> 13.0)
   rbmk!
+  rbs-inline
   rubocop (~> 1.21)
   rubocop-on-rbs (~> 1.1)
   rubocop-rake

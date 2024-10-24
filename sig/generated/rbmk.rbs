@@ -1,0 +1,29 @@
+# Generated from lib/rbmk.rb with RBS::Inline
+
+# The root namespace for rbmk.
+module Rbmk
+  class Error < StandardError
+  end
+
+  # @rbs file: String
+  # @rbs *args: String
+  # @rbs return: void
+  def self.execute_file: (String file, *String args) -> void
+
+  # @rbs file: String
+  # @rbs return: String
+  def self.transpile_file: (String file) -> String
+
+  # @rbs src: String
+  # @rbs return: String
+  def self.transpile: (String src) -> String
+
+  # @rbs file: String
+  # @rbs *args: String
+  # @rbs return: void
+  def self.execute_rb_file: (String file, *String args) -> void
+
+  # @rbs path: String
+  # @rbs return: String
+  def self.rb_path: (String path) -> String
+end
