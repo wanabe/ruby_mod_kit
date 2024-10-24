@@ -4,6 +4,7 @@ AllCops:
 
 require:
   - rubocop-rake
+  - rubocop-on-rbs
 
 Style/StringLiterals:
   Enabled: true

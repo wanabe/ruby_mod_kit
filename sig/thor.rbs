@@ -1,0 +1,3 @@
+class Thor
+  def self.desc: (String usage, String description, ?Hash[untyped, untyped] options) -> (String | false)?
+end
