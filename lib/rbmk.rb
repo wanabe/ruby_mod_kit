@@ -2,8 +2,10 @@
 
 # rbs_inline: enabled
 
-require_relative "rbmk/version"
 require "rbconfig"
+
+require_relative "rbmk/version"
+require_relative "rbmk/transpiler"
 
 # The root namespace for rbmk.
 module Rbmk
@@ -30,7 +32,7 @@ module Rbmk
     # @rbs src: String
     # @rbs return: String
     def transpile(src)
-      src
+      Transpiler.new(src).transpile
     end
 
     # @rbs file: String

@@ -4,9 +4,17 @@
 class User
   attr_reader :email
 
-  def initialize(email)
-    @email = email
+  def initialize(@email)
+  end
+end
+
+# Example class
+class Pos
+  attr_reader :x, :y
+
+  def initialize(@x, @y)
   end
 end
 
 p User.new("a@exmple.com").email
+p Pos.new(2, 3).y
