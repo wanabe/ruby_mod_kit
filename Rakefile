@@ -24,4 +24,4 @@ task :rbs_inline do
   RBS::Inline::CLI.new.run(%w[--output lib])
 end
 
-task default: %i[test rbs_inline rubocop steep:check]
+task default: %i[test rbs_inline rubocop:autocorrect_all steep:check]
