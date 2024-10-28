@@ -14,9 +14,7 @@ module Rbmk
     # @rbs prism_node: Prism::Node prism_node
     # @rbs parent: Node
     # @rbs return: void
-    def initialize(prism_node, parent: nil)
-      @prism_node = prism_node
-      @parent = parent
+    def initialize(@prism_node, @parent: nil)
     end
 
     # @rbs location: Prism::Location

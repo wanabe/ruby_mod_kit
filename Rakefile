@@ -8,6 +8,7 @@ require "rubocop/rake_task"
 require "steep/rake_task"
 require "rbs/inline"
 require "rbs/inline/cli"
+require "rbmk"
 
 Rake::TestTask.new(:test) do |t|
   t.libs << "test"
@@ -24,4 +25,10 @@ task :rbs_inline do
   RBS::Inline::CLI.new.run(%w[--output lib])
 end
 
-task default: %i[test rbs_inline rubocop:autocorrect_all steep:check]
+desc "Transpile .rbm files under lib/"
+task lib: Dir.glob("lib/**/*.rbm").map { _1.ext(".rb") }
+rule ".rb" => %w[.rbm] do |t|
+  Rbmk.transpile_file(t.source)
+end
+
+task default: %i[lib test rbs_inline rubocop:autocorrect_all steep:check]

@@ -6,5 +6,9 @@ module Rbmk
     # @rbs *args: String
     # @rbs return: void
     def exec: (*String args) -> void
+
+    # @rbs *args: String
+    # @rbs return: void
+    def transpile: (*String args) -> void
   end
 end

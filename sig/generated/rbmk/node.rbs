@@ -11,8 +11,6 @@ module Rbmk
 
     @parent: Node | nil
 
-    @rb_src: String
-
     # @rbs prism_node: Prism::Node prism_node
     # @rbs parent: Node
     # @rbs return: void

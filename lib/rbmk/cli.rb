@@ -14,5 +14,14 @@ module Rbmk
     def exec(*args)
       Rbmk.execute_file(*args)
     end
+
+    desc "transpile", "transpile rbm files"
+    # @rbs *args: String
+    # @rbs return: void
+    def transpile(*args)
+      args.each do |path|
+        Rbmk.transpile_file(path)
+      end
+    end
   end
 end
