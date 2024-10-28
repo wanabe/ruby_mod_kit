@@ -40,11 +40,14 @@ module Rbmk
     # @rbs return: String
     def inspect: () -> String
 
-    # @rbs return: Prism::RequiredParameterNode | nil
-    def parameter_node: () -> (Prism::RequiredParameterNode | nil)
+    # @rbs return: Prism::RequiredParameterNode | Prism::OptionalKeywordParameterNode
+    #            | Prism::OptionalParameterNode | Prism::RequiredKeywordParameterNode
+    #            | nil
+    def parameter_node: () -> (Prism::RequiredParameterNode | Prism::OptionalKeywordParameterNode | Prism::OptionalParameterNode | Prism::RequiredKeywordParameterNode | nil)
 
-    # @rbs return: Prism::RequiredParameterNode
-    def parameter_node!: () -> Prism::RequiredParameterNode
+    # @rbs return: Prism::RequiredParameterNode | Prism::OptionalKeywordParameterNode
+    #            | Prism::OptionalParameterNode | Prism::RequiredKeywordParameterNode
+    def parameter_node!: () -> (Prism::RequiredParameterNode | Prism::OptionalKeywordParameterNode | Prism::OptionalParameterNode | Prism::RequiredKeywordParameterNode)
 
     # @rbs return: String
     def parameter_name: () -> String

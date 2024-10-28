@@ -74,15 +74,19 @@ module Rbmk
       @object_to_s.bind(self).call
     end
 
-    # @rbs return: Prism::RequiredParameterNode | nil
+    # @rbs return: Prism::RequiredParameterNode | Prism::OptionalKeywordParameterNode
+    #            | Prism::OptionalParameterNode | Prism::RequiredKeywordParameterNode
+    #            | nil
     def parameter_node
       case prism_node
-      when Prism::RequiredParameterNode
+      when Prism::RequiredParameterNode, Prism::OptionalKeywordParameterNode,
+           Prism::OptionalParameterNode, Prism::RequiredKeywordParameterNode
         prism_node
       end
     end
 
-    # @rbs return: Prism::RequiredParameterNode
+    # @rbs return: Prism::RequiredParameterNode | Prism::OptionalKeywordParameterNode
+    #            | Prism::OptionalParameterNode | Prism::RequiredKeywordParameterNode
     def parameter_node!
       parameter_node || raise(Rbmk::Error, "Expected ParameterNode but #{prism_node.inspect}")
     end
