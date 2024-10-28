@@ -12,6 +12,8 @@ Style/StringLiterals:
 Style/StringLiteralsInInterpolation:
   Enabled: true
   EnforcedStyle: double_quotes
+Style/TrailingCommaInArrayLiteral:
+  EnforcedStyleForMultiline: consistent_comma
 
 Layout/EndAlignment:
   EnforcedStyleAlignWith: start_of_line
@@ -27,6 +29,10 @@ Metrics/MethodLength:
 Metrics/CyclomaticComplexity:
   Enabled: false
 Metrics/PerceivedComplexity:
+  Enabled: false
+Metrics/ClassLength:
+  Enabled: false
+Metrics/BlockLength:
   Enabled: false
 
 Naming/MethodParameterName:
