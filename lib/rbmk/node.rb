@@ -73,5 +73,23 @@ module Rbmk
       @object_to_s ||= Object.instance_method(:to_s)
       @object_to_s.bind(self).call
     end
+
+    # @rbs return: Prism::RequiredParameterNode | nil
+    def parameter_node
+      case prism_node
+      when Prism::RequiredParameterNode
+        prism_node
+      end
+    end
+
+    # @rbs return: Prism::RequiredParameterNode
+    def parameter_node!
+      parameter_node || raise(Rbmk::Error, "Expected ParameterNode but #{prism_node.inspect}")
+    end
+
+    # @rbs return: String
+    def parameter_name
+      parameter_node!.name.to_s
+    end
   end
 end

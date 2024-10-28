@@ -9,81 +9,108 @@ require "rbmk/node"
 module Rbmk
   # The class of transpiler.
   class Transpiler
-    # @rbs @parse_result: Prism::ParseResult
-    # @rbs @node: Rbmk::Node
     # @rbs @reverse_index_offsets: [[Integer, Integer]]
-    # @rbs @rbm_script: String
-    # @rbs @parse_errors: Array[Prism::ParseError]
+    # @rbs @dst: String
 
     # @rbs src: String
     # @rbs return: void
     def initialize(src)
-      @parse_result = Prism.parse(src)
-      @node = Node.new(@parse_result.value)
-      @parse_errors = @parse_result.errors
-      @reverse_index_offsets = []
+      @src = src
     end
 
     # @rbs return: String
     def transpile
-      @rbm_script = @parse_result.source.source.dup
-      transpile_ivar_args
+      correct_and_collect
+      apply_collected_data
+      @dst
     end
 
-    # @rbs return: String
-    def transpile_ivar_args
-      changing_def_nodes = {}
-      @parse_errors.each do |parse_error|
-        case parse_error.type
-        when :argument_formal_ivar
-          index = index(parse_error.location.start_offset)
-          length = parse_error.location.length
-          raise Rbmk::Error, "Expected ivar but '#{@rbm_script[index, length]}'" if @rbm_script[index] != "@"
+    # @rbs return: void
+    def correct_and_collect
+      @dst = @src.dup
+      @mod_data = []
 
-          dst = @rbm_script[index + 1, length - 1]
-          raise Rbmk::Error, "Expected String but #{dst.inspect}" unless dst
+      previous_error_count = 0
+      loop do
+        src = @dst.dup
+        parse_result = Prism.parse(src)
+        node = Node.new(parse_result.value)
+        parse_errors = parse_result.errors
+        @reverse_index_offsets = []
+        break if parse_errors.empty?
 
-          @rbm_script[index, length] = dst
-          insert_offset(index, -1)
+        parse_errors.each do |parse_error|
+          case parse_error.type
+          when :argument_formal_ivar
+            src_index = parse_error.location.start_offset
+            dst_index = dst_index(src_index)
+            length = parse_error.location.length
 
-          arg_node = @node.each.find do |node|
-            next if node.prism_node.location != parse_error.location
+            src.match(/([^@]*)@(\w{#{length - 1}})/, src_index)
+            prefix = ::Regexp.last_match(1)
+            name = ::Regexp.last_match(2)
+            raise Rbmk::Error, "Expected ivar but '#{src[src_index, length]}'" if prefix != "" || !name.is_a?(String)
 
-            node.prism_node.is_a?(Prism::RequiredParameterNode)
+            @dst[dst_index, length] = name
+            insert_offset(dst_index, -1)
+
+            arg_node = node.each.find do |node|
+              node.prism_node.location.start_offset == parse_error.location.start_offset && node.parameter_node
+            end
+            raise Rbmk::Error, "ParameterNode not found" unless arg_node
+
+            name = arg_node.parameter_name[1..]
+            arg_node.ancestors.find { _1.prism_node.is_a?(Prism::DefNode) }
+            insert_mod_data(dst_index, :ivar_arg, "@#{name} = #{name}")
           end
-          if !arg_node || !arg_node.prism_node.is_a?(Prism::RequiredParameterNode)
-            raise Rbmk::Error,
-                  "Expected Prism::RequiredParameterNode but #{arg_node&.prism_node.inspect}"
-          end
-
-          name = arg_node.prism_node.name.to_s[1..]
-          def_node = arg_node.ancestors.find { _1.prism_node.is_a?(Prism::DefNode) }
-          changing_def_nodes[def_node] ||= []
-          changing_def_nodes[def_node].push "@#{name} = #{name}"
         end
-      end
+        if previous_error_count.positive? && previous_error_count <= parse_errors.size
+          raise Rbmk::Error, "Syntax error: #{parse_errors.map(&:message).join("\n")}"
+        end
 
-      changing_def_nodes.each do |def_node, lines|
-        def_body_node = def_node.prism_node.body
-        if def_body_node
-          indent = def_body_node.location.start_column
-          index = index(def_body_node.location.start_offset - indent)
+        previous_error_count = parse_errors.size
+      end
+    end
+
+    # @rbs return: void
+    def apply_collected_data
+      root_node = Node.new(Prism.parse(@dst).value)
+      @mod_data.each do |(index, type, modify_script)|
+        case type
+        when :ivar_arg
+          parameter_node = root_node.each.find do |node|
+            break if node.prism_node.location.start_offset > index
+
+            node.prism_node.location.start_offset == index && node.parameter_node
+          end
+          raise Rbmk::Error, "ParameterNode not found" unless parameter_node
+
+          def_node = parameter_node.ancestors.find { _1.prism_node.is_a?(Prism::DefNode) }
+          raise Rbmk::Error, "DefNode not found" if !def_node || !def_node.prism_node.is_a?(Prism::DefNode)
+
+          def_body_location = def_node.prism_node.body&.location
+          if def_body_location
+            indent = def_body_location.start_column
+            dst_index = dst_index(def_body_location.start_offset - indent)
+          elsif def_node.prism_node.end_keyword_loc
+            indent = def_node.prism_node.end_keyword_loc.start_column + 2
+            dst_index = dst_index(def_node.prism_node.end_keyword_loc.start_offset - indent + 2)
+          else
+            raise Rbmk::Error, "Invalid DefNode #{def_node.prism_node.inspect}"
+          end
+
+          dst_line = "#{" " * indent}#{modify_script}\n"
+          @dst[dst_index, 0] = dst_line
+          insert_offset(dst_index + 1, dst_line.size)
         else
-          indent = def_node.prism_node.end_keyword_loc.start_column + 2
-          index = index(def_node.prism_node.end_keyword_loc.start_offset - indent + 2)
-        end
-        lines.reverse_each do |raw_line|
-          dst_line = "#{" " * indent}#{raw_line}\n"
-          @rbm_script[index, 0] = dst_line
-          insert_offset(index, dst_line.size)
+          raise Rbmk::Error, "Unexpected type #{type}"
         end
       end
-      @rbm_script
     end
 
     # @rbs src_index: Integer
     # @rbs return: Integer
-    def index(src_index)
+    def dst_index(src_index)
       offset = @reverse_index_offsets.find { _1.first <= src_index }&.last || 0
       offset + src_index
     end
@@ -101,10 +128,27 @@ module Rbmk
         end
       end
       if array_index
-        @reverse_index_offsets[array_index, 0] = [[new_index, new_diff + @reverse_index_offsets[array_index][1]]]
+        new_diff += @reverse_index_offsets[array_index][1]
       else
-        @reverse_index_offsets.push [new_index, new_diff]
+        array_index = -1
       end
+      @reverse_index_offsets.insert(array_index, [new_index, new_diff])
+      @mod_data.each do |line|
+        break if line[0] < new_index
+
+        line[0] += new_diff
+      end
+    end
+
+    # @rbs new_index: Integer
+    # @rbs type: Symbol
+    # @rbs modify_script: String
+    # @rbs return: void
+    def insert_mod_data(new_index, type, modify_script)
+      array_index = @mod_data.find_index.with_index do |(index, _), _i|
+        new_index >= index
+      end
+      @mod_data.insert(array_index || -1, [new_index, type, modify_script])
     end
   end
 end

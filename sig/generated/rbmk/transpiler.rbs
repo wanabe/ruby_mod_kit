@@ -3,15 +3,9 @@
 module Rbmk
   # The class of transpiler.
   class Transpiler
-    @parse_result: Prism::ParseResult
-
-    @node: Rbmk::Node
-
     @reverse_index_offsets: [ [ Integer, Integer ] ]
 
-    @rbm_script: String
-
-    @parse_errors: Array[Prism::ParseError]
+    @dst: String
 
     # @rbs src: String
     # @rbs return: void
@@ -20,16 +14,25 @@ module Rbmk
     # @rbs return: String
     def transpile: () -> String
 
-    # @rbs return: String
-    def transpile_ivar_args: () -> String
+    # @rbs return: void
+    def correct_and_collect: () -> void
+
+    # @rbs return: void
+    def apply_collected_data: () -> void
 
     # @rbs src_index: Integer
     # @rbs return: Integer
-    def index: (Integer src_index) -> Integer
+    def dst_index: (Integer src_index) -> Integer
 
     # @rbs new_index: Integer
     # @rbs new_diff: Integer
     # @rbs return: void
     def insert_offset: (Integer new_index, Integer new_diff) -> void
+
+    # @rbs new_index: Integer
+    # @rbs type: Symbol
+    # @rbs modify_script: String
+    # @rbs return: void
+    def insert_mod_data: (Integer new_index, Symbol type, String modify_script) -> void
   end
 end
