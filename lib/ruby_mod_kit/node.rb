@@ -93,5 +93,25 @@ module RubyModKit
     def parameter_name
       parameter_node!.name.to_s
     end
+
+    # @rbs offset: Integer
+    # @rbs prism_klass: Class | nil
+    # @rbs return: Node | nil
+    def [](offset, prism_klass = nil)
+      return nil unless include?(offset)
+
+      child = children.find { _1.include?(offset) }
+      node = child&.[](offset) || self
+      return node unless prism_klass
+      return node if node.prism_node.is_a?(prism_klass)
+
+      node.ancestors.find { _1.prism_node.is_a?(prism_klass) }
+    end
+
+    # @rbs offset: Integer
+    # @rbs return: bool
+    def include?(offset)
+      prism_node.location.start_offset <= offset && offset <= prism_node.location.end_offset
+    end
   end
 end
