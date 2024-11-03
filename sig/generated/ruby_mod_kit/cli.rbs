@@ -1,7 +1,7 @@
-# Generated from lib/rbmk/cli.rb with RBS::Inline
+# Generated from lib/ruby_mod_kit/cli.rb with RBS::Inline
 
-module Rbmk
-  # This class provides CLI commands of rbmk.
+module RubyModKit
+  # This class provides CLI commands of ruby_mod_kit.
   class CLI < Thor
     # @rbs *args: String
     # @rbs return: void

@@ -4,9 +4,9 @@
 
 require "prism"
 
-require "rbmk/node"
+require "ruby_mod_kit/node"
 
-module Rbmk
+module RubyModKit
   # The class of transpiler.
   class Transpiler
     # @rbs @reverse_index_offsets: [[Integer, Integer]]
@@ -14,8 +14,7 @@ module Rbmk
 
     # @rbs src: String
     # @rbs return: void
-    def initialize(src)
-      @src = src
+    def initialize(@src)
     end
 
     # @rbs return: String
@@ -49,7 +48,7 @@ module Rbmk
             src.match(/([^@]*)@(\w{#{length - 1}})/, src_index)
             prefix = ::Regexp.last_match(1)
             name = ::Regexp.last_match(2)
-            raise Rbmk::Error, "Expected ivar but '#{src[src_index, length]}'" if prefix != "" || !name.is_a?(String)
+            raise RubyModKit::Error, "Expected ivar but '#{src[src_index, length]}'" if prefix != "" || !name.is_a?(String)
 
             @dst[dst_index, length] = name
             insert_offset(dst_index, -1)
@@ -57,7 +56,7 @@ module Rbmk
             arg_node = node.each.find do |node|
               node.prism_node.location.start_offset == parse_error.location.start_offset && node.parameter_node
             end
-            raise Rbmk::Error, "ParameterNode not found" unless arg_node
+            raise RubyModKit::Error, "ParameterNode not found" unless arg_node
 
             name = arg_node.parameter_name[1..]
             arg_node.ancestors.find { _1.prism_node.is_a?(Prism::DefNode) }
@@ -65,7 +64,7 @@ module Rbmk
           end
         end
         if previous_error_count.positive? && previous_error_count <= parse_errors.size
-          raise Rbmk::Error, "Syntax error: #{parse_errors.map(&:message).join("\n")}"
+          raise RubyModKit::Error, "Syntax error: #{parse_errors.map(&:message).join("\n")}"
         end
 
         previous_error_count = parse_errors.size
@@ -83,10 +82,10 @@ module Rbmk
 
             node.prism_node.location.start_offset == index && node.parameter_node
           end
-          raise Rbmk::Error, "ParameterNode not found" unless parameter_node
+          raise RubyModKit::Error, "ParameterNode not found" unless parameter_node
 
           def_node = parameter_node.ancestors.find { _1.prism_node.is_a?(Prism::DefNode) }
-          raise Rbmk::Error, "DefNode not found" if !def_node || !def_node.prism_node.is_a?(Prism::DefNode)
+          raise RubyModKit::Error, "DefNode not found" if !def_node || !def_node.prism_node.is_a?(Prism::DefNode)
 
           def_body_location = def_node.prism_node.body&.location
           if def_body_location
@@ -96,14 +95,14 @@ module Rbmk
             indent = def_node.prism_node.end_keyword_loc.start_column + 2
             dst_index = dst_index(def_node.prism_node.end_keyword_loc.start_offset - indent + 2)
           else
-            raise Rbmk::Error, "Invalid DefNode #{def_node.prism_node.inspect}"
+            raise RubyModKit::Error, "Invalid DefNode #{def_node.prism_node.inspect}"
           end
 
           dst_line = "#{" " * indent}#{modify_script}\n"
           @dst[dst_index, 0] = dst_line
           insert_offset(dst_index + 1, dst_line.size)
         else
-          raise Rbmk::Error, "Unexpected type #{type}"
+          raise RubyModKit::Error, "Unexpected type #{type}"
         end
       end
     end

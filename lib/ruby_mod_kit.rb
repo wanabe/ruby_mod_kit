@@ -4,11 +4,11 @@
 
 require "rbconfig"
 
-require_relative "rbmk/version"
-require_relative "rbmk/transpiler"
+require_relative "ruby_mod_kit/version"
+require_relative "ruby_mod_kit/transpiler"
 
-# The root namespace for rbmk.
-module Rbmk
+# The root namespace for ruby_mod_kit.
+module RubyModKit
   class Error < StandardError; end
 
   class << self

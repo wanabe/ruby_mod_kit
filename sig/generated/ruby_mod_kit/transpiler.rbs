@@ -1,6 +1,6 @@
-# Generated from lib/rbmk/transpiler.rb with RBS::Inline
+# Generated from lib/ruby_mod_kit/transpiler.rb with RBS::Inline
 
-module Rbmk
+module RubyModKit
   # The class of transpiler.
   class Transpiler
     @reverse_index_offsets: [ [ Integer, Integer ] ]

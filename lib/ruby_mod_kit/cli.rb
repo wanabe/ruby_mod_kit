@@ -2,17 +2,17 @@
 
 # rbs_inline: enabled
 
-require "rbmk"
+require "ruby_mod_kit"
 require "thor"
 
-module Rbmk
-  # This class provides CLI commands of rbmk.
+module RubyModKit
+  # This class provides CLI commands of ruby_mod_kit.
   class CLI < Thor
     desc "exec", "execute rbm file"
     # @rbs *args: String
     # @rbs return: void
     def exec(*args)
-      Rbmk.execute_file(*args)
+      RubyModKit.execute_file(*args)
     end
 
     desc "transpile", "transpile rbm files"
@@ -20,7 +20,7 @@ module Rbmk
     # @rbs return: void
     def transpile(*args)
       args.each do |path|
-        Rbmk.transpile_file(path)
+        RubyModKit.transpile_file(path)
       end
     end
   end

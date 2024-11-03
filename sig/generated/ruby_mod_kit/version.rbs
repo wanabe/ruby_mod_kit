@@ -1,0 +1,5 @@
+# Generated from lib/ruby_mod_kit/version.rb with RBS::Inline
+
+module RubyModKit
+  VERSION: String
+end

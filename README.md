@@ -1,6 +1,6 @@
-# Rbmk
+# RubyModKit
 
-Rbmk is a transpiler tool from Ruby-like syntax script to Ruby script.
+RubyModKit is a transpiler tool from Ruby-like syntax script to Ruby script.
 The name is shorthand for ruby-modify-kit.
 
 ## Installation
@@ -17,7 +17,7 @@ TODO
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/wanabe/rbmk.
+Bug reports and pull requests are welcome on GitHub at https://github.com/wanabe/ruby_mod_kit.
 
 ## License
 

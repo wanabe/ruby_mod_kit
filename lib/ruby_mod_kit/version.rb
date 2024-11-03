@@ -2,6 +2,6 @@
 
 # rbs_inline: enabled
 
-module Rbmk
+module RubyModKit
   VERSION = "0.1.0" #: String
 end

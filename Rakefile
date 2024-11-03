@@ -8,7 +8,7 @@ require "rubocop/rake_task"
 require "steep/rake_task"
 require "rbs/inline"
 require "rbs/inline/cli"
-require "rbmk"
+require "ruby_mod_kit"
 
 Rake::TestTask.new(:test) do |t|
   t.libs << "test"
@@ -28,7 +28,7 @@ end
 desc "Transpile .rbm files under lib/"
 task lib: Dir.glob("lib/**/*.rbm").map { _1.ext(".rb") }
 rule ".rb" => %w[.rbm] do |t|
-  Rbmk.transpile_file(t.source)
+  RubyModKit.transpile_file(t.source)
 end
 
 task default: %i[lib test rbs_inline rubocop:autocorrect_all steep:check]

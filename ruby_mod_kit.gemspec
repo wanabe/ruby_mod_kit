@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
-require_relative "lib/rbmk/version"
+require_relative "lib/ruby_mod_kit/version"
 
 Gem::Specification.new do |spec|
-  spec.name = "rbmk"
-  spec.version = Rbmk::VERSION
+  spec.name = "ruby_mod_kit"
+  spec.version = RubyModKit::VERSION
   spec.authors = ["wanabe"]
   spec.email = ["s.wanabe@gmail.com"]
 
-  spec.summary = "rbmk"
-  spec.description = "rbmk"
-  spec.homepage = "https://github.com/wanabe/rbmk"
+  spec.summary = "ruby_mod_kit"
+  spec.description = "ruby_mod_kit"
+  spec.homepage = "https://github.com/wanabe/ruby_mod_kit"
   spec.license = "MIT"
   spec.required_ruby_version = ">= 2.7.0"
 

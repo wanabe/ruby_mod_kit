@@ -2,7 +2,7 @@
 
 source "https://rubygems.org"
 
-# Specify your gem's dependencies in rbmk.gemspec
+# Specify your gem's dependencies in ruby_mod_kit.gemspec
 gemspec
 
 gem "debug"

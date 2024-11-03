@@ -2,10 +2,10 @@
 
 require "test_helper"
 
-class RbmkTest < Test::Unit::TestCase
+class RubyModKitTest < Test::Unit::TestCase
   test "VERSION" do
     assert do
-      ::Rbmk.const_defined?(:VERSION)
+      ::RubyModKit.const_defined?(:VERSION)
     end
   end
 end

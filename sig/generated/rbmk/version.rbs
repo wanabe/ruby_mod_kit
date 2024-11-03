@@ -1,5 +1,0 @@
-# Generated from lib/rbmk/version.rb with RBS::Inline
-
-module Rbmk
-  VERSION: String
-end

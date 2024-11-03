@@ -2,7 +2,7 @@
 
 # rbs_inline: enabled
 
-module Rbmk
+module RubyModKit
   # The class of transpiler.
   class Node
     attr_reader :prism_node #: Prism::Node & Prism::_Node
@@ -84,7 +84,7 @@ module Rbmk
     # @rbs return: Prism::RequiredParameterNode | Prism::OptionalKeywordParameterNode
     #            | Prism::OptionalParameterNode | Prism::RequiredKeywordParameterNode
     def parameter_node!
-      parameter_node || raise(Rbmk::Error, "Expected ParameterNode but #{prism_node.inspect}")
+      parameter_node || raise(RubyModKit::Error, "Expected ParameterNode but #{prism_node.inspect}")
     end
 
     # @rbs return: String
