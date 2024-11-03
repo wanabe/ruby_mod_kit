@@ -14,6 +14,10 @@ Style/StringLiteralsInInterpolation:
   EnforcedStyle: double_quotes
 Style/TrailingCommaInArrayLiteral:
   EnforcedStyleForMultiline: consistent_comma
+Style/TrailingCommaInArguments:
+  EnforcedStyleForMultiline: consistent_comma
+Style/NumericPredicate:
+  EnforcedStyle: comparison
 
 Layout/EndAlignment:
   EnforcedStyleAlignWith: start_of_line
@@ -38,3 +42,9 @@ Metrics/BlockLength:
 Naming/MethodParameterName:
   Exclude:
     - examples/**/*.rb
+
+Lint/Debugger:
+  DebuggerMethods:
+    p:
+      - p
+      - pp

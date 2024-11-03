@@ -16,5 +16,7 @@ class Pos
   end
 end
 
-p User.new("a@exmple.com").email
-p Pos.new(2, 3).y
+puts(
+  User.new("a@exmple.com").email,
+  Pos.new(2, 3).y,
+)
