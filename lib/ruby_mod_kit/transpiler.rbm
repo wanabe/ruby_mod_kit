@@ -67,7 +67,14 @@ module RubyModKit
           end
         end
         if previous_error_count.positive? && previous_error_count <= parse_errors.size
-          raise RubyModKit::Error, "Syntax error: #{parse_errors.map(&:message).join("\n")}"
+          parse_errors.each do |error|
+            warn(
+              ":#{error.location.start_line}:#{error.message} (#{error.type})",
+              parse_result.source.lines[error.location.start_line - 1],
+              "#{" " * error.location.start_column}^#{"~" * [error.location.length - 1, 0].max}",
+            )
+          end
+          raise RubyModKit::Error, "Syntax error"
         end
 
         previous_error_count = parse_errors.size
