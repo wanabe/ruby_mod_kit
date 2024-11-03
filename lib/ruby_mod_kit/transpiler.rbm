@@ -48,7 +48,10 @@ module RubyModKit
             src.match(/([^@]*)@(\w{#{length - 1}})/, src_index)
             prefix = ::Regexp.last_match(1)
             name = ::Regexp.last_match(2)
-            raise RubyModKit::Error, "Expected ivar but '#{src[src_index, length]}'" if prefix != "" || !name.is_a?(String)
+            if prefix != "" || !name.is_a?(String)
+              raise RubyModKit::Error,
+                    "Expected ivar but '#{src[src_index, length]}'"
+            end
 
             @dst[dst_index, length] = name
             insert_offset(dst_index, -1)
