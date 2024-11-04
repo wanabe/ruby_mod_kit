@@ -45,25 +45,14 @@ module RubyModKit
           when :argument_formal_ivar
             src_index = parse_error.location.start_offset
             dst_index = dst_index(src_index)
-            length = parse_error.location.length
 
-            src.match(/([^@]*)@(\w{#{length - 1}})/, src_index)
-            prefix = ::Regexp.last_match(1)
-            name = ::Regexp.last_match(2)
-            if prefix != "" || !name.is_a?(String)
+            name = parse_error.location.slice[1..]
+            if parse_error.location.slice[0] != "@" || !name
               raise RubyModKit::Error,
-                    "Expected ivar but '#{src[src_index, length]}'"
+                    "Expected ivar but '#{parse_error.location.slice}'"
             end
 
-            self[dst_index, length] = name
-
-            arg_node = node.each.find do |node|
-              node.prism_node.location.start_offset == parse_error.location.start_offset && node.parameter_node
-            end
-            raise RubyModKit::Error, "ParameterNode not found" unless arg_node
-
-            name = arg_node.parameter_name[1..]
-            arg_node.ancestors.find { _1.prism_node.is_a?(Prism::DefNode) }
+            self[dst_index, parse_error.location.length] = name
             insert_mod_data(dst_index, :ivar_arg, "@#{name} = #{name}")
           when :unexpected_token_ignore
             next if parse_error.location.slice != "=>"
@@ -82,12 +71,10 @@ module RubyModKit
             next unless right_node
 
             right_offset = right_node.prism_node.location.start_offset
-            length = right_offset - last_parameter_offset
-            dst_index = dst_index(last_parameter_offset)
-
-            self[dst_index, length] = ""
+            self[dst_index(last_parameter_offset), right_offset - last_parameter_offset] = ""
           end
         end
+
         if previous_error_count.positive? && previous_error_count <= parse_errors.size
           parse_errors.each do |error|
             warn(
@@ -98,7 +85,6 @@ module RubyModKit
           end
           raise RubyModKit::Error, "Syntax error"
         end
-
         previous_error_count = parse_errors.size
       end
     end
@@ -110,7 +96,7 @@ module RubyModKit
     def []=(dst_index, length, str)
       diff = str.length - length
       @dst[dst_index, length] = str
-      insert_offset(dst_index, diff)
+      insert_offset(dst_index + 1, diff)
     end
 
     # @rbs return: void
@@ -133,9 +119,7 @@ module RubyModKit
             raise RubyModKit::Error, "Invalid DefNode #{def_node.prism_node.inspect}"
           end
 
-          dst_line = "#{" " * indent}#{modify_script}\n"
-          @dst[dst_index, 0] = dst_line
-          insert_offset(dst_index + 1, dst_line.size)
+          self[dst_index, 0] = "#{" " * indent}#{modify_script}\n"
         else
           raise RubyModKit::Error, "Unexpected type #{type}"
         end
