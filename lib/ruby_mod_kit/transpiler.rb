@@ -70,7 +70,12 @@ module RubyModKit
             next unless right_node
 
             right_offset = right_node.prism_node.location.start_offset
+            part = @dst[dst_index(last_parameter_offset)...dst_index(right_offset)]
+            raise RubyModKit::Error unless part
+
+            part = part.sub(/\s*=>\s*\z/, "")
             self[last_parameter_offset, right_offset - last_parameter_offset] = ""
+            insert_mod_data(last_parameter_offset, :type_parameter, part)
           end
         end
 
@@ -78,7 +83,7 @@ module RubyModKit
           line[0] = dst_index(line[0])
         end
 
-        if previous_error_count.positive? && previous_error_count <= parse_errors.size
+        if previous_error_count > 0 && previous_error_count <= parse_errors.size
           parse_errors.each do |error|
             warn(
               ":#{error.location.start_line}:#{error.message} (#{error.type})",
@@ -104,7 +109,8 @@ module RubyModKit
 
     # @rbs return: void
     def apply_collected_data
-      root_node = Node.new(Prism.parse(@dst).value)
+      parse_result = Prism.parse(@dst)
+      root_node = Node.new(parse_result.value)
       @mod_data.each do |(index, type, modify_script)|
         case type
         when :ivar_arg
@@ -123,6 +129,17 @@ module RubyModKit
           end
 
           self[src_index, 0] = "#{" " * indent}#{modify_script}\n"
+        when :type_parameter
+          def_node = root_node[index, Prism::DefNode]
+          raise RubyModKit::Error, "DefNode not found" if !def_node || !def_node.prism_node.is_a?(Prism::DefNode)
+
+          parameter_node = root_node[index]
+          raise RubyModKit::Error, "ParameterNode not found" unless parameter_node
+
+          line_start_offset = parse_result.source.offsets[def_node.prism_node.location.start_line - 1]
+          indent = def_node.prism_node.location.start_offset - line_start_offset
+          src_index = line_start_offset
+          self[src_index, 0] = "#{" " * indent}# @rbs #{parameter_node.parameter_name}: #{modify_script}\n"
         else
           raise RubyModKit::Error, "Unexpected type #{type}"
         end
@@ -134,7 +151,8 @@ module RubyModKit
     def dst_index(src_index)
       dst_index = src_index
       @index_offsets.each do |(index, offset)|
-        break if index >= src_index
+        break if index > src_index
+        break if index == src_index && offset < 0
 
         dst_index += offset
       end
