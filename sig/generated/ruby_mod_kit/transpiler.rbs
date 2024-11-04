@@ -35,10 +35,10 @@ module RubyModKit
     # @rbs return: void
     def insert_offset: (Integer src_index, Integer new_diff) -> void
 
-    # @rbs new_index: Integer
+    # @rbs src_index: Integer
     # @rbs type: Symbol
     # @rbs modify_script: String
     # @rbs return: void
-    def insert_mod_data: (Integer new_index, Symbol type, String modify_script) -> void
+    def insert_mod_data: (Integer src_index, Symbol type, String modify_script) -> void
   end
 end

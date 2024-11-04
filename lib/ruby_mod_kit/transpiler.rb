@@ -44,7 +44,6 @@ module RubyModKit
           case parse_error.type
           when :argument_formal_ivar
             src_index = parse_error.location.start_offset
-            dst_index = dst_index(src_index)
 
             name = parse_error.location.slice[1..]
             if parse_error.location.slice[0] != "@" || !name
@@ -53,7 +52,7 @@ module RubyModKit
             end
 
             self[src_index, parse_error.location.length] = name
-            insert_mod_data(dst_index, :ivar_arg, "@#{name} = #{name}")
+            insert_mod_data(src_index, :ivar_arg, "@#{name} = #{name}")
           when :unexpected_token_ignore
             next if parse_error.location.slice != "=>"
 
@@ -73,6 +72,10 @@ module RubyModKit
             right_offset = right_node.prism_node.location.start_offset
             self[last_parameter_offset, right_offset - last_parameter_offset] = ""
           end
+        end
+
+        @mod_data.each do |line|
+          line[0] = dst_index(line[0])
         end
 
         if previous_error_count.positive? && previous_error_count <= parse_errors.size
@@ -96,7 +99,7 @@ module RubyModKit
     def []=(src_index, length, str)
       diff = str.length - length
       @dst[dst_index(src_index), length] = str
-      insert_offset(src_index + 1, diff)
+      insert_offset(src_index, diff)
     end
 
     # @rbs return: void
@@ -146,22 +149,17 @@ module RubyModKit
         src_index < index
       end
       @index_offsets.insert(array_index || -1, [src_index, new_diff])
-      @mod_data.each do |line|
-        break if line[0] < src_index
-
-        line[0] += new_diff
-      end
     end
 
-    # @rbs new_index: Integer
+    # @rbs src_index: Integer
     # @rbs type: Symbol
     # @rbs modify_script: String
     # @rbs return: void
-    def insert_mod_data(new_index, type, modify_script)
+    def insert_mod_data(src_index, type, modify_script)
       array_index = @mod_data.find_index do |(index, _)|
-        new_index >= index
+        src_index < index
       end
-      @mod_data.insert(array_index || -1, [new_index, type, modify_script])
+      @mod_data.insert(array_index || -1, [src_index, type, modify_script])
     end
   end
 end
