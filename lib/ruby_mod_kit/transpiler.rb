@@ -9,7 +9,7 @@ require "ruby_mod_kit/node"
 module RubyModKit
   # The class of transpiler.
   class Transpiler
-    # @rbs @reverse_index_offsets: [[Integer, Integer]]
+    # @rbs @index_offsets: [[Integer, Integer]]
     # @rbs @dst: String
 
     # @rbs src: String
@@ -36,7 +36,7 @@ module RubyModKit
         parse_result = Prism.parse(src)
         node = Node.new(parse_result.value)
         parse_errors = parse_result.errors
-        @reverse_index_offsets = []
+        @index_offsets = []
         @typed_parameter_offsets = Set.new
         break if parse_errors.empty?
 
@@ -52,7 +52,7 @@ module RubyModKit
                     "Expected ivar but '#{parse_error.location.slice}'"
             end
 
-            self[dst_index, parse_error.location.length] = name
+            self[src_index, parse_error.location.length] = name
             insert_mod_data(dst_index, :ivar_arg, "@#{name} = #{name}")
           when :unexpected_token_ignore
             next if parse_error.location.slice != "=>"
@@ -71,7 +71,7 @@ module RubyModKit
             next unless right_node
 
             right_offset = right_node.prism_node.location.start_offset
-            self[dst_index(last_parameter_offset), right_offset - last_parameter_offset] = ""
+            self[last_parameter_offset, right_offset - last_parameter_offset] = ""
           end
         end
 
@@ -89,14 +89,14 @@ module RubyModKit
       end
     end
 
-    # @rbs dst_index: Integer
+    # @rbs src_index: Integer
     # @rbs length: Integer
     # @rbs str: String
     # @rbs return: String
-    def []=(dst_index, length, str)
+    def []=(src_index, length, str)
       diff = str.length - length
-      @dst[dst_index, length] = str
-      insert_offset(dst_index + 1, diff)
+      @dst[dst_index(src_index), length] = str
+      insert_offset(src_index + 1, diff)
     end
 
     # @rbs return: void
@@ -111,15 +111,15 @@ module RubyModKit
           def_body_location = def_node.prism_node.body&.location
           if def_body_location
             indent = def_body_location.start_column
-            dst_index = dst_index(def_body_location.start_offset - indent)
+            src_index = def_body_location.start_offset - indent
           elsif def_node.prism_node.end_keyword_loc
             indent = def_node.prism_node.end_keyword_loc.start_column + 2
-            dst_index = dst_index(def_node.prism_node.end_keyword_loc.start_offset - indent + 2)
+            src_index = def_node.prism_node.end_keyword_loc.start_offset - indent + 2
           else
             raise RubyModKit::Error, "Invalid DefNode #{def_node.prism_node.inspect}"
           end
 
-          self[dst_index, 0] = "#{" " * indent}#{modify_script}\n"
+          self[src_index, 0] = "#{" " * indent}#{modify_script}\n"
         else
           raise RubyModKit::Error, "Unexpected type #{type}"
         end
@@ -129,30 +129,25 @@ module RubyModKit
     # @rbs src_index: Integer
     # @rbs return: Integer
     def dst_index(src_index)
-      offset = @reverse_index_offsets.find { _1.first <= src_index }&.last || 0
-      offset + src_index
+      dst_index = src_index
+      @index_offsets.each do |(index, offset)|
+        break if index >= src_index
+
+        dst_index += offset
+      end
+      dst_index
     end
 
-    # @rbs new_index: Integer
+    # @rbs src_index: Integer
     # @rbs new_diff: Integer
     # @rbs return: void
-    def insert_offset(new_index, new_diff)
-      array_index = @reverse_index_offsets.find_index.with_index do |(index, _), i|
-        if new_index < index
-          @reverse_index_offsets[i][1] += new_diff
-          false
-        else
-          true
-        end
+    def insert_offset(src_index, new_diff)
+      array_index = @index_offsets.find_index do |(index, _)|
+        src_index < index
       end
-      if array_index
-        new_diff += @reverse_index_offsets[array_index][1]
-      else
-        array_index = -1
-      end
-      @reverse_index_offsets.insert(array_index, [new_index, new_diff])
+      @index_offsets.insert(array_index || -1, [src_index, new_diff])
       @mod_data.each do |line|
-        break if line[0] < new_index
+        break if line[0] < src_index
 
         line[0] += new_diff
       end
@@ -163,7 +158,7 @@ module RubyModKit
     # @rbs modify_script: String
     # @rbs return: void
     def insert_mod_data(new_index, type, modify_script)
-      array_index = @mod_data.find_index.with_index do |(index, _), _i|
+      array_index = @mod_data.find_index do |(index, _)|
         new_index >= index
       end
       @mod_data.insert(array_index || -1, [new_index, type, modify_script])
