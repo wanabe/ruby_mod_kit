@@ -37,6 +37,7 @@ module RubyModKit
         node = Node.new(parse_result.value)
         parse_errors = parse_result.errors
         @reverse_index_offsets = []
+        @typed_parameter_offsets = Set.new
         break if parse_errors.empty?
 
         parse_errors.each do |parse_error|
@@ -65,6 +66,27 @@ module RubyModKit
             name = arg_node.parameter_name[1..]
             arg_node.ancestors.find { _1.prism_node.is_a?(Prism::DefNode) }
             insert_mod_data(dst_index, :ivar_arg, "@#{name} = #{name}")
+          when :unexpected_token_ignore
+            next if parse_error.location.slice != "=>"
+
+            def_node = node[parse_error.location.start_offset, Prism::DefNode]
+            parameters_node, body_node, = def_node&.children
+            next if !parameters_node || !body_node
+
+            last_parameter_offset = parameters_node.children.map { _1.prism_node.location.start_offset }.max
+            next if @typed_parameter_offsets.include?(last_parameter_offset)
+
+            @typed_parameter_offsets << last_parameter_offset
+            right_node = body_node.children.find do |child_node|
+              child_node.prism_node.location.start_offset >= parse_error.location.end_offset
+            end
+            next unless right_node
+
+            right_offset = right_node.prism_node.location.start_offset
+            length = right_offset - last_parameter_offset
+            dst_index = dst_index(last_parameter_offset)
+            @dst[dst_index, length] = ""
+            insert_offset(dst_index, -length)
           end
         end
         if previous_error_count.positive? && previous_error_count <= parse_errors.size
@@ -88,14 +110,7 @@ module RubyModKit
       @mod_data.each do |(index, type, modify_script)|
         case type
         when :ivar_arg
-          parameter_node = root_node.each.find do |node|
-            break if node.prism_node.location.start_offset > index
-
-            node.prism_node.location.start_offset == index && node.parameter_node
-          end
-          raise RubyModKit::Error, "ParameterNode not found" unless parameter_node
-
-          def_node = parameter_node.ancestors.find { _1.prism_node.is_a?(Prism::DefNode) }
+          def_node = root_node[index, Prism::DefNode]
           raise RubyModKit::Error, "DefNode not found" if !def_node || !def_node.prism_node.is_a?(Prism::DefNode)
 
           def_body_location = def_node.prism_node.body&.location

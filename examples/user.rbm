@@ -2,21 +2,26 @@
 
 # Example class
 class User
-  attr_reader :email
+  attr_reader :email, :name, :nick
 
-  def initialize(@email, @tel = nil, @name: nil, @nick: nil)
+  def initialize(String => @email, (nil | String) => @tel = nil, (nil | String) => @name: nil, (nil | String) => @nick: nil)
   end
 end
 
 # Example class
 class Pos
-  attr_reader :x, :y
+  attr_reader :x, :y, :z
 
-  def initialize(@x, @y, @z = 0)
+  def initialize(Integer => @x, Integer => @y, Integer => @z = 0)
+  end
+
+  def *(Pos => other)
+    (@x * other.x) + (@y * other.y) + (@z * other.z)
   end
 end
 
 puts(
   User.new("a@exmple.com").email,
   Pos.new(2, 3).y,
+  Pos.new(1, 2) * Pos.new(3, 4),
 )
