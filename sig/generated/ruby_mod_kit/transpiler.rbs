@@ -17,6 +17,12 @@ module RubyModKit
     # @rbs return: void
     def correct_and_collect: () -> void
 
+    # @rbs dst_index: Integer
+    # @rbs length: Integer
+    # @rbs str: String
+    # @rbs return: String
+    def []=: (Integer dst_index, Integer length, String str) -> String
+
     # @rbs return: void
     def apply_collected_data: () -> void
 

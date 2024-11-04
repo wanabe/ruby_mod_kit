@@ -55,8 +55,7 @@ module RubyModKit
                     "Expected ivar but '#{src[src_index, length]}'"
             end
 
-            @dst[dst_index, length] = name
-            insert_offset(dst_index, -1)
+            self[dst_index, length] = name
 
             arg_node = node.each.find do |node|
               node.prism_node.location.start_offset == parse_error.location.start_offset && node.parameter_node
@@ -85,8 +84,8 @@ module RubyModKit
             right_offset = right_node.prism_node.location.start_offset
             length = right_offset - last_parameter_offset
             dst_index = dst_index(last_parameter_offset)
-            @dst[dst_index, length] = ""
-            insert_offset(dst_index, -length)
+
+            self[dst_index, length] = ""
           end
         end
         if previous_error_count.positive? && previous_error_count <= parse_errors.size
@@ -102,6 +101,16 @@ module RubyModKit
 
         previous_error_count = parse_errors.size
       end
+    end
+
+    # @rbs dst_index: Integer
+    # @rbs length: Integer
+    # @rbs str: String
+    # @rbs return: String
+    def []=(dst_index, length, str)
+      diff = str.length - length
+      @dst[dst_index, length] = str
+      insert_offset(dst_index, diff)
     end
 
     # @rbs return: void
