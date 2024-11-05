@@ -20,10 +20,15 @@ class Pos
   def *(Pos => other)
     (@x * other.x) + (@y * other.y) + (@z * other.z)
   end
+
+  def *(Integer => n)
+    Pos.new(@x * n, @y * n, @z * n)
+  end
 end
 
 puts(
   User.new("a@exmple.com").email,
   Pos.new(2, 3).y,
   Pos.new(1, 2) * Pos.new(3, 4),
+  Pos.new(1, 2) * 3,
 )

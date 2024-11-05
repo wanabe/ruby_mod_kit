@@ -7,6 +7,8 @@ module RubyModKit
 
     @dst: String
 
+    OVERLOAD_METHOD_MAP: Hash[Symbol, String]
+
     # @rbs src: String
     # @rbs return: void
     def initialize: (String src) -> void
