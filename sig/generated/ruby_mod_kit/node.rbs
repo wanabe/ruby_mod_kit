@@ -39,16 +39,16 @@ module RubyModKit
     def inspect: () -> String
 
     # @rbs return: Prism::RequiredParameterNode | Prism::OptionalKeywordParameterNode
-    #            | Prism::OptionalParameterNode | Prism::RequiredKeywordParameterNode
+    #            | Prism::OptionalParameterNode | Prism::RequiredKeywordParameterNode | Prism::DefNode
     #            | nil
-    def parameter_node: () -> (Prism::RequiredParameterNode | Prism::OptionalKeywordParameterNode | Prism::OptionalParameterNode | Prism::RequiredKeywordParameterNode | nil)
+    def named_node: () -> (Prism::RequiredParameterNode | Prism::OptionalKeywordParameterNode | Prism::OptionalParameterNode | Prism::RequiredKeywordParameterNode | Prism::DefNode | nil)
 
     # @rbs return: Prism::RequiredParameterNode | Prism::OptionalKeywordParameterNode
-    #            | Prism::OptionalParameterNode | Prism::RequiredKeywordParameterNode
-    def parameter_node!: () -> (Prism::RequiredParameterNode | Prism::OptionalKeywordParameterNode | Prism::OptionalParameterNode | Prism::RequiredKeywordParameterNode)
+    #            | Prism::OptionalParameterNode | Prism::RequiredKeywordParameterNode | Prism::DefNode
+    def named_node!: () -> (Prism::RequiredParameterNode | Prism::OptionalKeywordParameterNode | Prism::OptionalParameterNode | Prism::RequiredKeywordParameterNode | Prism::DefNode)
 
-    # @rbs return: String
-    def parameter_name: () -> String
+    # @rbs return: Symbol
+    def name: () -> Symbol
 
     # @rbs offset: Integer
     # @rbs prism_klass: Class | nil

@@ -139,7 +139,7 @@ module RubyModKit
           line_start_offset = parse_result.source.offsets[def_node.prism_node.location.start_line - 1]
           indent = def_node.prism_node.location.start_offset - line_start_offset
           src_index = line_start_offset
-          self[src_index, 0] = "#{" " * indent}# @rbs #{parameter_node.parameter_name}: #{modify_script}\n"
+          self[src_index, 0] = "#{" " * indent}# @rbs #{parameter_node.name}: #{modify_script}\n"
         else
           raise RubyModKit::Error, "Unexpected type #{type}"
         end

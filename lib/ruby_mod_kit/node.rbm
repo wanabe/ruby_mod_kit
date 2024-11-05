@@ -71,25 +71,25 @@ module RubyModKit
     end
 
     # @rbs return: Prism::RequiredParameterNode | Prism::OptionalKeywordParameterNode
-    #            | Prism::OptionalParameterNode | Prism::RequiredKeywordParameterNode
+    #            | Prism::OptionalParameterNode | Prism::RequiredKeywordParameterNode | Prism::DefNode
     #            | nil
-    def parameter_node
+    def named_node
       case prism_node
       when Prism::RequiredParameterNode, Prism::OptionalKeywordParameterNode,
-           Prism::OptionalParameterNode, Prism::RequiredKeywordParameterNode
+           Prism::OptionalParameterNode, Prism::RequiredKeywordParameterNode, Prism::DefNode
         prism_node
       end
     end
 
     # @rbs return: Prism::RequiredParameterNode | Prism::OptionalKeywordParameterNode
-    #            | Prism::OptionalParameterNode | Prism::RequiredKeywordParameterNode
-    def parameter_node!
-      parameter_node || raise(RubyModKit::Error, "Expected ParameterNode but #{prism_node.inspect}")
+    #            | Prism::OptionalParameterNode | Prism::RequiredKeywordParameterNode | Prism::DefNode
+    def named_node!
+      named_node || raise(RubyModKit::Error, "Expected ParameterNode but #{prism_node.inspect}")
     end
 
-    # @rbs return: String
-    def parameter_name
-      parameter_node!.name.to_s
+    # @rbs return: Symbol
+    def name
+      named_node!.name
     end
 
     # @rbs offset: Integer
