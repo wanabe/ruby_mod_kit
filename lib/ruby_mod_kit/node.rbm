@@ -100,7 +100,8 @@ module RubyModKit
 
       child = children.find { _1.include?(offset) }
       node = child&.[](offset) || self
-      return node if prism_klass || node.prism_node.is_a?(prism_klass)
+      return node unless prism_klass
+      return node if node.prism_node.is_a?(prism_klass)
 
       node.ancestors.find { _1.prism_node.is_a?(prism_klass) }
     end
