@@ -3,13 +3,14 @@
 # rbs_inline: enabled
 
 require "prism"
+require "sorted_set"
 
 require "ruby_mod_kit/node"
 
 module RubyModKit
   # The class of transpiler.
   class Transpiler
-    # @rbs @diffs: [[Integer, Integer]]
+    # @rbs @diffs: SortedSet[[Integer, Integer, Integer]]
     # @rbs @dst: String
 
     OVERLOAD_METHOD_MAP = {
@@ -31,7 +32,7 @@ module RubyModKit
     # @rbs return: void
     def correct_and_collect
       @dst = @src.dup
-      @mod_data = []
+      @mod_data = SortedSet.new
 
       previous_error_count = 0
       loop do
@@ -39,7 +40,7 @@ module RubyModKit
         parse_result = Prism.parse(src)
         node = Node.new(parse_result.value)
         parse_errors = parse_result.errors
-        @diffs = []
+        @diffs = SortedSet.new
         typed_parameter_offsets = Set.new
         break if parse_errors.empty?
 
@@ -154,7 +155,7 @@ module RubyModKit
     def apply_collected_data
       parse_result = Prism.parse(@dst)
       root_node = Node.new(parse_result.value)
-      @mod_data.each do |(index, type, modify_script)|
+      @mod_data.each do |(index, _, type, modify_script)|
         case type
         when :ivar_arg
           def_node = root_node[index, Prism::DefNode]
@@ -192,7 +193,7 @@ module RubyModKit
     # @rbs return: Integer
     def dst_offset(src_offset)
       dst_offset = src_offset
-      @diffs.each do |(offset, diff)|
+      @diffs.each do |(offset, _, diff)|
         break if offset > src_offset
         break if offset == src_offset && diff < 0
 
@@ -205,10 +206,7 @@ module RubyModKit
     # @rbs new_diff: Integer
     # @rbs return: void
     def insert_diff(src_offset, new_diff)
-      array_index = @diffs.find_index do |(offset, _)|
-        src_offset < offset
-      end
-      @diffs.insert(array_index || -1, [src_offset, new_diff])
+      @diffs << [src_offset, @diffs.size, new_diff]
     end
 
     # @rbs src_offset: Integer
@@ -216,10 +214,7 @@ module RubyModKit
     # @rbs modify_script: String
     # @rbs return: void
     def insert_mod_data(src_offset, type, modify_script)
-      array_index = @mod_data.find_index do |(offset, _)|
-        src_offset < offset
-      end
-      @mod_data.insert(array_index || -1, [src_offset, type, modify_script])
+      @mod_data << [src_offset, @mod_data.size, type, modify_script]
     end
   end
 end

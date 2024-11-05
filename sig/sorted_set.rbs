@@ -1,0 +1,6 @@
+# sorted_set gem
+class SortedSet [T]
+  def each: () { (T) -> void } -> self
+  def size: () -> Integer
+  def <<: (T) -> T
+end

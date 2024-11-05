@@ -3,7 +3,7 @@
 module RubyModKit
   # The class of transpiler.
   class Transpiler
-    @diffs: [ [ Integer, Integer ] ]
+    @diffs: SortedSet[[ Integer, Integer, Integer ]]
 
     @dst: String
 
