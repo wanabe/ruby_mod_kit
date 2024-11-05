@@ -3,7 +3,7 @@
 module RubyModKit
   # The class of transpiler.
   class Transpiler
-    @index_offsets: [ [ Integer, Integer ] ]
+    @diffs: [ [ Integer, Integer ] ]
 
     @dst: String
 
@@ -19,28 +19,28 @@ module RubyModKit
     # @rbs return: void
     def correct_and_collect: () -> void
 
-    # @rbs src_index: Integer
+    # @rbs src_offset: Integer
     # @rbs length: Integer
     # @rbs str: String
     # @rbs return: String
-    def []=: (Integer src_index, Integer length, String str) -> String
+    def []=: (Integer src_offset, Integer length, String str) -> String
 
     # @rbs return: void
     def apply_collected_data: () -> void
 
-    # @rbs src_index: Integer
+    # @rbs src_offset: Integer
     # @rbs return: Integer
-    def dst_index: (Integer src_index) -> Integer
+    def dst_offset: (Integer src_offset) -> Integer
 
-    # @rbs src_index: Integer
+    # @rbs src_offset: Integer
     # @rbs new_diff: Integer
     # @rbs return: void
-    def insert_offset: (Integer src_index, Integer new_diff) -> void
+    def insert_diff: (Integer src_offset, Integer new_diff) -> void
 
-    # @rbs src_index: Integer
+    # @rbs src_offset: Integer
     # @rbs type: Symbol
     # @rbs modify_script: String
     # @rbs return: void
-    def insert_mod_data: (Integer src_index, Symbol type, String modify_script) -> void
+    def insert_mod_data: (Integer src_offset, Symbol type, String modify_script) -> void
   end
 end

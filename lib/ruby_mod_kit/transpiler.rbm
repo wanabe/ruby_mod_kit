@@ -9,7 +9,7 @@ require "ruby_mod_kit/node"
 module RubyModKit
   # The class of transpiler.
   class Transpiler
-    # @rbs @index_offsets: [[Integer, Integer]]
+    # @rbs @diffs: [[Integer, Integer]]
     # @rbs @dst: String
 
     OVERLOAD_METHOD_MAP = {
@@ -39,8 +39,8 @@ module RubyModKit
         parse_result = Prism.parse(src)
         node = Node.new(parse_result.value)
         parse_errors = parse_result.errors
-        @index_offsets = []
-        @typed_parameter_offsets = Set.new
+        @diffs = []
+        typed_parameter_offsets = Set.new
         break if parse_errors.empty?
 
         overload_methods = {} if previous_error_count == 0
@@ -48,7 +48,7 @@ module RubyModKit
         parse_errors.each do |parse_error|
           case parse_error.type
           when :argument_formal_ivar
-            src_index = parse_error.location.start_offset
+            src_offset = parse_error.location.start_offset
 
             name = parse_error.location.slice[1..]
             if parse_error.location.slice[0] != "@" || !name
@@ -56,8 +56,8 @@ module RubyModKit
                     "Expected ivar but '#{parse_error.location.slice}'"
             end
 
-            self[src_index, parse_error.location.length] = name
-            insert_mod_data(src_index, :ivar_arg, "@#{name} = #{name}")
+            self[src_offset, parse_error.location.length] = name
+            insert_mod_data(src_offset, :ivar_arg, "@#{name} = #{name}")
           when :unexpected_token_ignore
             next if parse_error.location.slice != "=>"
 
@@ -69,27 +69,27 @@ module RubyModKit
             next if !def_parent_node || !parameters_node || !body_node
 
             last_parameter_offset = parameters_node.children.map { _1.prism_node.location.start_offset }.max
-            next if @typed_parameter_offsets.include?(last_parameter_offset)
+            next if typed_parameter_offsets.include?(last_parameter_offset)
 
-            @typed_parameter_offsets << last_parameter_offset
+            typed_parameter_offsets << last_parameter_offset
             right_node = body_node.children.find do |child_node|
               child_node.prism_node.location.start_offset >= parse_error.location.end_offset
             end
             next unless right_node
 
             right_offset = right_node.prism_node.location.start_offset
-            part = @dst[dst_index(last_parameter_offset)...dst_index(right_offset)]&.sub(/\s*=>\s*\z/, "")
-            raise RubyModKit::Error unless part
+            parameter_type = @dst[dst_offset(last_parameter_offset)...dst_offset(right_offset)]&.sub(/\s*=>\s*\z/, "")
+            raise RubyModKit::Error unless parameter_type
 
             if overload_methods
               overload_id = [def_parent_node.prism_node.location.start_offset, def_node.named_node!.name]
               overload_methods[overload_id] ||= {}
               overload_methods[overload_id][def_node] ||= []
-              overload_methods[overload_id][def_node] << part
+              overload_methods[overload_id][def_node] << parameter_type
             end
 
             self[last_parameter_offset, right_offset - last_parameter_offset] = ""
-            insert_mod_data(last_parameter_offset, :type_parameter, part)
+            insert_mod_data(last_parameter_offset, :type_parameter, parameter_type)
           end
         end
 
@@ -97,7 +97,7 @@ module RubyModKit
           next if def_node_part_pairs.size <= 1
 
           first_def_node = def_node_part_pairs.first[0]
-          src_index = parse_result.source.offsets[first_def_node.prism_node.location.start_line - 1]
+          src_offset = parse_result.source.offsets[first_def_node.prism_node.location.start_line - 1]
           script = +""
           def_node_part_pairs.each_value do |parts|
             script << if script.empty?
@@ -117,21 +117,21 @@ module RubyModKit
             script << "    #{overload_name}(*args)\n"
           end
           script << "  end\nend\n\n"
-          indent = first_def_node.prism_node.location.start_offset - src_index
+          indent = first_def_node.prism_node.location.start_offset - src_offset
           script.gsub!(/^(?=.)/, " " * indent)
-          self[src_index, 0] = script
+          self[src_offset, 0] = script
         end
 
         @mod_data.each do |line|
-          line[0] = dst_index(line[0])
+          line[0] = dst_offset(line[0])
         end
 
         if previous_error_count > 0 && previous_error_count <= parse_errors.size
-          parse_errors.each do |error|
+          parse_errors.each do |parse_error|
             warn(
-              ":#{error.location.start_line}:#{error.message} (#{error.type})",
-              parse_result.source.lines[error.location.start_line - 1],
-              "#{" " * error.location.start_column}^#{"~" * [error.location.length - 1, 0].max}",
+              ":#{parse_error.location.start_line}:#{parse_error.message} (#{parse_error.type})",
+              parse_result.source.lines[parse_error.location.start_line - 1],
+              "#{" " * parse_error.location.start_column}^#{"~" * [parse_error.location.length - 1, 0].max}",
             )
           end
           raise RubyModKit::Error, "Syntax error"
@@ -140,14 +140,14 @@ module RubyModKit
       end
     end
 
-    # @rbs src_index: Integer
+    # @rbs src_offset: Integer
     # @rbs length: Integer
     # @rbs str: String
     # @rbs return: String
-    def []=(src_index, length, str)
+    def []=(src_offset, length, str)
       diff = str.length - length
-      @dst[dst_index(src_index), length] = str
-      insert_offset(src_index, diff)
+      @dst[dst_offset(src_offset), length] = str
+      insert_diff(src_offset, diff)
     end
 
     # @rbs return: void
@@ -163,15 +163,15 @@ module RubyModKit
           def_body_location = def_node.prism_node.body&.location
           if def_body_location
             indent = def_body_location.start_column
-            src_index = def_body_location.start_offset - indent
+            src_offset = def_body_location.start_offset - indent
           elsif def_node.prism_node.end_keyword_loc
             indent = def_node.prism_node.end_keyword_loc.start_column + 2
-            src_index = def_node.prism_node.end_keyword_loc.start_offset - indent + 2
+            src_offset = def_node.prism_node.end_keyword_loc.start_offset - indent + 2
           else
             raise RubyModKit::Error, "Invalid DefNode #{def_node.prism_node.inspect}"
           end
 
-          self[src_index, 0] = "#{" " * indent}#{modify_script}\n"
+          self[src_offset, 0] = "#{" " * indent}#{modify_script}\n"
         when :type_parameter
           def_node = root_node[index, Prism::DefNode]
           raise RubyModKit::Error, "DefNode not found" if !def_node || !def_node.prism_node.is_a?(Prism::DefNode)
@@ -179,48 +179,47 @@ module RubyModKit
           parameter_node = root_node[index]
           raise RubyModKit::Error, "ParameterNode not found" unless parameter_node
 
-          line_start_offset = parse_result.source.offsets[def_node.prism_node.location.start_line - 1]
-          indent = def_node.prism_node.location.start_offset - line_start_offset
-          src_index = line_start_offset
-          self[src_index, 0] = "#{" " * indent}# @rbs #{parameter_node.name}: #{modify_script}\n"
+          src_offset = parse_result.source.offsets[def_node.prism_node.location.start_line - 1]
+          indent = def_node.prism_node.location.start_offset - src_offset
+          self[src_offset, 0] = "#{" " * indent}# @rbs #{parameter_node.name}: #{modify_script}\n"
         else
           raise RubyModKit::Error, "Unexpected type #{type}"
         end
       end
     end
 
-    # @rbs src_index: Integer
+    # @rbs src_offset: Integer
     # @rbs return: Integer
-    def dst_index(src_index)
-      dst_index = src_index
-      @index_offsets.each do |(index, offset)|
-        break if index > src_index
-        break if index == src_index && offset < 0
+    def dst_offset(src_offset)
+      dst_offset = src_offset
+      @diffs.each do |(offset, diff)|
+        break if offset > src_offset
+        break if offset == src_offset && diff < 0
 
-        dst_index += offset
+        dst_offset += diff
       end
-      dst_index
+      dst_offset
     end
 
-    # @rbs src_index: Integer
+    # @rbs src_offset: Integer
     # @rbs new_diff: Integer
     # @rbs return: void
-    def insert_offset(src_index, new_diff)
-      array_index = @index_offsets.find_index do |(index, _)|
-        src_index < index
+    def insert_diff(src_offset, new_diff)
+      array_index = @diffs.find_index do |(offset, _)|
+        src_offset < offset
       end
-      @index_offsets.insert(array_index || -1, [src_index, new_diff])
+      @diffs.insert(array_index || -1, [src_offset, new_diff])
     end
 
-    # @rbs src_index: Integer
+    # @rbs src_offset: Integer
     # @rbs type: Symbol
     # @rbs modify_script: String
     # @rbs return: void
-    def insert_mod_data(src_index, type, modify_script)
-      array_index = @mod_data.find_index do |(index, _)|
-        src_index < index
+    def insert_mod_data(src_offset, type, modify_script)
+      array_index = @mod_data.find_index do |(offset, _)|
+        src_offset < offset
       end
-      @mod_data.insert(array_index || -1, [src_index, type, modify_script])
+      @mod_data.insert(array_index || -1, [src_offset, type, modify_script])
     end
   end
 end
