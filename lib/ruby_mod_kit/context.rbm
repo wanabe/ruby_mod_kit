@@ -13,6 +13,9 @@ module RubyModKit
     # @rbs @diffs: SortedSet[[Integer, Integer, Integer]]
     # @rbs @script: String
 
+    attr_reader :parse_result #: Prism::ParseResult
+    attr_reader :script #: String
+
     OVERLOAD_METHOD_MAP = {
       "*": "_mul",
     }.freeze #: Hash[Symbol, String]
@@ -25,10 +28,11 @@ module RubyModKit
     end
 
     # @rbs return: String
-    def transpile
+    def self.transpile(script)
+      @context = Context.new(script)
       correct_and_collect_repeatedly
-      apply_collected_data
-      @script
+      @context.apply_collected_data
+      @context.script
     end
 
     # @rbs return: void
@@ -38,26 +42,26 @@ module RubyModKit
     end
 
     # @rbs return: void
-    def correct_and_collect_repeatedly
+    def self.correct_and_collect_repeatedly
       previous_error_count = 0
       overload_methods = {}
 
-      until @parse_result.errors.empty?
-        correct_and_collect(overload_methods: overload_methods)
+      until @context.parse_result.errors.empty?
+        @context.correct_and_collect(overload_methods: overload_methods)
         overload_methods = nil
 
-        if previous_error_count > 0 && previous_error_count <= @parse_result.errors.size
-          @parse_result.errors.each do |parse_error|
+        if previous_error_count > 0 && previous_error_count <= @context.parse_result.errors.size
+          @context.parse_result.errors.each do |parse_error|
             warn(
               ":#{parse_error.location.start_line}:#{parse_error.message} (#{parse_error.type})",
-              @parse_result.source.lines[parse_error.location.start_line - 1],
+              @context.parse_result.source.lines[parse_error.location.start_line - 1],
               "#{" " * parse_error.location.start_column}^#{"~" * [parse_error.location.length - 1, 0].max}",
             )
           end
           raise RubyModKit::Error, "Syntax error"
         end
-        previous_error_count = @parse_result.errors.size
-        parse
+        previous_error_count = @context.parse_result.errors.size
+        @context.parse
       end
     end
 

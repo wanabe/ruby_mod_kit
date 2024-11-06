@@ -15,7 +15,7 @@ module RubyModKit
 
     # @rbs return: String
     def transpile
-      Context.new(@src).transpile
+      Context.transpile(@src)
     end
   end
 end

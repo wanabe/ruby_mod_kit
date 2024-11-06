@@ -7,6 +7,10 @@ module RubyModKit
 
     @script: String
 
+    attr_reader parse_result: Prism::ParseResult
+
+    attr_reader script: String
+
     OVERLOAD_METHOD_MAP: Hash[Symbol, String]
 
     # @rbs src: String
@@ -14,13 +18,13 @@ module RubyModKit
     def initialize: (untyped script, ?mod_data: untyped) -> void
 
     # @rbs return: String
-    def transpile: () -> String
+    def self.transpile: (untyped script) -> String
 
     # @rbs return: void
     def parse: () -> void
 
     # @rbs return: void
-    def correct_and_collect_repeatedly: () -> void
+    def self.correct_and_collect_repeatedly: () -> void
 
     def correct_and_collect: (overload_methods: untyped) -> untyped
 
