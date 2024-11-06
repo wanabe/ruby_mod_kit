@@ -1,0 +1,13 @@
+# Generated from lib/ruby_mod_kit/transpiler.rb with RBS::Inline
+
+module RubyModKit
+  # The class of transpiler.
+  class Transpiler
+    # @rbs src: String
+    # @rbs return: void
+    def initialize: (String src) -> void
+
+    # @rbs return: String
+    def transpile: () -> String
+  end
+end
