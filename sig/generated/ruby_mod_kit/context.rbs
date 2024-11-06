@@ -5,13 +5,13 @@ module RubyModKit
   class Context
     @diffs: SortedSet[[ Integer, Integer, Integer ]]
 
-    @dst: String
+    @script: String
 
     OVERLOAD_METHOD_MAP: Hash[Symbol, String]
 
     # @rbs src: String
     # @rbs return: void
-    def initialize: (String src) -> void
+    def initialize: (untyped script) -> void
 
     # @rbs return: String
     def transpile: () -> String

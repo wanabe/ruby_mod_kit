@@ -11,7 +11,7 @@ module RubyModKit
   # The class of transpiler context.
   class Context
     # @rbs @diffs: SortedSet[[Integer, Integer, Integer]]
-    # @rbs @dst: String
+    # @rbs @script: String
 
     OVERLOAD_METHOD_MAP = {
       "*": "_mul",
@@ -19,27 +19,25 @@ module RubyModKit
 
     # @rbs src: String
     # @rbs return: void
-    def initialize(src)
-      @src = src
+    def initialize(script)
+      @script = script
+      @mod_data = SortedSet.new
     end
 
     # @rbs return: String
     def transpile
       correct_and_collect
       apply_collected_data
-      @dst
+      @script
     end
 
     # @rbs return: void
     def correct_and_collect
-      @dst = @src.dup
-      @mod_data = SortedSet.new
-
       previous_error_count = 0
+
       loop do
-        src = @dst.dup
-        parse_result = Prism.parse(src)
-        node = Node.new(parse_result.value)
+        parse_result = Prism.parse(@script)
+        root_node = Node.new(parse_result.value)
         parse_errors = parse_result.errors
         @diffs = SortedSet.new
         typed_parameter_offsets = Set.new
@@ -63,7 +61,7 @@ module RubyModKit
           when :unexpected_token_ignore
             next if parse_error.location.slice != "=>"
 
-            def_node = node[parse_error.location.start_offset, Prism::DefNode]
+            def_node = root_node[parse_error.location.start_offset, Prism::DefNode]
             next unless def_node
 
             def_parent_node = def_node.parent
@@ -80,7 +78,8 @@ module RubyModKit
             next unless right_node
 
             right_offset = right_node.prism_node.location.start_offset
-            parameter_type = @dst[dst_offset(last_parameter_offset)...dst_offset(right_offset)]&.sub(/\s*=>\s*\z/, "")
+            parameter_type_location_range = dst_offset(last_parameter_offset)...dst_offset(right_offset)
+            parameter_type = @script[parameter_type_location_range]&.sub(/\s*=>\s*\z/, "")
             raise RubyModKit::Error unless parameter_type
 
             if overload_methods
@@ -148,13 +147,13 @@ module RubyModKit
     # @rbs return: String
     def []=(src_offset, length, str)
       diff = str.length - length
-      @dst[dst_offset(src_offset), length] = str
+      @script[dst_offset(src_offset), length] = str
       insert_diff(src_offset, diff)
     end
 
     # @rbs return: void
     def apply_collected_data
-      parse_result = Prism.parse(@dst)
+      parse_result = Prism.parse(@script)
       root_node = Node.new(parse_result.value)
       @mod_data.each do |(index, _, type, modify_script)|
         case type
