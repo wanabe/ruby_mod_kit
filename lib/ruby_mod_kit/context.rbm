@@ -44,11 +44,9 @@ module RubyModKit
     # @rbs return: void
     def self.correct_and_collect_repeatedly
       previous_error_count = 0
-      overload_methods = {}
 
       until @context.parse_result.errors.empty?
-        @context.correct_and_collect(overload_methods: overload_methods)
-        overload_methods = nil
+        @context.correct_and_collect
 
         if previous_error_count > 0 && previous_error_count <= @context.parse_result.errors.size
           @context.parse_result.errors.each do |parse_error|
@@ -65,7 +63,8 @@ module RubyModKit
       end
     end
 
-    def correct_and_collect(overload_methods:)
+    def correct_and_collect
+      overload_methods = {} if @mod_data.empty?
       typed_parameter_offsets = Set.new
 
       @parse_result.errors.each do |parse_error|

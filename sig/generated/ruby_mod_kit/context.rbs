@@ -26,7 +26,7 @@ module RubyModKit
     # @rbs return: void
     def self.correct_and_collect_repeatedly: () -> void
 
-    def correct_and_collect: (overload_methods: untyped) -> untyped
+    def correct_and_collect: () -> untyped
 
     # @rbs src_offset: Integer
     # @rbs length: Integer
