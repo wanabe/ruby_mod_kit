@@ -5,7 +5,7 @@
 require "rbconfig"
 
 require_relative "ruby_mod_kit/version"
-require_relative "ruby_mod_kit/transpiler"
+require_relative "ruby_mod_kit/context"
 
 # The root namespace for ruby_mod_kit.
 module RubyModKit
@@ -32,7 +32,7 @@ module RubyModKit
     # @rbs src: String
     # @rbs return: String
     def transpile(src)
-      Transpiler.new(src).transpile
+      Context.new(src).transpile
     end
 
     # @rbs file: String

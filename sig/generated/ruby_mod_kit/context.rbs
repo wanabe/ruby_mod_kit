@@ -1,8 +1,8 @@
-# Generated from lib/ruby_mod_kit/transpiler.rb with RBS::Inline
+# Generated from lib/ruby_mod_kit/context.rb with RBS::Inline
 
 module RubyModKit
-  # The class of transpiler.
-  class Transpiler
+  # The class of transpiler context.
+  class Context
     @diffs: SortedSet[[ Integer, Integer, Integer ]]
 
     @dst: String

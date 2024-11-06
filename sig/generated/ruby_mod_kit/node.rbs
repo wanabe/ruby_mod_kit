@@ -1,7 +1,7 @@
 # Generated from lib/ruby_mod_kit/node.rb with RBS::Inline
 
 module RubyModKit
-  # The class of transpiler.
+  # The class of transpile node.
   class Node
     attr_reader prism_node: Prism::Node & Prism::_Node
 

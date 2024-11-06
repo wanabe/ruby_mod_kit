@@ -3,7 +3,7 @@
 # rbs_inline: enabled
 
 module RubyModKit
-  # The class of transpiler.
+  # The class of transpile node.
   class Node
     attr_reader :prism_node #: Prism::Node & Prism::_Node
     attr_reader :parent #: Node | nil

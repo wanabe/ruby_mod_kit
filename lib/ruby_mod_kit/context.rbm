@@ -8,8 +8,8 @@ require "sorted_set"
 require "ruby_mod_kit/node"
 
 module RubyModKit
-  # The class of transpiler.
-  class Transpiler
+  # The class of transpiler context.
+  class Context
     # @rbs @diffs: SortedSet[[Integer, Integer, Integer]]
     # @rbs @dst: String
 
