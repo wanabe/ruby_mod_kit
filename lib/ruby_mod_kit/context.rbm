@@ -19,8 +19,8 @@ module RubyModKit
 
     # @rbs src: String
     # @rbs return: void
-    def initialize(@script)
-      @mod_data = SortedSet.new
+    def initialize(@script, @mod_data: SortedSet.new)
+      @diffs = SortedSet.new
     end
 
     # @rbs return: String
@@ -35,16 +35,14 @@ module RubyModKit
       previous_error_count = 0
 
       loop do
-        parse_result = Prism.parse(@script)
-        root_node = Node.new(parse_result.value)
-        parse_errors = parse_result.errors
-        @diffs = SortedSet.new
-        typed_parameter_offsets = Set.new
-        break if parse_errors.empty?
+        @parse_result = Prism.parse(@script)
+        @root_node = Node.new(@parse_result.value)
+        break if @parse_result.errors.empty?
 
+        typed_parameter_offsets = Set.new
         overload_methods = {} if previous_error_count == 0
 
-        parse_errors.each do |parse_error|
+        @parse_result.errors.each do |parse_error|
           case parse_error.type
           when :argument_formal_ivar
             src_offset = parse_error.location.start_offset
@@ -60,7 +58,7 @@ module RubyModKit
           when :unexpected_token_ignore
             next if parse_error.location.slice != "=>"
 
-            def_node = root_node[parse_error.location.start_offset, Prism::DefNode]
+            def_node = @root_node[parse_error.location.start_offset, Prism::DefNode]
             next unless def_node
 
             def_parent_node = def_node.parent
@@ -97,7 +95,7 @@ module RubyModKit
           next if def_node_part_pairs.size <= 1
 
           first_def_node = def_node_part_pairs.first[0]
-          src_offset = parse_result.source.offsets[first_def_node.prism_node.location.start_line - 1]
+          src_offset = @parse_result.source.offsets[first_def_node.prism_node.location.start_line - 1]
           script = +""
           def_node_part_pairs.each_value do |parts|
             script << if script.empty?
@@ -125,18 +123,19 @@ module RubyModKit
         @mod_data.each do |line|
           line[0] = dst_offset(line[0])
         end
+        @diffs.clear
 
-        if previous_error_count > 0 && previous_error_count <= parse_errors.size
-          parse_errors.each do |parse_error|
+        if previous_error_count > 0 && previous_error_count <= @parse_result.errors.size
+          @parse_result.errors.each do |parse_error|
             warn(
               ":#{parse_error.location.start_line}:#{parse_error.message} (#{parse_error.type})",
-              parse_result.source.lines[parse_error.location.start_line - 1],
+              @parse_result.source.lines[parse_error.location.start_line - 1],
               "#{" " * parse_error.location.start_column}^#{"~" * [parse_error.location.length - 1, 0].max}",
             )
           end
           raise RubyModKit::Error, "Syntax error"
         end
-        previous_error_count = parse_errors.size
+        previous_error_count = @parse_result.errors.size
       end
     end
 
@@ -152,12 +151,12 @@ module RubyModKit
 
     # @rbs return: void
     def apply_collected_data
-      parse_result = Prism.parse(@script)
-      root_node = Node.new(parse_result.value)
+      @parse_result = Prism.parse(@script)
+      @root_node = Node.new(@parse_result.value)
       @mod_data.each do |(index, _, type, modify_script)|
         case type
         when :ivar_arg
-          def_node = root_node[index, Prism::DefNode]
+          def_node = @root_node[index, Prism::DefNode]
           raise RubyModKit::Error, "DefNode not found" if !def_node || !def_node.prism_node.is_a?(Prism::DefNode)
 
           def_body_location = def_node.prism_node.body&.location
@@ -173,13 +172,13 @@ module RubyModKit
 
           self[src_offset, 0] = "#{" " * indent}#{modify_script}\n"
         when :type_parameter
-          def_node = root_node[index, Prism::DefNode]
+          def_node = @root_node[index, Prism::DefNode]
           raise RubyModKit::Error, "DefNode not found" if !def_node || !def_node.prism_node.is_a?(Prism::DefNode)
 
-          parameter_node = root_node[index]
+          parameter_node = @root_node[index]
           raise RubyModKit::Error, "ParameterNode not found" unless parameter_node
 
-          src_offset = parse_result.source.offsets[def_node.prism_node.location.start_line - 1]
+          src_offset = @parse_result.source.offsets[def_node.prism_node.location.start_line - 1]
           indent = def_node.prism_node.location.start_offset - src_offset
           self[src_offset, 0] = "#{" " * indent}# @rbs #{parameter_node.name}: #{modify_script}\n"
         else

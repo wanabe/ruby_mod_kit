@@ -3,4 +3,5 @@ class SortedSet [T]
   def each: () { (T) -> void } -> self
   def size: () -> Integer
   def <<: (T) -> T
+  def clear: () -> self
 end

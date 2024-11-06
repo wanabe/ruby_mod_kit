@@ -11,7 +11,7 @@ module RubyModKit
 
     # @rbs src: String
     # @rbs return: void
-    def initialize: (untyped script) -> void
+    def initialize: (untyped script, ?mod_data: untyped) -> void
 
     # @rbs return: String
     def transpile: () -> String
