@@ -23,26 +23,49 @@ module RubyModKit
       @script = script
       @mod_data = mod_data
       @diffs = SortedSet.new
+      parse
     end
 
     # @rbs return: String
     def transpile
-      correct_and_collect
+      correct_and_collect_repeatedly
       apply_collected_data
       @script
     end
 
     # @rbs return: void
-    def correct_and_collect
+    def parse
+      @parse_result = Prism.parse(@script)
+      @root_node = Node.new(@parse_result.value)
+    end
+
+    # @rbs return: void
+    def correct_and_collect_repeatedly
       previous_error_count = 0
+      overload_methods = {}
 
-      loop do
-        @parse_result = Prism.parse(@script)
-        @root_node = Node.new(@parse_result.value)
-        break if @parse_result.errors.empty?
+      until @parse_result.errors.empty?
+        correct_and_collect(overload_methods: overload_methods)
+        overload_methods = nil
 
+        if previous_error_count > 0 && previous_error_count <= @parse_result.errors.size
+          @parse_result.errors.each do |parse_error|
+            warn(
+              ":#{parse_error.location.start_line}:#{parse_error.message} (#{parse_error.type})",
+              @parse_result.source.lines[parse_error.location.start_line - 1],
+              "#{" " * parse_error.location.start_column}^#{"~" * [parse_error.location.length - 1, 0].max}",
+            )
+          end
+          raise RubyModKit::Error, "Syntax error"
+        end
+        previous_error_count = @parse_result.errors.size
+        parse
+      end
+    end
+
+    def correct_and_collect(overload_methods:)
+      loop do # just for indent. TODO: remove the meaningless loop
         typed_parameter_offsets = Set.new
-        overload_methods = {} if previous_error_count == 0
 
         @parse_result.errors.each do |parse_error|
           case parse_error.type
@@ -126,18 +149,7 @@ module RubyModKit
           line[0] = dst_offset(line[0])
         end
         @diffs.clear
-
-        if previous_error_count > 0 && previous_error_count <= @parse_result.errors.size
-          @parse_result.errors.each do |parse_error|
-            warn(
-              ":#{parse_error.location.start_line}:#{parse_error.message} (#{parse_error.type})",
-              @parse_result.source.lines[parse_error.location.start_line - 1],
-              "#{" " * parse_error.location.start_column}^#{"~" * [parse_error.location.length - 1, 0].max}",
-            )
-          end
-          raise RubyModKit::Error, "Syntax error"
-        end
-        previous_error_count = @parse_result.errors.size
+        break if self
       end
     end
 
@@ -153,8 +165,6 @@ module RubyModKit
 
     # @rbs return: void
     def apply_collected_data
-      @parse_result = Prism.parse(@script)
-      @root_node = Node.new(@parse_result.value)
       @mod_data.each do |(index, _, type, modify_script)|
         case type
         when :ivar_arg
