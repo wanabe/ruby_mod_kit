@@ -65,6 +65,7 @@ module RubyModKit
       end
     end
 
+    # @rbs return: void
     def correct_and_collect
       overload_methods = {} if @mod_data.empty?
       typed_parameter_offsets = Set.new
