@@ -5,6 +5,8 @@ module RubyModKit
   class Context
     @diffs: SortedSet[[ Integer, Integer, Integer ]]
 
+    @mod_data: SortedSet[[ Integer, Integer, Symbol, String ]]
+
     @script: String
 
     attr_reader parse_result: Prism::ParseResult
@@ -14,8 +16,9 @@ module RubyModKit
     OVERLOAD_METHOD_MAP: Hash[Symbol, String]
 
     # @rbs src: String
+    # @rbs previous_error_count: Integer
     # @rbs return: void
-    def initialize: (untyped script, ?mod_data: untyped) -> void
+    def initialize: (untyped script, ?mod_data: untyped, ?previous_error_count: Integer) -> void
 
     # @rbs return: String
     def self.transpile: (untyped script) -> String
@@ -26,8 +29,9 @@ module RubyModKit
     # @rbs return: Context
     def generate_next: () -> Context
 
-    # @rbs return: void
-    def self.correct_and_collect_repeatedly: () -> void
+    def resolve: () -> untyped
+
+    def completed?: () -> untyped
 
     # @rbs return: void
     def correct_and_collect: () -> void

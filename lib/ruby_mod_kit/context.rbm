@@ -11,6 +11,7 @@ module RubyModKit
   # The class of transpiler context.
   class Context
     # @rbs @diffs: SortedSet[[Integer, Integer, Integer]]
+    # @rbs @mod_data: SortedSet[[Integer, Integer, Symbol, String]]
     # @rbs @script: String
 
     attr_reader :parse_result #: Prism::ParseResult
@@ -21,18 +22,21 @@ module RubyModKit
     }.freeze #: Hash[Symbol, String]
 
     # @rbs src: String
+    # @rbs previous_error_count: Integer
     # @rbs return: void
-    def initialize(@script, @mod_data: SortedSet.new)
+    def initialize(@script, @mod_data: SortedSet.new, @previous_error_count: 0)
       @diffs = SortedSet.new
       parse
     end
 
     # @rbs return: String
     def self.transpile(script)
-      @context = Context.new(script)
-      correct_and_collect_repeatedly
-      @context.apply_collected_data
-      @context.script
+      context = Context.new(script)
+      until context.completed?
+        context.resolve
+        context = context.generate_next
+      end
+      context.script
     end
 
     # @rbs return: void
@@ -43,26 +47,19 @@ module RubyModKit
 
     # @rbs return: Context
     def generate_next
-      Context.new(@script, mod_data: @mod_data)
+      Context.new(@script, mod_data: @mod_data, previous_error_count: @parse_result.errors.size)
     end
 
-    # @rbs return: void
-    def self.correct_and_collect_repeatedly
-      until @context.parse_result.errors.empty?
-        previous_error_count = @context.parse_result.errors.size
-        @context.correct_and_collect
-        @context = @context.generate_next
-        next unless previous_error_count > 0 && previous_error_count <= @context.parse_result.errors.size
-
-        @context.parse_result.errors.each do |parse_error|
-          warn(
-            ":#{parse_error.location.start_line}:#{parse_error.message} (#{parse_error.type})",
-            @context.parse_result.source.lines[parse_error.location.start_line - 1],
-            "#{" " * parse_error.location.start_column}^#{"~" * [parse_error.location.length - 1, 0].max}",
-          )
-        end
-        raise RubyModKit::Error, "Syntax error"
+    def resolve
+      if !@parse_result.errors.empty?
+        correct_and_collect
+      elsif !@mod_data.empty?
+        apply_collected_data
       end
+    end
+
+    def completed?
+      @parse_result.errors.empty? && @mod_data.empty?
     end
 
     # @rbs return: void
@@ -152,6 +149,17 @@ module RubyModKit
         line[0] = dst_offset(line[0])
       end
       @diffs.clear
+
+      return if @previous_error_count == 0 || @previous_error_count > @parse_result.errors.size
+
+      @parse_result.errors.each do |parse_error|
+        warn(
+          ":#{parse_error.location.start_line}:#{parse_error.message} (#{parse_error.type})",
+          @parse_result.source.lines[parse_error.location.start_line - 1],
+          "#{" " * parse_error.location.start_column}^#{"~" * [parse_error.location.length - 1, 0].max}",
+        )
+      end
+      raise RubyModKit::Error, "Syntax error"
     end
 
     # @rbs src_offset: Integer
@@ -198,6 +206,7 @@ module RubyModKit
           raise RubyModKit::Error, "Unexpected type #{type}"
         end
       end
+      @mod_data.clear
     end
 
     # @rbs src_offset: Integer

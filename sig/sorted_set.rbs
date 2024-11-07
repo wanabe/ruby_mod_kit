@@ -4,4 +4,5 @@ class SortedSet [T]
   def size: () -> Integer
   def <<: (T) -> T
   def clear: () -> self
+  def empty?: () -> bool
 end
