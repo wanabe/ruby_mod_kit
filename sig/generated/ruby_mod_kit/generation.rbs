@@ -5,7 +5,7 @@ module RubyModKit
   class Generation
     @diffs: SortedSet[[ Integer, Integer, Integer ]]
 
-    @mod_data: SortedSet[[ Integer, Integer, Symbol, String ]]
+    @missions: SortedSet[[ Integer, Integer, Symbol, String ]]
 
     @script: String
 
@@ -18,7 +18,7 @@ module RubyModKit
     # @rbs src: String
     # @rbs previous_error_count: Integer
     # @rbs return: void
-    def initialize: (untyped script, ?mod_data: untyped, ?previous_error_count: Integer) -> void
+    def initialize: (untyped script, ?missions: untyped, ?previous_error_count: Integer) -> void
 
     # @rbs return: Generation
     def generate_next: () -> Generation
@@ -28,7 +28,7 @@ module RubyModKit
     def completed?: () -> untyped
 
     # @rbs return: void
-    def correct_and_collect: () -> void
+    def resolve_parse_errors: () -> void
 
     # @rbs src_offset: Integer
     # @rbs length: Integer
@@ -37,7 +37,7 @@ module RubyModKit
     def []=: (Integer src_offset, Integer length, String str) -> String
 
     # @rbs return: void
-    def apply_collected_data: () -> void
+    def perform_missions: () -> void
 
     # @rbs src_offset: Integer
     # @rbs return: Integer
@@ -52,6 +52,6 @@ module RubyModKit
     # @rbs type: Symbol
     # @rbs modify_script: String
     # @rbs return: void
-    def insert_mod_data: (Integer src_offset, Symbol type, String modify_script) -> void
+    def insert_mission: (Integer src_offset, Symbol type, String modify_script) -> void
   end
 end

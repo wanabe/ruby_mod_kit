@@ -11,7 +11,7 @@ module RubyModKit
   # The class of transpiler generation.
   class Generation
     # @rbs @diffs: SortedSet[[Integer, Integer, Integer]]
-    # @rbs @mod_data: SortedSet[[Integer, Integer, Symbol, String]]
+    # @rbs @missions: SortedSet[[Integer, Integer, Symbol, String]]
     # @rbs @script: String
 
     attr_reader :parse_result #: Prism::ParseResult
@@ -24,9 +24,9 @@ module RubyModKit
     # @rbs src: String
     # @rbs previous_error_count: Integer
     # @rbs return: void
-    def initialize(script, mod_data: SortedSet.new, previous_error_count: 0)
+    def initialize(script, missions: SortedSet.new, previous_error_count: 0)
       @script = script
-      @mod_data = mod_data
+      @missions = missions
       @previous_error_count = previous_error_count
       @diffs = SortedSet.new
       @parse_result = Prism.parse(@script)
@@ -35,24 +35,24 @@ module RubyModKit
 
     # @rbs return: Generation
     def generate_next
-      Generation.new(@script, mod_data: @mod_data, previous_error_count: @parse_result.errors.size)
+      Generation.new(@script, missions: @missions, previous_error_count: @parse_result.errors.size)
     end
 
     def resolve
       if !@parse_result.errors.empty?
-        correct_and_collect
-      elsif !@mod_data.empty?
-        apply_collected_data
+        resolve_parse_errors
+      elsif !@missions.empty?
+        perform_missions
       end
     end
 
     def completed?
-      @parse_result.errors.empty? && @mod_data.empty?
+      @parse_result.errors.empty? && @missions.empty?
     end
 
     # @rbs return: void
-    def correct_and_collect
-      overload_methods = {} if @mod_data.empty?
+    def resolve_parse_errors
+      overload_methods = {} if @missions.empty?
       typed_parameter_offsets = Set.new
 
       @parse_result.errors.each do |parse_error|
@@ -67,7 +67,7 @@ module RubyModKit
           end
 
           self[src_offset, parse_error.location.length] = name
-          insert_mod_data(src_offset, :ivar_arg, "@#{name} = #{name}")
+          insert_mission(src_offset, :ivar_arg, "@#{name} = #{name}")
         when :unexpected_token_ignore
           next if parse_error.location.slice != "=>"
 
@@ -100,7 +100,7 @@ module RubyModKit
           end
 
           self[last_parameter_offset, right_offset - last_parameter_offset] = ""
-          insert_mod_data(last_parameter_offset, :type_parameter, parameter_type)
+          insert_mission(last_parameter_offset, :type_parameter, parameter_type)
         end
       end
 
@@ -133,7 +133,7 @@ module RubyModKit
         self[src_offset, 0] = script
       end
 
-      @mod_data.each do |line|
+      @missions.each do |line|
         line[0] = dst_offset(line[0])
       end
       @diffs.clear
@@ -161,11 +161,11 @@ module RubyModKit
     end
 
     # @rbs return: void
-    def apply_collected_data
-      @mod_data.each do |(index, _, type, modify_script)|
+    def perform_missions
+      @missions.each do |(offset, _, type, modify_script)|
         case type
         when :ivar_arg
-          def_node = @root_node[index, Prism::DefNode]
+          def_node = @root_node[offset, Prism::DefNode]
           raise RubyModKit::Error, "DefNode not found" if !def_node || !def_node.prism_node.is_a?(Prism::DefNode)
 
           def_body_location = def_node.prism_node.body&.location
@@ -181,10 +181,10 @@ module RubyModKit
 
           self[src_offset, 0] = "#{" " * indent}#{modify_script}\n"
         when :type_parameter
-          def_node = @root_node[index, Prism::DefNode]
+          def_node = @root_node[offset, Prism::DefNode]
           raise RubyModKit::Error, "DefNode not found" if !def_node || !def_node.prism_node.is_a?(Prism::DefNode)
 
-          parameter_node = @root_node[index]
+          parameter_node = @root_node[offset]
           raise RubyModKit::Error, "ParameterNode not found" unless parameter_node
 
           src_offset = @parse_result.source.offsets[def_node.prism_node.location.start_line - 1]
@@ -194,7 +194,7 @@ module RubyModKit
           raise RubyModKit::Error, "Unexpected type #{type}"
         end
       end
-      @mod_data.clear
+      @missions.clear
     end
 
     # @rbs src_offset: Integer
@@ -221,8 +221,8 @@ module RubyModKit
     # @rbs type: Symbol
     # @rbs modify_script: String
     # @rbs return: void
-    def insert_mod_data(src_offset, type, modify_script)
-      @mod_data << [src_offset, @mod_data.size, type, modify_script]
+    def insert_mission(src_offset, type, modify_script)
+      @missions << [src_offset, @missions.size, type, modify_script]
     end
   end
 end
