@@ -33,16 +33,6 @@ module RubyModKit
       @root_node = Node.new(@parse_result.value)
     end
 
-    # @rbs return: String
-    def self.transpile(script)
-      context = Context.new(script)
-      until context.completed?
-        context.resolve
-        context = context.generate_next
-      end
-      context.script
-    end
-
     # @rbs return: Context
     def generate_next
       Context.new(@script, mod_data: @mod_data, previous_error_count: @parse_result.errors.size)

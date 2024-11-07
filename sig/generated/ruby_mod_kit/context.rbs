@@ -20,9 +20,6 @@ module RubyModKit
     # @rbs return: void
     def initialize: (untyped script, ?mod_data: untyped, ?previous_error_count: Integer) -> void
 
-    # @rbs return: String
-    def self.transpile: (untyped script) -> String
-
     # @rbs return: Context
     def generate_next: () -> Context
 

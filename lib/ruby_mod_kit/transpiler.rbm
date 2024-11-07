@@ -14,7 +14,12 @@ module RubyModKit
 
     # @rbs return: String
     def transpile
-      Context.transpile(@src)
+      context = Context.new(@src)
+      until context.completed?
+        context.resolve
+        context = context.generate_next
+      end
+      context.script
     end
   end
 end
