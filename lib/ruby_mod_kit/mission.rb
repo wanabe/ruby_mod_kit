@@ -15,5 +15,12 @@ module RubyModKit
       @offset = offset
       @modify_script = modify_script
     end
+
+    # @rbs _generation: Generation
+    # @rbs _root_node: Node
+    # @rbs _parse_result: Prism::ParseResult
+    def perform(_generation, _root_node, _parse_result)
+      raise RubyModKit::Error, "Unexpected type #{self.class}"
+    end
   end
 end

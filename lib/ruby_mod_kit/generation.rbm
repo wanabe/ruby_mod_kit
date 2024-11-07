@@ -163,36 +163,7 @@ module RubyModKit
     # @rbs return: void
     def perform_missions
       @missions.each do |mission|
-        case mission
-        when Mission::IvarArg
-          def_node = @root_node[mission.offset, Prism::DefNode]
-          raise RubyModKit::Error, "DefNode not found" if !def_node || !def_node.prism_node.is_a?(Prism::DefNode)
-
-          def_body_location = def_node.prism_node.body&.location
-          if def_body_location
-            indent = def_body_location.start_column
-            src_offset = def_body_location.start_offset - indent
-          elsif def_node.prism_node.end_keyword_loc
-            indent = def_node.prism_node.end_keyword_loc.start_column + 2
-            src_offset = def_node.prism_node.end_keyword_loc.start_offset - indent + 2
-          else
-            raise RubyModKit::Error, "Invalid DefNode #{def_node.prism_node.inspect}"
-          end
-
-          self[src_offset, 0] = "#{" " * indent}#{mission.modify_script}\n"
-        when Mission::TypeParameter
-          def_node = @root_node[mission.offset, Prism::DefNode]
-          raise RubyModKit::Error, "DefNode not found" if !def_node || !def_node.prism_node.is_a?(Prism::DefNode)
-
-          parameter_node = @root_node[mission.offset]
-          raise RubyModKit::Error, "ParameterNode not found" unless parameter_node
-
-          src_offset = @parse_result.source.offsets[def_node.prism_node.location.start_line - 1]
-          indent = def_node.prism_node.location.start_offset - src_offset
-          self[src_offset, 0] = "#{" " * indent}# @rbs #{parameter_node.name}: #{mission.modify_script}\n"
-        else
-          raise RubyModKit::Error, "Unexpected type #{mission.class}"
-        end
+        mission.perform(self, @root_node, parse_result)
       end
       @missions.clear
     end
