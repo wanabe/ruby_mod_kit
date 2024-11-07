@@ -5,7 +5,7 @@ module RubyModKit
   class Generation
     @diffs: SortedSet[[ Integer, Integer, Integer ]]
 
-    @missions: SortedSet[[ Integer, Integer, Symbol, String ]]
+    @missions: Array[[ Integer, Symbol, String ]]
 
     @script: String
 

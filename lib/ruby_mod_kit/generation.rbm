@@ -11,7 +11,7 @@ module RubyModKit
   # The class of transpiler generation.
   class Generation
     # @rbs @diffs: SortedSet[[Integer, Integer, Integer]]
-    # @rbs @missions: SortedSet[[Integer, Integer, Symbol, String]]
+    # @rbs @missions: Array[[Integer, Symbol, String]]
     # @rbs @script: String
 
     attr_reader :parse_result #: Prism::ParseResult
@@ -24,7 +24,7 @@ module RubyModKit
     # @rbs src: String
     # @rbs previous_error_count: Integer
     # @rbs return: void
-    def initialize(@script, @missions: SortedSet.new, @previous_error_count: 0)
+    def initialize(@script, @missions: [], @previous_error_count: 0)
       @diffs = SortedSet.new
       @parse_result = Prism.parse(@script)
       @root_node = Node.new(@parse_result.value)
@@ -159,7 +159,7 @@ module RubyModKit
 
     # @rbs return: void
     def perform_missions
-      @missions.each do |(offset, _, type, modify_script)|
+      @missions.each do |(offset, type, modify_script)|
         case type
         when :ivar_arg
           def_node = @root_node[offset, Prism::DefNode]
@@ -219,7 +219,7 @@ module RubyModKit
     # @rbs modify_script: String
     # @rbs return: void
     def insert_mission(src_offset, type, modify_script)
-      @missions << [src_offset, @missions.size, type, modify_script]
+      @missions << [src_offset, type, modify_script]
     end
   end
 end
