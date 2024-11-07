@@ -26,7 +26,8 @@ module RubyModKit
     # @rbs return: void
     def initialize(@script, @mod_data: SortedSet.new, @previous_error_count: 0)
       @diffs = SortedSet.new
-      parse
+      @parse_result = Prism.parse(@script)
+      @root_node = Node.new(@parse_result.value)
     end
 
     # @rbs return: String
@@ -37,12 +38,6 @@ module RubyModKit
         context = context.generate_next
       end
       context.script
-    end
-
-    # @rbs return: void
-    def parse
-      @parse_result = Prism.parse(@script)
-      @root_node = Node.new(@parse_result.value)
     end
 
     # @rbs return: Context

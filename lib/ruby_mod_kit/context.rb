@@ -29,7 +29,8 @@ module RubyModKit
       @mod_data = mod_data
       @previous_error_count = previous_error_count
       @diffs = SortedSet.new
-      parse
+      @parse_result = Prism.parse(@script)
+      @root_node = Node.new(@parse_result.value)
     end
 
     # @rbs return: String
@@ -40,12 +41,6 @@ module RubyModKit
         context = context.generate_next
       end
       context.script
-    end
-
-    # @rbs return: void
-    def parse
-      @parse_result = Prism.parse(@script)
-      @root_node = Node.new(@parse_result.value)
     end
 
     # @rbs return: Context

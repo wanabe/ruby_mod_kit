@@ -23,9 +23,6 @@ module RubyModKit
     # @rbs return: String
     def self.transpile: (untyped script) -> String
 
-    # @rbs return: void
-    def parse: () -> void
-
     # @rbs return: Context
     def generate_next: () -> Context
 
