@@ -1,8 +1,8 @@
-# Generated from lib/ruby_mod_kit/context.rb with RBS::Inline
+# Generated from lib/ruby_mod_kit/generation.rb with RBS::Inline
 
 module RubyModKit
-  # The class of transpiler context.
-  class Context
+  # The class of transpiler generation.
+  class Generation
     @diffs: SortedSet[[ Integer, Integer, Integer ]]
 
     @mod_data: SortedSet[[ Integer, Integer, Symbol, String ]]
@@ -20,8 +20,8 @@ module RubyModKit
     # @rbs return: void
     def initialize: (untyped script, ?mod_data: untyped, ?previous_error_count: Integer) -> void
 
-    # @rbs return: Context
-    def generate_next: () -> Context
+    # @rbs return: Generation
+    def generate_next: () -> Generation
 
     def resolve: () -> untyped
 

@@ -8,8 +8,8 @@ require "sorted_set"
 require "ruby_mod_kit/node"
 
 module RubyModKit
-  # The class of transpiler context.
-  class Context
+  # The class of transpiler generation.
+  class Generation
     # @rbs @diffs: SortedSet[[Integer, Integer, Integer]]
     # @rbs @mod_data: SortedSet[[Integer, Integer, Symbol, String]]
     # @rbs @script: String
@@ -30,9 +30,9 @@ module RubyModKit
       @root_node = Node.new(@parse_result.value)
     end
 
-    # @rbs return: Context
+    # @rbs return: Generation
     def generate_next
-      Context.new(@script, mod_data: @mod_data, previous_error_count: @parse_result.errors.size)
+      Generation.new(@script, mod_data: @mod_data, previous_error_count: @parse_result.errors.size)
     end
 
     def resolve

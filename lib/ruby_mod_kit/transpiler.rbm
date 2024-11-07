@@ -2,7 +2,7 @@
 
 # rbs_inline: enabled
 
-require "ruby_mod_kit/context"
+require "ruby_mod_kit/generation"
 
 module RubyModKit
   # The class of transpiler.
@@ -14,12 +14,12 @@ module RubyModKit
 
     # @rbs return: String
     def transpile
-      context = Context.new(@src)
-      until context.completed?
-        context.resolve
-        context = context.generate_next
+      generation = Generation.new(@src)
+      until generation.completed?
+        generation.resolve
+        generation = generation.generate_next
       end
-      context.script
+      generation.script
     end
   end
 end
