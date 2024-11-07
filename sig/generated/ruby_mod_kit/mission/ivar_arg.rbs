@@ -1,0 +1,9 @@
+# Generated from lib/ruby_mod_kit/mission/ivar_arg.rb with RBS::Inline
+
+module RubyModKit
+  class Mission
+    # The mission for instance variable arguments
+    class IvarArg < Mission
+    end
+  end
+end

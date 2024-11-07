@@ -6,12 +6,15 @@ require "prism"
 require "sorted_set"
 
 require "ruby_mod_kit/node"
+require "ruby_mod_kit/mission"
+require "ruby_mod_kit/mission/ivar_arg"
+require "ruby_mod_kit/mission/type_parameter"
 
 module RubyModKit
   # The class of transpiler generation.
   class Generation
     # @rbs @diffs: SortedSet[[Integer, Integer, Integer]]
-    # @rbs @missions: Array[[Integer, Symbol, String]]
+    # @rbs @missions: Array[Mission]
     # @rbs @script: String
 
     attr_reader :parse_result #: Prism::ParseResult
@@ -64,7 +67,7 @@ module RubyModKit
           end
 
           self[src_offset, parse_error.location.length] = name
-          insert_mission(src_offset, :ivar_arg, "@#{name} = #{name}")
+          @missions << Mission::IvarArg.new(src_offset, "@#{name} = #{name}")
         when :unexpected_token_ignore
           next if parse_error.location.slice != "=>"
 
@@ -97,7 +100,7 @@ module RubyModKit
           end
 
           self[last_parameter_offset, right_offset - last_parameter_offset] = ""
-          insert_mission(last_parameter_offset, :type_parameter, parameter_type)
+          @missions << Mission::TypeParameter.new(last_parameter_offset, parameter_type)
         end
       end
 
@@ -130,8 +133,8 @@ module RubyModKit
         self[src_offset, 0] = script
       end
 
-      @missions.each do |line|
-        line[0] = dst_offset(line[0])
+      @missions.each do |mission|
+        mission.offset = dst_offset(mission.offset)
       end
       @diffs.clear
 
@@ -159,10 +162,10 @@ module RubyModKit
 
     # @rbs return: void
     def perform_missions
-      @missions.each do |(offset, type, modify_script)|
-        case type
-        when :ivar_arg
-          def_node = @root_node[offset, Prism::DefNode]
+      @missions.each do |mission|
+        case mission
+        when Mission::IvarArg
+          def_node = @root_node[mission.offset, Prism::DefNode]
           raise RubyModKit::Error, "DefNode not found" if !def_node || !def_node.prism_node.is_a?(Prism::DefNode)
 
           def_body_location = def_node.prism_node.body&.location
@@ -176,19 +179,19 @@ module RubyModKit
             raise RubyModKit::Error, "Invalid DefNode #{def_node.prism_node.inspect}"
           end
 
-          self[src_offset, 0] = "#{" " * indent}#{modify_script}\n"
-        when :type_parameter
-          def_node = @root_node[offset, Prism::DefNode]
+          self[src_offset, 0] = "#{" " * indent}#{mission.modify_script}\n"
+        when Mission::TypeParameter
+          def_node = @root_node[mission.offset, Prism::DefNode]
           raise RubyModKit::Error, "DefNode not found" if !def_node || !def_node.prism_node.is_a?(Prism::DefNode)
 
-          parameter_node = @root_node[offset]
+          parameter_node = @root_node[mission.offset]
           raise RubyModKit::Error, "ParameterNode not found" unless parameter_node
 
           src_offset = @parse_result.source.offsets[def_node.prism_node.location.start_line - 1]
           indent = def_node.prism_node.location.start_offset - src_offset
-          self[src_offset, 0] = "#{" " * indent}# @rbs #{parameter_node.name}: #{modify_script}\n"
+          self[src_offset, 0] = "#{" " * indent}# @rbs #{parameter_node.name}: #{mission.modify_script}\n"
         else
-          raise RubyModKit::Error, "Unexpected type #{type}"
+          raise RubyModKit::Error, "Unexpected type #{mission.class}"
         end
       end
       @missions.clear
@@ -212,14 +215,6 @@ module RubyModKit
     # @rbs return: void
     def insert_diff(src_offset, new_diff)
       @diffs << [src_offset, @diffs.size, new_diff]
-    end
-
-    # @rbs src_offset: Integer
-    # @rbs type: Symbol
-    # @rbs modify_script: String
-    # @rbs return: void
-    def insert_mission(src_offset, type, modify_script)
-      @missions << [src_offset, type, modify_script]
     end
   end
 end

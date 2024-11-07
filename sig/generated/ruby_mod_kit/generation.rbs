@@ -5,7 +5,7 @@ module RubyModKit
   class Generation
     @diffs: SortedSet[[ Integer, Integer, Integer ]]
 
-    @missions: Array[[ Integer, Symbol, String ]]
+    @missions: Array[Mission]
 
     @script: String
 
@@ -47,11 +47,5 @@ module RubyModKit
     # @rbs new_diff: Integer
     # @rbs return: void
     def insert_diff: (Integer src_offset, Integer new_diff) -> void
-
-    # @rbs src_offset: Integer
-    # @rbs type: Symbol
-    # @rbs modify_script: String
-    # @rbs return: void
-    def insert_mission: (Integer src_offset, Symbol type, String modify_script) -> void
   end
 end
