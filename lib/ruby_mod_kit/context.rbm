@@ -41,25 +41,27 @@ module RubyModKit
       @root_node = Node.new(@parse_result.value)
     end
 
+    # @rbs return: Context
+    def generate_next
+      Context.new(@script, mod_data: @mod_data)
+    end
+
     # @rbs return: void
     def self.correct_and_collect_repeatedly
-      previous_error_count = 0
-
       until @context.parse_result.errors.empty?
-        @context.correct_and_collect
-
-        if previous_error_count > 0 && previous_error_count <= @context.parse_result.errors.size
-          @context.parse_result.errors.each do |parse_error|
-            warn(
-              ":#{parse_error.location.start_line}:#{parse_error.message} (#{parse_error.type})",
-              @context.parse_result.source.lines[parse_error.location.start_line - 1],
-              "#{" " * parse_error.location.start_column}^#{"~" * [parse_error.location.length - 1, 0].max}",
-            )
-          end
-          raise RubyModKit::Error, "Syntax error"
-        end
         previous_error_count = @context.parse_result.errors.size
-        @context.parse
+        @context.correct_and_collect
+        @context = @context.generate_next
+        next unless previous_error_count > 0 && previous_error_count <= @context.parse_result.errors.size
+
+        @context.parse_result.errors.each do |parse_error|
+          warn(
+            ":#{parse_error.location.start_line}:#{parse_error.message} (#{parse_error.type})",
+            @context.parse_result.source.lines[parse_error.location.start_line - 1],
+            "#{" " * parse_error.location.start_column}^#{"~" * [parse_error.location.length - 1, 0].max}",
+          )
+        end
+        raise RubyModKit::Error, "Syntax error"
       end
     end
 

@@ -24,6 +24,10 @@ class Pos
   def *(Integer => n)
     Pos.new(@x * n, @y * n, @z * n)
   end
+
+  def to_s
+    "#<Pos: (#{@x}, #{@y}, #{@z})>"
+  end
 end
 
 puts(

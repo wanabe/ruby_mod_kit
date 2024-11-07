@@ -23,6 +23,9 @@ module RubyModKit
     # @rbs return: void
     def parse: () -> void
 
+    # @rbs return: Context
+    def generate_next: () -> Context
+
     # @rbs return: void
     def self.correct_and_collect_repeatedly: () -> void
 

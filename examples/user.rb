@@ -51,6 +51,10 @@ class Pos
   def _mul__overload1(n)
     Pos.new(@x * n, @y * n, @z * n)
   end
+
+  def to_s
+    "#<Pos: (#{@x}, #{@y}, #{@z})>"
+  end
 end
 
 puts(
