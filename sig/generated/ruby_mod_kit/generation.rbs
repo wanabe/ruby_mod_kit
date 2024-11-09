@@ -13,12 +13,12 @@ module RubyModKit
 
     attr_reader script: String
 
-    OVERLOAD_METHOD_MAP: Hash[Symbol, String]
-
     # @rbs src: String
     # @rbs previous_error_count: Integer
     # @rbs return: void
-    def initialize: (untyped script, ?missions: untyped, ?previous_error_count: Integer) -> void
+    def initialize: (untyped script, ?missions: untyped, ?previous_error_count: Integer, ?generation_num: untyped) -> void
+
+    def first_generation?: () -> untyped
 
     # @rbs return: Generation
     def generate_next: () -> Generation
@@ -36,6 +36,10 @@ module RubyModKit
     # @rbs return: String
     def []=: (Integer src_offset, Integer length, String str) -> String
 
+    # @rbs src_range: Range[Integer]
+    # @rbs return: String
+    def []: (Range[Integer] src_range) -> String
+
     # @rbs return: void
     def perform_missions: () -> void
 
@@ -47,5 +51,7 @@ module RubyModKit
     # @rbs new_diff: Integer
     # @rbs return: void
     def insert_diff: (Integer src_offset, Integer new_diff) -> void
+
+    def add_mission: (untyped mission) -> untyped
   end
 end
