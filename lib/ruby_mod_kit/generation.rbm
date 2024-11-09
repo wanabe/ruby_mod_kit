@@ -92,7 +92,7 @@ module RubyModKit
     # @rbs return: void
     def perform_missions
       @missions.delete_if do |mission|
-        mission.perform(self, @root_node, parse_result) || break
+        mission.perform(self, @root_node, @parse_result, @memo) || break
       end
       @missions.each do |mission|
         mission.offset = dst_offset(mission.offset)

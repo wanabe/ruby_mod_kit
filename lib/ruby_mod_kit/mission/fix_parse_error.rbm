@@ -15,8 +15,9 @@ module RubyModKit
       # @rbs generation: Generation
       # @rbs root_node: Node
       # @rbs parse_result: Prism::ParseResult
+      # @rbs _memo: Memo
       # @rbs return: bool
-      def perform(generation, root_node, parse_result)
+      def perform(generation, root_node, parse_result, _memo)
         return true if parse_result.errors.empty?
 
         overload_methods = {} if generation.first_generation?
