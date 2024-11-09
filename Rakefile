@@ -2,23 +2,18 @@
 
 require "bundler/setup"
 require "bundler/gem_tasks"
-require "rake/testtask"
-
 require "rubocop/rake_task"
 require "steep/rake_task"
+require "rspec/core/rake_task"
 require "rbs/inline"
 require "rbs/inline/cli"
 require "ruby_mod_kit"
 
-Rake::TestTask.new(:test) do |t|
-  t.libs << "test"
-  t.libs << "lib"
-  t.test_files = FileList["test/**/*_test.rb"]
-end
-
 RuboCop::RakeTask.new
 
 Steep::RakeTask.new
+
+RSpec::Core::RakeTask.new(:spec)
 
 desc "Generate RBS files from annotations"
 task :rbs_inline do
@@ -47,4 +42,4 @@ task :rbs_typed do
   raise "untyped found" if untyped_found
 end
 
-task default: %i[lib test rbs_inline rbs_typed rubocop:autocorrect_all steep:check]
+task default: %i[lib spec rbs_inline rbs_typed rubocop:autocorrect_all steep:check]
