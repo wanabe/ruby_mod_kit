@@ -78,7 +78,6 @@ module RubyModKit
       @missions.each do |mission|
         mission.offset = dst_offset(mission.offset)
       end
-      @diffs.clear
     end
 
     # @rbs src_offset: Integer
