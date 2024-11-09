@@ -1,0 +1,17 @@
+# Generated from lib/ruby_mod_kit/mission/overload.rb with RBS::Inline
+
+module RubyModKit
+  class Mission
+    # The mission for overload
+    class Overload < Mission
+      OVERLOAD_METHOD_MAP: Hash[Symbol, String]
+
+      # @rbs generation: Generation
+      # @rbs root_node: Node
+      # @rbs parse_result: Prism::ParseResult
+      # @rbs memo: Memo
+      # @rbs return: bool
+      def perform: (Generation generation, untyped _root_node, Prism::ParseResult parse_result, Memo memo) -> bool
+    end
+  end
+end

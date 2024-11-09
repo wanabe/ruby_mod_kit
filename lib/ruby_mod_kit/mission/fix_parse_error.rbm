@@ -8,19 +8,14 @@ module RubyModKit
   class Mission
     # The mission for parameter types
     class FixParseError < Mission
-      OVERLOAD_METHOD_MAP = {
-        "*": "_mul",
-      }.freeze #: Hash[Symbol, String]
-
       # @rbs generation: Generation
       # @rbs root_node: Node
       # @rbs parse_result: Prism::ParseResult
-      # @rbs _memo: Memo
+      # @rbs memo: Memo
       # @rbs return: bool
-      def perform(generation, root_node, parse_result, _memo)
+      def perform(generation, root_node, parse_result, memo)
         return true if parse_result.errors.empty?
 
-        overload_methods = {} if generation.first_generation?
         typed_parameter_offsets = Set.new
 
         parse_result.errors.each do |parse_error|
@@ -59,11 +54,14 @@ module RubyModKit
             parameter_type = generation[last_parameter_offset...right_offset]&.sub(/\s*=>\s*\z/, "")
             raise RubyModKit::Error unless parameter_type
 
-            if overload_methods
+            if generation.first_generation?
               overload_id = [def_parent_node.prism_node.location.start_offset, def_node.named_node!.name]
-              overload_methods[overload_id] ||= {}
-              overload_methods[overload_id][def_node] ||= []
-              overload_methods[overload_id][def_node] << parameter_type
+              memo.overload_methods[overload_id] ||= {}
+              if memo.overload_methods[overload_id][def_node]
+                memo.overload_methods[overload_id][def_node] << parameter_type
+              else
+                memo.overload_methods[overload_id][def_node] = [parameter_type]
+              end
             end
 
             generation[last_parameter_offset, right_offset - last_parameter_offset] = ""
@@ -71,34 +69,6 @@ module RubyModKit
           end
         end
 
-        overload_methods&.each do |(_, name), def_node_part_pairs|
-          next if def_node_part_pairs.size <= 1
-
-          first_def_node = def_node_part_pairs.first[0]
-          src_offset = parse_result.source.offsets[first_def_node.prism_node.location.start_line - 1]
-          script = +""
-          def_node_part_pairs.each_value do |parts|
-            script << if script.empty?
-              "# @rbs"
-            else
-              "#    |"
-            end
-            script << " (#{parts.join(", ")}) -> untyped\n"
-          end
-          script << "def #{name}(*args)\n  case args\n"
-          overload_prefix = +"#{OVERLOAD_METHOD_MAP[name] || name}_"
-          def_node_part_pairs.each_with_index do |(def_node, parts), i|
-            overload_name = "#{overload_prefix}_overload#{i}"
-            name_loc = def_node.prism_node.name_loc
-            generation[name_loc.start_offset, name_loc.length] = overload_name
-            script << "  in [#{parts.join(", ")}]\n"
-            script << "    #{overload_name}(*args)\n"
-          end
-          script << "  end\nend\n\n"
-          indent = first_def_node.prism_node.location.start_offset - src_offset
-          script.gsub!(/^(?=.)/, " " * indent)
-          generation[src_offset, 0] = script
-        end
         false
       end
     end

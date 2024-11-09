@@ -11,6 +11,7 @@ require "ruby_mod_kit/mission"
 require "ruby_mod_kit/mission/ivar_arg"
 require "ruby_mod_kit/mission/type_parameter"
 require "ruby_mod_kit/mission/fix_parse_error"
+require "ruby_mod_kit/mission/overload"
 
 module RubyModKit
   # The class of transpiler generation.
@@ -94,6 +95,7 @@ module RubyModKit
       @missions.delete_if do |mission|
         mission.perform(self, @root_node, @parse_result, @memo) || break
       end
+      Mission::Overload.new(0, "").perform(self, @root_node, @parse_result, @memo) if first_generation?
       @missions.each do |mission|
         mission.offset = dst_offset(mission.offset)
       end
