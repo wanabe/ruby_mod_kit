@@ -32,9 +32,6 @@ module RubyModKit
     # @rbs return: bool
     def completed?: () -> bool
 
-    # @rbs return: void
-    def resolve_parse_errors: () -> void
-
     # @rbs src_offset: Integer
     # @rbs length: Integer
     # @rbs str: String

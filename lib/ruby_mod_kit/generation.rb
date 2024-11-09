@@ -53,7 +53,9 @@ module RubyModKit
 
     # @rbs return: void
     def resolve
-      if !@parse_result.errors.empty? && !first_generation? && @previous_error_count <= @parse_result.errors.size
+      if first_generation?
+        add_mission(Mission::FixParseError.new(0, ""))
+      elsif !@parse_result.errors.empty? && @previous_error_count <= @parse_result.errors.size
         @parse_result.errors.each do |parse_error|
           warn(
             ":#{parse_error.location.start_line}:#{parse_error.message} (#{parse_error.type})",
@@ -64,24 +66,12 @@ module RubyModKit
         raise RubyModKit::Error, "Syntax error"
       end
 
-      if !@parse_result.errors.empty?
-        resolve_parse_errors
-      elsif !@missions.empty?
-        perform_missions
-      end
+      perform_missions
     end
 
     # @rbs return: bool
     def completed?
       @parse_result.errors.empty? && @missions.empty?
-    end
-
-    # @rbs return: void
-    def resolve_parse_errors
-      Mission::FixParseError.new(0, "").perform(self, @root_node, parse_result)
-      @missions.each do |mission|
-        mission.offset = dst_offset(mission.offset)
-      end
     end
 
     # @rbs src_offset: Integer
@@ -103,10 +93,12 @@ module RubyModKit
 
     # @rbs return: void
     def perform_missions
-      @missions.each do |mission|
-        mission.perform(self, @root_node, parse_result)
+      @missions.delete_if do |mission|
+        mission.perform(self, @root_node, parse_result) || break
       end
-      @missions.clear
+      @missions.each do |mission|
+        mission.offset = dst_offset(mission.offset)
+      end
     end
 
     # @rbs src_offset: Integer

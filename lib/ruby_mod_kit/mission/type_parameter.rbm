@@ -11,7 +11,7 @@ module RubyModKit
       # @rbs generation: Generation
       # @rbs root_node: Node
       # @rbs parse_result: Prism::ParseResult
-      # @rbs return: void
+      # @rbs return: bool
       def perform(generation, root_node, parse_result)
         def_node = root_node[@offset, Prism::DefNode]
         raise RubyModKit::Error, "DefNode not found" if !def_node || !def_node.prism_node.is_a?(Prism::DefNode)
@@ -22,6 +22,7 @@ module RubyModKit
         src_offset = parse_result.source.offsets[def_node.prism_node.location.start_line - 1]
         indent = def_node.prism_node.location.start_offset - src_offset
         generation[src_offset, 0] = "#{" " * indent}# @rbs #{parameter_node.name}: #{@modify_script}\n"
+        true
       end
     end
   end

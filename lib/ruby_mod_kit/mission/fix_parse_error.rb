@@ -15,8 +15,10 @@ module RubyModKit
       # @rbs generation: Generation
       # @rbs root_node: Node
       # @rbs parse_result: Prism::ParseResult
-      # @rbs return: void
+      # @rbs return: bool
       def perform(generation, root_node, parse_result)
+        return true if parse_result.errors.empty?
+
         overload_methods = {} if generation.first_generation?
         typed_parameter_offsets = Set.new
 
@@ -96,6 +98,7 @@ module RubyModKit
           script.gsub!(/^(?=.)/, " " * indent)
           generation[src_offset, 0] = script
         end
+        false
       end
     end
   end
