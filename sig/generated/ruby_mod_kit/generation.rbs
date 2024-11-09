@@ -46,15 +46,6 @@ module RubyModKit
     # @rbs return: void
     def perform_missions: () -> void
 
-    # @rbs src_offset: Integer
-    # @rbs return: Integer
-    def dst_offset: (Integer src_offset) -> Integer
-
-    # @rbs src_offset: Integer
-    # @rbs new_diff: Integer
-    # @rbs return: void
-    def insert_diff: (Integer src_offset, Integer new_diff) -> void
-
     # @rbs mission: Mission
     # @rbs return: void
     def add_mission: (Mission mission) -> void

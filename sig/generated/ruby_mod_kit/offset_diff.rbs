@@ -1,0 +1,19 @@
+# Generated from lib/ruby_mod_kit/offset_diff.rb with RBS::Inline
+
+module RubyModKit
+  # The class of offset differences.
+  class OffsetDiff
+    # @rbs @diffs: SortedSet[[Integer, Integer, Integer]]
+    # @rbs return: void
+    def initialize: () -> void
+
+    # @rbs src_offset: Integer
+    # @rbs return: Integer
+    def []: (Integer src_offset) -> Integer
+
+    # @rbs src_offset: Integer
+    # @rbs new_diff: Integer
+    # @rbs return: void
+    def insert: (Integer src_offset, Integer new_diff) -> void
+  end
+end

@@ -18,5 +18,9 @@ module RubyModKit
     # @rbs _memo: Memo
     # @rbs return: void
     def perform: (untyped _generation, untyped _root_node, untyped _parse_result, untyped _memo) -> void
+
+    # @rbs offset_diff: OffsetDiff
+    # @rbs return: void
+    def apply: (OffsetDiff offset_diff) -> void
   end
 end

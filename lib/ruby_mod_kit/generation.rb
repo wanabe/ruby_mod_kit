@@ -12,6 +12,7 @@ require "ruby_mod_kit/mission/ivar_arg"
 require "ruby_mod_kit/mission/type_parameter"
 require "ruby_mod_kit/mission/fix_parse_error"
 require "ruby_mod_kit/mission/overload"
+require "ruby_mod_kit/offset_diff"
 
 module RubyModKit
   # The class of transpiler generation.
@@ -33,7 +34,7 @@ module RubyModKit
       @script = script
       @missions = missions
       @memo = memo
-      @diffs = SortedSet.new
+      @offset_diff = OffsetDiff.new
       @parse_result = Prism.parse(@script)
       @root_node = Node.new(@parse_result.value)
     end
@@ -82,14 +83,14 @@ module RubyModKit
     # @rbs return: String
     def []=(src_offset, length, str)
       diff = str.length - length
-      @script[dst_offset(src_offset), length] = str
-      insert_diff(src_offset, diff)
+      @script[@offset_diff[src_offset], length] = str
+      @offset_diff.insert(src_offset, diff)
     end
 
     # @rbs src_range: Range[Integer]
     # @rbs return: String
     def [](src_range)
-      dst_range = Range.new(dst_offset(src_range.first), dst_offset(src_range.last), src_range.exclude_end?)
+      dst_range = Range.new(@offset_diff[src_range.first], @offset_diff[src_range.last], src_range.exclude_end?)
       @script[dst_range] || raise(RubyModKit::Error, "Invalid range")
     end
 
@@ -100,28 +101,8 @@ module RubyModKit
       end
       Mission::Overload.new(0, "").perform(self, @root_node, @parse_result, @memo) if first_generation?
       @missions.each do |mission|
-        mission.offset = dst_offset(mission.offset)
+        mission.apply(@offset_diff)
       end
-    end
-
-    # @rbs src_offset: Integer
-    # @rbs return: Integer
-    def dst_offset(src_offset)
-      dst_offset = src_offset
-      @diffs.each do |(offset, _, diff)|
-        break if offset > src_offset
-        break if offset == src_offset && diff < 0
-
-        dst_offset += diff
-      end
-      dst_offset
-    end
-
-    # @rbs src_offset: Integer
-    # @rbs new_diff: Integer
-    # @rbs return: void
-    def insert_diff(src_offset, new_diff)
-      @diffs << [src_offset, @diffs.size, new_diff]
     end
 
     # @rbs mission: Mission

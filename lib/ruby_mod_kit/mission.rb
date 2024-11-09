@@ -24,5 +24,11 @@ module RubyModKit
     def perform(_generation, _root_node, _parse_result, _memo)
       raise RubyModKit::Error, "Unexpected type #{self.class}"
     end
+
+    # @rbs offset_diff: OffsetDiff
+    # @rbs return: void
+    def apply(offset_diff)
+      @offset = offset_diff[@offset]
+    end
   end
 end
