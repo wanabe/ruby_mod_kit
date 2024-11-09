@@ -10,6 +10,8 @@ module RubyModKit
 
     # @rbs @prism_node: Prism::Node & Prism::_Node
     # @rbs @parent: Node | nil
+    # @rbs @children: Array[Node]
+    # @rbs @ancestors: Array[Node]
 
     # @rbs prism_node: Prism::Node prism_node
     # @rbs parent: Node
@@ -19,18 +21,6 @@ module RubyModKit
       @parent = parent
     end
 
-    # @rbs location: Prism::Location
-    # @rbs return: bool
-    def contain?(location)
-      prism_node_loc = @prism_node.location
-      return false if prism_node_loc.start_offset > location.start_offset
-      return false if prism_node_loc.start_offset + prism_node_loc.length < location.start_offset + location.length
-
-      true
-    end
-
-    # @rbs @children: Array[Node]
-
     # @rbs return: Array[Node]
     def children
       return @children if @children
@@ -39,8 +29,6 @@ module RubyModKit
         Node.new(prism_child_node, parent: self)
       end
     end
-
-    # @rbs @ancestors: Array[Node]
 
     # @rbs return: Array[Node]
     def ancestors
@@ -72,26 +60,15 @@ module RubyModKit
       @object_to_s.bind(self).call
     end
 
-    # @rbs return: Prism::RequiredParameterNode | Prism::OptionalKeywordParameterNode
-    #            | Prism::OptionalParameterNode | Prism::RequiredKeywordParameterNode | Prism::DefNode
-    #            | nil
-    def named_node
+    # @rbs return: Symbol
+    def name
       case prism_node
       when Prism::RequiredParameterNode, Prism::OptionalKeywordParameterNode,
            Prism::OptionalParameterNode, Prism::RequiredKeywordParameterNode, Prism::DefNode
-        prism_node
+        prism_node.name
+      else
+        raise(RubyModKit::Error, "Expected ParameterNode but #{prism_node.inspect}")
       end
-    end
-
-    # @rbs return: Prism::RequiredParameterNode | Prism::OptionalKeywordParameterNode
-    #            | Prism::OptionalParameterNode | Prism::RequiredKeywordParameterNode | Prism::DefNode
-    def named_node!
-      named_node || raise(RubyModKit::Error, "Expected ParameterNode but #{prism_node.inspect}")
-    end
-
-    # @rbs return: Symbol
-    def name
-      named_node!.name
     end
 
     # @rbs offset: Integer
@@ -111,7 +88,12 @@ module RubyModKit
     # @rbs offset: Integer
     # @rbs return: bool
     def include?(offset)
-      prism_node.location.start_offset <= offset && offset <= prism_node.location.end_offset
+      self.offset <= offset && offset <= prism_node.location.end_offset
+    end
+
+    # @rbs return: Integer
+    def offset
+      prism_node.location.start_offset
     end
   end
 end

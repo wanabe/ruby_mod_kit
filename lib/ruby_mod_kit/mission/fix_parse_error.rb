@@ -41,21 +41,21 @@ module RubyModKit
             parameters_node, body_node, = def_node.children
             next if !def_parent_node || !parameters_node || !body_node
 
-            last_parameter_offset = parameters_node.children.map { _1.prism_node.location.start_offset }.max
+            last_parameter_offset = parameters_node.children.map(&:offset).max
             next if typed_parameter_offsets.include?(last_parameter_offset)
 
             typed_parameter_offsets << last_parameter_offset
             right_node = body_node.children.find do |child_node|
-              child_node.prism_node.location.start_offset >= parse_error.location.end_offset
+              child_node.offset >= parse_error.location.end_offset
             end
             next unless right_node
 
-            right_offset = right_node.prism_node.location.start_offset
+            right_offset = right_node.offset
             parameter_type = generation[last_parameter_offset...right_offset]&.sub(/\s*=>\s*\z/, "")
             raise RubyModKit::Error unless parameter_type
 
             if generation.first_generation?
-              overload_id = [def_parent_node.prism_node.location.start_offset, def_node.named_node!.name]
+              overload_id = [def_parent_node.offset, def_node.name]
               memo.overload_methods[overload_id] ||= {}
               if memo.overload_methods[overload_id][def_node]
                 memo.overload_methods[overload_id][def_node] << parameter_type

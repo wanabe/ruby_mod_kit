@@ -11,21 +11,17 @@ module RubyModKit
 
     @parent: Node | nil
 
+    @children: Array[Node]
+
+    @ancestors: Array[Node]
+
     # @rbs prism_node: Prism::Node prism_node
     # @rbs parent: Node
     # @rbs return: void
     def initialize: (Prism::Node prism_node, ?parent: Node) -> void
 
-    # @rbs location: Prism::Location
-    # @rbs return: bool
-    def contain?: (Prism::Location location) -> bool
-
-    @children: Array[Node]
-
     # @rbs return: Array[Node]
     def children: () -> Array[Node]
-
-    @ancestors: Array[Node]
 
     # @rbs return: Array[Node]
     def ancestors: () -> Array[Node]
@@ -38,15 +34,6 @@ module RubyModKit
     # @rbs return: String
     def inspect: () -> String
 
-    # @rbs return: Prism::RequiredParameterNode | Prism::OptionalKeywordParameterNode
-    #            | Prism::OptionalParameterNode | Prism::RequiredKeywordParameterNode | Prism::DefNode
-    #            | nil
-    def named_node: () -> (Prism::RequiredParameterNode | Prism::OptionalKeywordParameterNode | Prism::OptionalParameterNode | Prism::RequiredKeywordParameterNode | Prism::DefNode | nil)
-
-    # @rbs return: Prism::RequiredParameterNode | Prism::OptionalKeywordParameterNode
-    #            | Prism::OptionalParameterNode | Prism::RequiredKeywordParameterNode | Prism::DefNode
-    def named_node!: () -> (Prism::RequiredParameterNode | Prism::OptionalKeywordParameterNode | Prism::OptionalParameterNode | Prism::RequiredKeywordParameterNode | Prism::DefNode)
-
     # @rbs return: Symbol
     def name: () -> Symbol
 
@@ -58,5 +45,8 @@ module RubyModKit
     # @rbs offset: Integer
     # @rbs return: bool
     def include?: (Integer offset) -> bool
+
+    # @rbs return: Integer
+    def offset: () -> Integer
   end
 end

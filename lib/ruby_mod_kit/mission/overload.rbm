@@ -49,7 +49,7 @@ module RubyModKit
             script << "    #{overload_name}(*args)\n"
           end
           script << "  end\nend\n\n"
-          indent = first_def_node.prism_node.location.start_offset - src_offset
+          indent = first_def_node.offset - src_offset
           script.gsub!(/^(?=.)/, " " * indent)
           generation[src_offset, 0] = script
         end
