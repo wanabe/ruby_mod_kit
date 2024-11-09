@@ -5,6 +5,7 @@
 require "prism"
 require "sorted_set"
 
+require "ruby_mod_kit/memo"
 require "ruby_mod_kit/node"
 require "ruby_mod_kit/mission"
 require "ruby_mod_kit/mission/ivar_arg"
@@ -25,12 +26,12 @@ module RubyModKit
     # @rbs missions: Array[Mission]
     # @rbs previous_error_count: Integer
     # @rbs generation_num: Integer
+    # @rbs memo: Memo
     # @rbs return: void
-    def initialize(script, missions: [], previous_error_count: 0, generation_num: 0)
+    def initialize(script, missions: [], memo: Memo.new)
       @script = script
       @missions = missions
-      @previous_error_count = previous_error_count
-      @generation_num = generation_num
+      @memo = memo
       @diffs = SortedSet.new
       @parse_result = Prism.parse(@script)
       @root_node = Node.new(@parse_result.value)
@@ -38,16 +39,16 @@ module RubyModKit
 
     # @rbs return: bool
     def first_generation?
-      @generation_num == 0
+      @memo.generation_num == 0
     end
 
     # @rbs return: Generation
     def generate_next
+      @memo.previous_error_count = @parse_result.errors.size
       Generation.new(
         @script,
         missions: @missions,
-        previous_error_count: @parse_result.errors.size,
-        generation_num: @generation_num + 1,
+        memo: @memo.succ,
       )
     end
 
@@ -55,7 +56,7 @@ module RubyModKit
     def resolve
       if first_generation?
         add_mission(Mission::FixParseError.new(0, ""))
-      elsif !@parse_result.errors.empty? && @previous_error_count <= @parse_result.errors.size
+      elsif !@parse_result.errors.empty? && @memo.previous_error_count <= @parse_result.errors.size
         @parse_result.errors.each do |parse_error|
           warn(
             ":#{parse_error.location.start_line}:#{parse_error.message} (#{parse_error.type})",

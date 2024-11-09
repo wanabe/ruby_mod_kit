@@ -1,0 +1,20 @@
+# Generated from lib/ruby_mod_kit/memo.rb with RBS::Inline
+
+module RubyModKit
+  # The class of transpiler generation.
+  class Memo
+    @previous_error_count: Integer
+
+    @generation_num: Integer
+
+    attr_accessor previous_error_count: Integer
+
+    attr_reader generation_num: Integer
+
+    # @rbs return: void
+    def initialize: () -> void
+
+    # @rbs return: self
+    def succ: () -> self
+  end
+end

@@ -17,8 +17,9 @@ module RubyModKit
     # @rbs missions: Array[Mission]
     # @rbs previous_error_count: Integer
     # @rbs generation_num: Integer
+    # @rbs memo: Memo
     # @rbs return: void
-    def initialize: (String script, ?missions: Array[Mission], ?previous_error_count: Integer, ?generation_num: Integer) -> void
+    def initialize: (String script, ?missions: Array[Mission], ?memo: Memo) -> void
 
     # @rbs return: bool
     def first_generation?: () -> bool
