@@ -15,9 +15,11 @@ group :lint do
   gem "rubocop", "~> 1.21"
   gem "rubocop-on-rbs", "~> 1.1", require: false
   gem "rubocop-rake", require: false
+  gem "rubocop-rspec", require: false
   gem "steep"
 end
 
 group :test do
   gem "rspec", "~> 3.13"
+  gem "simplecov"
 end

@@ -5,6 +5,7 @@ AllCops:
 require:
   - rubocop-rake
   - rubocop-on-rbs
+  - rubocop-rspec
 
 Style/StringLiterals:
   Enabled: true
@@ -50,3 +51,10 @@ Lint/Debugger:
     p:
       - p
       - pp
+
+RSpec/ExampleLength:
+  Enabled: false
+RSpec/MultipleExpectations:
+  Enabled: false
+RSpec/MultipleMemoizedHelpers:
+  Enabled: false
