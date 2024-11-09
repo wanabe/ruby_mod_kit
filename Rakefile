@@ -31,4 +31,20 @@ rule ".rb" => %w[.rbm] do |t|
   RubyModKit.transpile_file(t.source)
 end
 
-task default: %i[lib test rbs_inline rubocop:autocorrect_all steep:check]
+desc "Check untyped in rbs"
+task :rbs_typed do
+  untyped_found = false
+  Dir.glob("sig/generated/**/*.rbs") do |path|
+    File.open(path) do |f|
+      f.each_line do |l|
+        if l =~ /untyped(?! _)/
+          untyped_found = true
+          warn "#{path}:#{l}"
+        end
+      end
+    end
+  end
+  raise "untyped found" if untyped_found
+end
+
+task default: %i[lib test rbs_inline rbs_typed rubocop:autocorrect_all steep:check]

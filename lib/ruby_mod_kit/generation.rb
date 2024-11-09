@@ -21,8 +21,10 @@ module RubyModKit
     attr_reader :parse_result #: Prism::ParseResult
     attr_reader :script #: String
 
-    # @rbs src: String
+    # @rbs script: String
+    # @rbs missions: Array[Mission]
     # @rbs previous_error_count: Integer
+    # @rbs generation_num: Integer
     # @rbs return: void
     def initialize(script, missions: [], previous_error_count: 0, generation_num: 0)
       @script = script
@@ -34,6 +36,7 @@ module RubyModKit
       @root_node = Node.new(@parse_result.value)
     end
 
+    # @rbs return: bool
     def first_generation?
       @generation_num == 0
     end
@@ -48,6 +51,7 @@ module RubyModKit
       )
     end
 
+    # @rbs return: void
     def resolve
       if !@parse_result.errors.empty? && !first_generation? && @previous_error_count <= @parse_result.errors.size
         @parse_result.errors.each do |parse_error|
@@ -67,6 +71,7 @@ module RubyModKit
       end
     end
 
+    # @rbs return: bool
     def completed?
       @parse_result.errors.empty? && @missions.empty?
     end
@@ -125,6 +130,8 @@ module RubyModKit
       @diffs << [src_offset, @diffs.size, new_diff]
     end
 
+    # @rbs mission: Mission
+    # @rbs return: void
     def add_mission(mission)
       @missions << mission
     end

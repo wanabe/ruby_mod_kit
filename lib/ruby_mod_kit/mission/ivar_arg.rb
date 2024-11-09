@@ -11,6 +11,7 @@ module RubyModKit
       # @rbs generation: Generation
       # @rbs root_node: Node
       # @rbs _parse_result: Prism::ParseResult
+      # @rbs return: void
       def perform(generation, root_node, _parse_result)
         def_node = root_node[@offset, Prism::DefNode]
         raise RubyModKit::Error, "DefNode not found" if !def_node || !def_node.prism_node.is_a?(Prism::DefNode)

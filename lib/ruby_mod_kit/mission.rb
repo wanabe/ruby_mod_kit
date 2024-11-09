@@ -19,6 +19,7 @@ module RubyModKit
     # @rbs _generation: Generation
     # @rbs _root_node: Node
     # @rbs _parse_result: Prism::ParseResult
+    # @rbs return: void
     def perform(_generation, _root_node, _parse_result)
       raise RubyModKit::Error, "Unexpected type #{self.class}"
     end

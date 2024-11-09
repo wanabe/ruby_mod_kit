@@ -15,6 +15,7 @@ module RubyModKit
       # @rbs generation: Generation
       # @rbs root_node: Node
       # @rbs parse_result: Prism::ParseResult
+      # @rbs return: void
       def perform(generation, root_node, parse_result)
         overload_methods = {} if generation.first_generation?
         typed_parameter_offsets = Set.new

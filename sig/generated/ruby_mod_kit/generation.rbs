@@ -13,19 +13,24 @@ module RubyModKit
 
     attr_reader script: String
 
-    # @rbs src: String
+    # @rbs script: String
+    # @rbs missions: Array[Mission]
     # @rbs previous_error_count: Integer
+    # @rbs generation_num: Integer
     # @rbs return: void
-    def initialize: (untyped script, ?missions: untyped, ?previous_error_count: Integer, ?generation_num: untyped) -> void
+    def initialize: (String script, ?missions: Array[Mission], ?previous_error_count: Integer, ?generation_num: Integer) -> void
 
-    def first_generation?: () -> untyped
+    # @rbs return: bool
+    def first_generation?: () -> bool
 
     # @rbs return: Generation
     def generate_next: () -> Generation
 
-    def resolve: () -> untyped
+    # @rbs return: void
+    def resolve: () -> void
 
-    def completed?: () -> untyped
+    # @rbs return: bool
+    def completed?: () -> bool
 
     # @rbs return: void
     def resolve_parse_errors: () -> void
@@ -52,6 +57,8 @@ module RubyModKit
     # @rbs return: void
     def insert_diff: (Integer src_offset, Integer new_diff) -> void
 
-    def add_mission: (untyped mission) -> untyped
+    # @rbs mission: Mission
+    # @rbs return: void
+    def add_mission: (Mission mission) -> void
   end
 end
