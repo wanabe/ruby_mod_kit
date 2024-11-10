@@ -25,7 +25,7 @@ module RubyModKit
 
     # @rbs offset_diff: OffsetDiff
     # @rbs return: void
-    def apply(offset_diff)
+    def succ(offset_diff)
       @offset = offset_diff[@offset]
     end
   end

@@ -13,7 +13,7 @@ module RubyModKit
       generation = Generation.new(src.dup)
       until generation.completed?
         generation.resolve
-        generation = generation.generate_next
+        generation = generation.succ
       end
       generation.script
     end

@@ -45,7 +45,7 @@ module RubyModKit
     end
 
     # @rbs return: Generation
-    def generate_next
+    def succ
       @memo.previous_error_count = @parse_result.errors.size
       Generation.new(
         @script,
@@ -101,7 +101,7 @@ module RubyModKit
       end
       Mission::Overload.new(0, "").perform(self, @root_node, @parse_result, @memo) if first_generation?
       @missions.each do |mission|
-        mission.apply(@offset_diff)
+        mission.succ(@offset_diff)
       end
     end
 

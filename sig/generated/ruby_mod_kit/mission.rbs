@@ -21,6 +21,6 @@ module RubyModKit
 
     # @rbs offset_diff: OffsetDiff
     # @rbs return: void
-    def apply: (OffsetDiff offset_diff) -> void
+    def succ: (OffsetDiff offset_diff) -> void
   end
 end

@@ -25,7 +25,7 @@ module RubyModKit
     def first_generation?: () -> bool
 
     # @rbs return: Generation
-    def generate_next: () -> Generation
+    def succ: () -> Generation
 
     # @rbs return: void
     def resolve: () -> void
