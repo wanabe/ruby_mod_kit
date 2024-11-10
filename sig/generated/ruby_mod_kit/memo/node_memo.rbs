@@ -1,0 +1,22 @@
+# Generated from lib/ruby_mod_kit/memo/node_memo.rb with RBS::Inline
+
+module RubyModKit
+  class Memo
+    # The base class for located memo
+    class NodeMemo
+      attr_reader offset: Integer
+
+      # @rbs memo: Memo
+      # @rbs node: Node
+      # @rbs return: void
+      def initialize: (Memo memo, Node node) -> void
+
+      # @rbs return: Symbol
+      def type: () -> Symbol
+
+      # @rbs offset_diff: OffsetDiff
+      # @rbs return: void
+      def succ: (OffsetDiff offset_diff) -> void
+    end
+  end
+end

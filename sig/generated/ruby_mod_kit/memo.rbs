@@ -18,8 +18,20 @@ module RubyModKit
     # @rbs return: void
     def initialize: () -> void
 
+    # @rbs offset_diff: OffsetDiff
     # @rbs previous_error_count: Integer
-    # @rbs return: self
-    def succ: (Integer previous_error_count) -> self
+    # @rbs return: void
+    def succ: (OffsetDiff offset_diff, Integer previous_error_count) -> void
+
+    # @rbs type: Symbol
+    # @rbs offset: Integer
+    # @rbs return: NodeMemo | nil
+    def []: (Symbol type, Integer offset) -> (NodeMemo | nil)
+
+    # @rbs type: Symbol
+    # @rbs node: Node
+    # @rbs node_memo: NodeMemo
+    # @rbs return: NodeMemo
+    def add: (Symbol type, Node node, NodeMemo node_memo) -> NodeMemo
   end
 end
