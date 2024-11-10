@@ -1,3 +1,5 @@
-#!/bin/sh
+#!/usr/bin/env ruby
+# frozen_string_literal: true
 
-bundle exec ruby -rruby_mod_kit/cli -e 'RubyModKit::CLI.start' "$@"
+require "ruby_mod_kit/cli"
+RubyModKit::CLI.start
