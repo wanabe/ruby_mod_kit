@@ -9,7 +9,7 @@ module RubyModKit
     # @rbs @generation_num: Integer
     # @rbs @overload_methods: Hash[Array[(Integer | Symbol)], Hash[Node, [String]]]
 
-    attr_accessor :previous_error_count #: Integer
+    attr_reader :previous_error_count #: Integer
     attr_reader :generation_num #: Integer
     attr_reader :overload_methods #: Hash[Array[(Integer | Symbol)], Hash[Node, [String]]]
 
@@ -20,8 +20,9 @@ module RubyModKit
       @overload_methods = {}
     end
 
+    # @rbs previous_error_count: Integer
     # @rbs return: self
-    def succ
+    def succ(@previous_error_count)
       @generation_num += 1
       self
     end

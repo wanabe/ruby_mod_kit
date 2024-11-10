@@ -9,7 +9,7 @@ module RubyModKit
 
     @overload_methods: Hash[Array[Integer | Symbol], Hash[Node, [ String ]]]
 
-    attr_accessor previous_error_count: Integer
+    attr_reader previous_error_count: Integer
 
     attr_reader generation_num: Integer
 
@@ -18,7 +18,8 @@ module RubyModKit
     # @rbs return: void
     def initialize: () -> void
 
+    # @rbs previous_error_count: Integer
     # @rbs return: self
-    def succ: () -> self
+    def succ: (Integer previous_error_count) -> self
   end
 end

@@ -43,11 +43,11 @@ module RubyModKit
 
     # @rbs return: Generation
     def succ
-      @memo.previous_error_count = @parse_result.errors.size
+      @memo.succ(@parse_result.errors.size)
       Generation.new(
         @script,
         missions: @missions,
-        memo: @memo.succ,
+        memo: @memo,
       )
     end
 
