@@ -10,7 +10,7 @@ module RubyModKit
     # @rbs src: String
     # @rbs return: void
     def initialize(src)
-      @src = src
+      @src = src.dup
     end
 
     # @rbs return: String

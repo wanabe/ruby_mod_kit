@@ -9,7 +9,8 @@ module RubyModKit
   class Transpiler
     # @rbs src: String
     # @rbs return: void
-    def initialize(@src)
+    def initialize(src)
+      @src = src.dup
     end
 
     # @rbs return: String
