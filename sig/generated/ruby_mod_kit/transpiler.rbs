@@ -4,10 +4,7 @@ module RubyModKit
   # The class of transpiler.
   class Transpiler
     # @rbs src: String
-    # @rbs return: void
-    def initialize: (String src) -> void
-
     # @rbs return: String
-    def transpile: () -> String
+    def transpile: (String src) -> String
   end
 end

@@ -8,14 +8,9 @@ module RubyModKit
   # The class of transpiler.
   class Transpiler
     # @rbs src: String
-    # @rbs return: void
-    def initialize(src)
-      @src = src.dup
-    end
-
     # @rbs return: String
-    def transpile
-      generation = Generation.new(@src)
+    def transpile(src)
+      generation = Generation.new(src.dup)
       until generation.completed?
         generation.resolve
         generation = generation.generate_next

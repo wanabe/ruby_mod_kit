@@ -32,7 +32,7 @@ module RubyModKit
     # @rbs src: String
     # @rbs return: String
     def transpile(src)
-      Transpiler.new(src).transpile
+      Transpiler.new.transpile(src)
     end
 
     # @rbs file: String
