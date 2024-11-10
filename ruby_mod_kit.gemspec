@@ -24,9 +24,13 @@ Gem::Specification.new do |spec|
   # The `git ls-files -z` loads the files in the RubyGem that have been added into git.
   spec.files = Dir.chdir(__dir__) do
     `git ls-files -z`.split("\x0").reject do |f|
-      (File.expand_path(f) == __FILE__) ||
-        f.start_with?(*%w[bin/ test/ spec/ features/ .git .circleci appveyor]) ||
-        f.end_with?(".rbm")
+      next true if File.expand_path(f) == __FILE__
+      next false if f =~ %r{\Aexamples/.*rbm?\z}
+      next true if f.start_with?(*%w[bin/ test/ spec/ features/ coverage/ bin/ .git])
+      next true if %w[Gemfile Gemfile.lock .rspec .rubocop.yml Rakefile Steepfile].include?(f)
+      next true if f.end_with?(".rbm")
+
+      false
     end
   end
   spec.bindir = "exe"
