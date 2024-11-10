@@ -26,14 +26,6 @@ module RubyModKit
     # @rbs return: Array[Node]
     def ancestors: () -> Array[Node]
 
-    # @rbs () -> Enumerator[Node, void]
-    #    | () { (Node) -> void } -> void
-    def each: () -> Enumerator[Node, void]
-            | () { (Node) -> void } -> void
-
-    # @rbs return: String
-    def inspect: () -> String
-
     # @rbs return: Symbol
     def name: () -> Symbol
 

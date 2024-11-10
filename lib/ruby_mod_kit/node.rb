@@ -42,24 +42,6 @@ module RubyModKit
       end
     end
 
-    # @rbs () -> Enumerator[Node, void]
-    #    | () { (Node) -> void } -> void
-    def each(&block)
-      return enum_for(__method__ || :each) unless block
-
-      yield self
-      children.each do |child|
-        child.each(&block)
-      end
-      self
-    end
-
-    # @rbs return: String
-    def inspect
-      @object_to_s ||= Object.instance_method(:to_s)
-      @object_to_s.bind(self).call
-    end
-
     # @rbs return: Symbol
     def name
       case prism_node
