@@ -77,5 +77,35 @@ module RubyModKit
     def offset
       prism_node.location.start_offset
     end
+
+    # @rbs return: String
+    def inspect
+      str = +"#<#{self.class} "
+      first = true
+      instance_variables.each do |ivar_name|
+        case ivar_name
+        when :@children, :@ancestors, :@parent
+          next
+        end
+
+        if first
+          first = false
+        else
+          str << ", "
+        end
+        str << "#{ivar_name}="
+        value = instance_variable_get(ivar_name)
+        str << (
+          case value
+          when Prism::Node
+            "#<#{value.class} location=#{value.location.inspect}>"
+          else
+            value.inspect
+          end
+        )
+      end
+      str << ">"
+      str
+    end
   end
 end

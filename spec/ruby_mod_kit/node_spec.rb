@@ -3,10 +3,10 @@
 require "ruby_mod_kit/cli"
 
 describe RubyModKit::Node do
-  describe "#name" do
-    let(:node) { described_class.new(prism_node) }
-    let(:parse_result) { Prism.parse(script).value }
+  let(:node) { described_class.new(prism_node) }
+  let(:parse_result) { Prism.parse(script).value }
 
+  describe "#name" do
     context "with Prism::DefNode" do
       let(:script) { "def foo; end" }
       let(:prism_node) { parse_result.statements.body[0] }
@@ -32,6 +32,19 @@ describe RubyModKit::Node do
       it "returns parameter name" do
         expect(node.name).to eq(:bar)
       end
+    end
+  end
+
+  describe "#inspect" do
+    let(:script) { "def foo; end" }
+    let(:prism_node) { parse_result }
+
+    it "doesn't include redundant values @children, @parent nor @ancestors" do
+      child = node.children[0]
+      child.ancestors
+      expect(child.inspect).not_to include("@parent")
+      expect(child.inspect).not_to include("@ancestors")
+      expect(node.inspect).not_to include("@children")
     end
   end
 end

@@ -40,5 +40,8 @@ module RubyModKit
 
     # @rbs return: Integer
     def offset: () -> Integer
+
+    # @rbs return: String
+    def inspect: () -> String
   end
 end
