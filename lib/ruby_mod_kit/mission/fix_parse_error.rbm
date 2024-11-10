@@ -24,10 +24,7 @@ module RubyModKit
             src_offset = parse_error.location.start_offset
 
             name = parse_error.location.slice[1..]
-            if parse_error.location.slice[0] != "@" || !name
-              raise RubyModKit::Error,
-                    "Expected ivar but '#{parse_error.location.slice}'"
-            end
+            raise RubyModKit::Error unless name
 
             generation[src_offset, parse_error.location.length] = name
             generation.add_mission(Mission::IvarArg.new(src_offset, "@#{name} = #{name}"))

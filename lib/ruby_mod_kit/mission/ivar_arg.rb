@@ -24,9 +24,8 @@ module RubyModKit
         elsif def_node.prism_node.end_keyword_loc
           indent = def_node.prism_node.end_keyword_loc.start_column + 2
           src_offset = def_node.prism_node.end_keyword_loc.start_offset - indent + 2
-        else
-          raise RubyModKit::Error, "Invalid DefNode #{def_node.prism_node.inspect}"
         end
+        raise RubyModKit::Error if !src_offset || !indent
 
         generation[src_offset, 0] = "#{" " * indent}#{@modify_script}\n"
         true
