@@ -90,7 +90,7 @@ describe RubyModKit::Transpiler do
           def foo(Bar::Buz => bar)
           end
         RBM
-          # @rbs bar: (Bar::Buz)
+          # @rbs bar: Bar::Buz
           def foo(bar)
           end
         RB

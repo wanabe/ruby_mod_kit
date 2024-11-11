@@ -7,9 +7,9 @@ class User
   attr_reader :email, :name, :nick
 
   # @rbs email: String
-  # @rbs tel: (nil | String)
-  # @rbs name: (nil | String)
-  # @rbs nick: (nil | String)
+  # @rbs tel: nil | String
+  # @rbs name: nil | String
+  # @rbs nick: nil | String
   # @rbs return: void
   def initialize(email, tel = nil, name: nil, nick: nil)
     @email = email

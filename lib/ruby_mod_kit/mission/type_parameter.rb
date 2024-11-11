@@ -6,6 +6,13 @@ module RubyModKit
   class Mission
     # The mission for parameter types
     class TypeParameter < Mission
+      # @rbs offset: Integer
+      # @rbs modify_script: String
+      # @rbs return: void
+      def initialize(offset, modify_script)
+        super(offset, unify_type(modify_script))
+      end
+
       # @rbs generation: Generation
       # @rbs root_node: Node
       # @rbs parse_result: Prism::ParseResult
