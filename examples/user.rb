@@ -10,6 +10,7 @@ class User
   # @rbs tel: (nil | String)
   # @rbs name: (nil | String)
   # @rbs nick: (nil | String)
+  # @rbs return: void
   def initialize(email, tel = nil, name: nil, nick: nil)
     @email = email
     @tel = tel
@@ -25,14 +26,15 @@ class Pos
   # @rbs x: Integer
   # @rbs y: Integer
   # @rbs z: Integer
+  # @rbs return: void
   def initialize(x, y, z = 0)
     @x = x
     @y = y
     @z = z
   end
 
-  # @rbs (Pos) -> untyped
-  #    | (Integer) -> untyped
+  # @rbs (Pos) -> Integer
+  #    | (Integer) -> Pos
   def *(*args)
     case args
     in [Pos]
@@ -43,15 +45,18 @@ class Pos
   end
 
   # @rbs other: Pos
+  # @rbs return: Integer
   def _mul__overload0(other)
     (@x * other.x) + (@y * other.y) + (@z * other.z)
   end
 
   # @rbs n: Integer
+  # @rbs return: Pos
   def _mul__overload1(n)
     Pos.new(@x * n, @y * n, @z * n)
   end
 
+  # @rbs return: String
   def to_s
     "#<Pos: (#{@x}, #{@y}, #{@z})>"
   end

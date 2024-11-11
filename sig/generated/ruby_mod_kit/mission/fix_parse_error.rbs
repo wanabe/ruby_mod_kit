@@ -22,6 +22,13 @@ module RubyModKit
       # @rbs typed_parameter_offsets: Set[Integer]
       # @rbs return: void
       def fix_unexpected_assoc: (Prism::ParseError parse_error, Generation generation, Node root_node, Set[Integer] typed_parameter_offsets) -> void
+
+      # @rbs parse_error: Prism::ParseError
+      # @rbs generation: Generation
+      # @rbs root_node: Node
+      # @rbs typed_parameter_offsets: Set[Integer]
+      # @rbs return: void
+      def fix_unexpected_colon: (Prism::ParseError parse_error, Generation generation, Node root_node) -> void
     end
   end
 end

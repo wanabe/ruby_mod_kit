@@ -30,3 +30,9 @@ module RubyModKit
     end
   end
 end
+
+require "ruby_mod_kit/mission/ivar_arg"
+require "ruby_mod_kit/mission/type_parameter"
+require "ruby_mod_kit/mission/type_return"
+require "ruby_mod_kit/mission/fix_parse_error"
+require "ruby_mod_kit/mission/overload"

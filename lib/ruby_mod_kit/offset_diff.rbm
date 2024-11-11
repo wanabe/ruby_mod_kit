@@ -5,14 +5,6 @@
 require "prism"
 require "sorted_set"
 
-require "ruby_mod_kit/memo"
-require "ruby_mod_kit/node"
-require "ruby_mod_kit/mission"
-require "ruby_mod_kit/mission/ivar_arg"
-require "ruby_mod_kit/mission/type_parameter"
-require "ruby_mod_kit/mission/fix_parse_error"
-require "ruby_mod_kit/mission/overload"
-
 module RubyModKit
   # The class of offset differences.
   class OffsetDiff

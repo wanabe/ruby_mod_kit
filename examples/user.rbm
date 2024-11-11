@@ -6,7 +6,7 @@
 class User
   attr_reader :email, :name, :nick
 
-  def initialize(String => @email, (nil | String) => @tel = nil, (nil | String) => @name: nil, (nil | String) => @nick: nil)
+  def initialize(String => @email, (nil | String) => @tel = nil, (nil | String) => @name: nil, (nil | String) => @nick: nil): void
   end
 end
 
@@ -14,18 +14,18 @@ end
 class Pos
   attr_reader :x, :y, :z
 
-  def initialize(Integer => @x, Integer => @y, Integer => @z = 0)
+  def initialize(Integer => @x, Integer => @y, Integer => @z = 0): void
   end
 
-  def *(Pos => other)
+  def *(Pos => other): Integer
     (@x * other.x) + (@y * other.y) + (@z * other.z)
   end
 
-  def *(Integer => n)
+  def *(Integer => n): Pos
     Pos.new(@x * n, @y * n, @z * n)
   end
 
-  def to_s
+  def to_s: String
     "#<Pos: (#{@x}, #{@y}, #{@z})>"
   end
 end

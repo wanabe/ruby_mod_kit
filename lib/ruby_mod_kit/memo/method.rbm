@@ -9,16 +9,19 @@ module RubyModKit
       # @rbs @parent_offset: Integer
       # @rbs @name: Symbol
       # @rbs @parameters: Array[Parameter]
+      # @rbs @type: String
 
       attr_reader :parent_offset #: Integer
       attr_reader :name #: Symbol
       attr_reader :parameters #: Array[Parameter]
+      attr_accessor :type #: String
 
       # @rbs memo: Memo
       # @rbs node: Node
       # @rbs type: String
       # @rbs return: void
       def initialize(memo, node)
+        @type = "untyped"
         @parameters = []
         @name = node.name
         raise RubyModKit::Error unless node.parent

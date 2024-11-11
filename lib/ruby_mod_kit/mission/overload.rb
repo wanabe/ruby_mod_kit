@@ -49,7 +49,7 @@ module RubyModKit
             else
               "#    |"
             end
-            script << " (#{method_memo.parameters.map(&:type).join(", ")}) -> untyped\n"
+            script << " (#{method_memo.parameters.map(&:type).join(", ")}) -> #{method_memo.type}\n"
           end
           script << "def #{name}(*args)\n  case args\n"
           overload_prefix = +"#{OVERLOAD_METHOD_MAP[name] || name}_"

@@ -26,8 +26,11 @@ module RubyModKit
           when :argument_formal_ivar
             fix_argument_formal_ivar(parse_error, generation)
           when :unexpected_token_ignore
-            if parse_error.location.slice == "=>"
+            case parse_error.location.slice
+            when "=>"
               fix_unexpected_assoc(parse_error, generation, root_node, typed_parameter_offsets)
+            when ":"
+              fix_unexpected_colon(parse_error, generation, root_node)
             end
           end
         end
@@ -76,6 +79,34 @@ module RubyModKit
 
         generation[last_parameter_offset, right_offset - last_parameter_offset] = ""
         generation.add_mission(Mission::TypeParameter.new(last_parameter_offset, parameter_type))
+      end
+
+      # @rbs parse_error: Prism::ParseError
+      # @rbs generation: Generation
+      # @rbs root_node: Node
+      # @rbs typed_parameter_offsets: Set[Integer]
+      # @rbs return: void
+      def fix_unexpected_colon(parse_error, generation, root_node)
+        def_node = root_node[parse_error.location.start_offset, Prism::DefNode]
+        return unless def_node
+        return unless def_node.prism_node.is_a?(Prism::DefNode)
+
+        lparen_loc = def_node.prism_node.lparen_loc
+        rparen_loc = def_node.prism_node.rparen_loc
+        if !lparen_loc && !rparen_loc
+          src_offset = def_node.prism_node.name_loc.end_offset
+        elsif lparen_loc && rparen_loc && lparen_loc.slice == "(" && rparen_loc.slice == ")"
+          src_offset = rparen_loc.end_offset
+        else
+          return
+        end
+        return if generation[src_offset...parse_error.location.start_offset] !~ /\A\s*\z/
+
+        return_type_location = root_node[parse_error.location.end_offset + 1]&.prism_node&.location
+        return unless return_type_location
+
+        generation[src_offset, return_type_location.end_offset - src_offset] = ""
+        generation.add_mission(Mission::TypeReturn.new(src_offset, return_type_location.slice))
       end
     end
   end

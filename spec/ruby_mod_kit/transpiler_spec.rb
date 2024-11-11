@@ -118,5 +118,30 @@ describe RubyModKit::Transpiler do
         RB
       end
     end
+
+    describe "typed return value" do
+      it "converts typed return value to rbs-inline annotation" do
+        expect(transpiler.transpile(<<~RBM)).to eq(<<~RB)
+          def foo: Bar
+          end
+        RBM
+          # @rbs return: Bar
+          def foo
+          end
+        RB
+      end
+
+      it "insert return value annotation after parameter annotation" do
+        expect(transpiler.transpile(<<~RBM)).to eq(<<~RB)
+          def foo(Bar => bar): Buz
+          end
+        RBM
+          # @rbs bar: Bar
+          # @rbs return: Buz
+          def foo(bar)
+          end
+        RB
+      end
+    end
   end
 end

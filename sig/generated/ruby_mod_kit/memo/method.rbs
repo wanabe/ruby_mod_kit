@@ -10,11 +10,15 @@ module RubyModKit
 
       @parameters: Array[Parameter]
 
+      @type: String
+
       attr_reader parent_offset: Integer
 
       attr_reader name: Symbol
 
       attr_reader parameters: Array[Parameter]
+
+      attr_accessor type: String
 
       # @rbs memo: Memo
       # @rbs node: Node
