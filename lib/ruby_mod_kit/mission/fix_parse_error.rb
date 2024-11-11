@@ -23,6 +23,8 @@ module RubyModKit
           case parse_error.type
           when :argument_formal_ivar
             fix_argument_formal_ivar(parse_error, generation)
+          when :argument_formal_constant
+            fix_argument_formal_constant(parse_error, generation, parse_result)
           when :unexpected_token_ignore
             case parse_error.location.slice
             when "=>"
@@ -47,6 +49,22 @@ module RubyModKit
 
         generation[src_offset, parse_error.location.length] = name
         generation.add_mission(Mission::IvarArg.new(src_offset, "@#{name} = #{name}"))
+      end
+
+      # @rbs parse_error: Prism::ParseError
+      # @rbs generation: Generation
+      # @rbs parse_result: Prism::ParseResult
+      # @rbs return: void
+      def fix_argument_formal_constant(parse_error, generation, parse_result)
+        line = parse_result.source.lines[parse_error.location.start_line - 1]
+        line = line[parse_error.location.start_column..]
+        return unless line
+
+        parameter_type = line[/(\A[A-Z]\w*(?:::[A-Z]\w*)+)(?:\s*=>\s*)/, 1]
+        return unless parameter_type
+
+        src_offset = parse_error.location.start_offset
+        generation[src_offset, parameter_type.length] = "(#{parameter_type})"
       end
 
       # @rbs parse_error: Prism::ParseError

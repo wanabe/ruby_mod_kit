@@ -85,6 +85,17 @@ describe RubyModKit::Transpiler do
         RB
       end
 
+      it "allows constant joined with `::`" do
+        expect(transpiler.transpile(<<~RBM)).to eq(<<~RB)
+          def foo(Bar::Buz => bar)
+          end
+        RBM
+          # @rbs bar: (Bar::Buz)
+          def foo(bar)
+          end
+        RB
+      end
+
       it "treats same name method definitions as overloading" do
         expect(transpiler.transpile(<<~RBM)).to eq(<<~RB)
           def foo(Bar => bar)
