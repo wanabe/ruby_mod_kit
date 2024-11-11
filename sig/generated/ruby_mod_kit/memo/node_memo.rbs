@@ -6,13 +6,9 @@ module RubyModKit
     class NodeMemo
       attr_reader offset: Integer
 
-      # @rbs memo: Memo
       # @rbs node: Node
       # @rbs return: void
-      def initialize: (Memo memo, Node node) -> void
-
-      # @rbs return: Symbol
-      def type: () -> Symbol
+      def initialize: (Node node) -> void
 
       # @rbs offset_diff: OffsetDiff
       # @rbs return: void

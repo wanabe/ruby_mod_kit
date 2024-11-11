@@ -8,17 +8,10 @@ module RubyModKit
     class NodeMemo
       attr_reader :offset #: Integer
 
-      # @rbs memo: Memo
       # @rbs node: Node
       # @rbs return: void
-      def initialize(memo, node)
+      def initialize(node)
         @offset = node.offset
-        memo.add(type, node, self)
-      end
-
-      # @rbs return: Symbol
-      def type
-        :unknown
       end
 
       # @rbs offset_diff: OffsetDiff

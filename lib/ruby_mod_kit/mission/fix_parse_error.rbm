@@ -11,10 +11,13 @@ module RubyModKit
       # @rbs generation: Generation
       # @rbs root_node: Node
       # @rbs parse_result: Prism::ParseResult
-      # @rbs memo: Memo
+      # @rbs _memo: Memo
       # @rbs return: bool
-      def perform(generation, root_node, parse_result, memo)
-        return true if parse_result.errors.empty?
+      def perform(generation, root_node, parse_result, _memo)
+        if parse_result.errors.empty?
+          generation.add_mission(Mission::Overload.new(0, ""))
+          return true
+        end
 
         typed_parameter_offsets = Set.new
 
@@ -50,16 +53,6 @@ module RubyModKit
             right_offset = right_node.offset
             parameter_type = generation[last_parameter_offset...right_offset]&.sub(/\s*=>\s*\z/, "")
             raise RubyModKit::Error unless parameter_type
-
-            if generation.first_generation?
-              overload_id = [def_parent_node.offset, def_node.name]
-              memo.overload_methods[overload_id] ||= {}
-              if memo.overload_methods[overload_id][def_node]
-                memo.overload_methods[overload_id][def_node] << parameter_type
-              else
-                memo.overload_methods[overload_id][def_node] = [parameter_type]
-              end
-            end
 
             generation[last_parameter_offset, right_offset - last_parameter_offset] = ""
             generation.add_mission(Mission::TypeParameter.new(last_parameter_offset, parameter_type))

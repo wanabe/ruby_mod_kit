@@ -7,13 +7,17 @@ module RubyModKit
 
     @generation_num: Integer
 
-    @overload_methods: Hash[Array[Integer | Symbol], Hash[Node, [ String ]]]
+    @methods_memo: Hash[Integer, Memo::Method]
+
+    @parameters_memo: Hash[Integer, Memo::Parameter]
 
     attr_reader previous_error_count: Integer
 
     attr_reader generation_num: Integer
 
-    attr_reader overload_methods: Hash[Array[Integer | Symbol], Hash[Node, [ String ]]]
+    attr_reader methods_memo: Hash[Integer, Memo::Method]
+
+    attr_reader parameters_memo: Hash[Integer, Memo::Parameter]
 
     # @rbs return: void
     def initialize: () -> void
@@ -22,16 +26,5 @@ module RubyModKit
     # @rbs previous_error_count: Integer
     # @rbs return: void
     def succ: (OffsetDiff offset_diff, Integer previous_error_count) -> void
-
-    # @rbs type: Symbol
-    # @rbs offset: Integer
-    # @rbs return: NodeMemo | nil
-    def []: (Symbol type, Integer offset) -> (NodeMemo | nil)
-
-    # @rbs type: Symbol
-    # @rbs node: Node
-    # @rbs node_memo: NodeMemo
-    # @rbs return: NodeMemo
-    def add: (Symbol type, Node node, NodeMemo node_memo) -> NodeMemo
   end
 end

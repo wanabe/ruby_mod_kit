@@ -6,6 +6,8 @@ module RubyModKit
   class Memo
     # The memo for parameter type
     class Parameter < NodeMemo
+      attr_reader :type #: String
+
       # @rbs memo: Memo
       # @rbs node: Node
       # @rbs type: String
@@ -16,14 +18,11 @@ module RubyModKit
         def_node = node.parent&.parent
         raise RubyModKit::Error unless def_node
 
-        @method = memo[:method, def_node.offset] || Memo::Method.new(memo, def_node)
+        @method = memo.methods_memo[def_node.offset] || Memo::Method.new(memo, def_node)
+        @method.add_parameter(self)
 
-        super(memo, node)
-      end
-
-      # @rbs return: Symbol
-      def type
-        :parameter
+        memo.parameters_memo[node.offset] = self
+        super(node)
       end
     end
   end

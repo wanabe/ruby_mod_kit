@@ -9,25 +9,27 @@ module RubyModKit
   class Memo
     # @rbs @previous_error_count: Integer
     # @rbs @generation_num: Integer
-    # @rbs @overload_methods: Hash[Array[(Integer | Symbol)], Hash[Node, [String]]]
+    # @rbs @methods_memo: Hash[Integer, Memo::Method]
+    # @rbs @parameters_memo: Hash[Integer, Memo::Parameter]
 
     attr_reader :previous_error_count #: Integer
     attr_reader :generation_num #: Integer
-    attr_reader :overload_methods #: Hash[Array[(Integer | Symbol)], Hash[Node, [String]]]
+    attr_reader :methods_memo #: Hash[Integer, Memo::Method]
+    attr_reader :parameters_memo #: Hash[Integer, Memo::Parameter]
 
     # @rbs return: void
     def initialize
       @previous_error_count = 0
       @generation_num = 0
-      @overload_methods = {}
-      @type_map = {}
+      @methods_memo = {}
+      @parameters_memo = {}
     end
 
     # @rbs offset_diff: OffsetDiff
     # @rbs previous_error_count: Integer
     # @rbs return: void
     def succ(offset_diff, @previous_error_count)
-      @type_map.each_value do |offset_node_memo|
+      [@methods_memo, @parameters_memo].each do |offset_node_memo|
         new_offset_node_memo = {}
         offset_node_memo.each_value do |node_memo|
           node_memo.succ(offset_diff)
@@ -37,23 +39,6 @@ module RubyModKit
       end
       @generation_num += 1
       self
-    end
-
-    # @rbs type: Symbol
-    # @rbs offset: Integer
-    # @rbs return: NodeMemo | nil
-    def [](type, offset)
-      @type_map[type] ||= {}
-      @type_map[type][offset]
-    end
-
-    # @rbs type: Symbol
-    # @rbs node: Node
-    # @rbs node_memo: NodeMemo
-    # @rbs return: NodeMemo
-    def add(type, node, node_memo)
-      @type_map[type] ||= {}
-      @type_map[type][node.offset] = node_memo
     end
   end
 end

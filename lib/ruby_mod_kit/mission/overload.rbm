@@ -17,40 +17,55 @@ module RubyModKit
       # @rbs parse_result: Prism::ParseResult
       # @rbs memo: Memo
       # @rbs return: bool
-      def perform(generation, _root_node, parse_result, memo)
-        memo.overload_methods.each do |(_, name), def_node_part_pairs|
-          next if def_node_part_pairs.size <= 1
+      def perform(generation, root_node, parse_result, memo)
+        # Wait TypeParameter performed
+        @call_count ||= 0
+        if @call_count == 0
+          @call_count += 1
+          return false
+        end
+
+        method_memo_groups = memo.methods_memo.each_value.group_by do |method_memo|
+          [method_memo.parent_offset, method_memo.name]
+        end
+        method_memo_groups.each_value do |method_memos|
+          next if method_memos.length <= 1
+
+          first_method_memo = method_memos.first
+          name = first_method_memo.name
+          first_def_node = root_node[first_method_memo.offset, Prism::DefNode]
+          raise RubyModKit::Error unless first_def_node
           raise RubyModKit::Error unless name.is_a?(Symbol)
 
-          first_def_node_part_pairs = def_node_part_pairs.first
-          raise RubyModKit::Error unless first_def_node_part_pairs
-
-          first_def_node = first_def_node_part_pairs[0]
-          src_offset = parse_result.source.offsets[first_def_node.prism_node.location.start_line - 1]
+          start_line = first_def_node.prism_node.location.start_line - 1
+          indent = parse_result.source.lines[start_line][/\A */] || ""
+          start_line -= 1 while parse_result.source.lines[start_line - 1] =~ /^ *# *@rbs /
+          src_offset = parse_result.source.offsets[start_line]
           script = +""
-          def_node_part_pairs.each_value do |parts|
+
+          method_memos.each do |method_memo|
             script << if script.empty?
               "# @rbs"
             else
               "#    |"
             end
-            script << " (#{parts.join(", ")}) -> untyped\n"
+            script << " (#{method_memo.parameters.map(&:type).join(", ")}) -> untyped\n"
           end
-
           script << "def #{name}(*args)\n  case args\n"
           overload_prefix = +"#{OVERLOAD_METHOD_MAP[name] || name}_"
-          def_node_part_pairs.each_with_index do |(def_node, parts), i|
+          method_memos.each_with_index do |method_memo, i|
             overload_name = "#{overload_prefix}_overload#{i}"
-            raise RubyModKit::Error unless def_node.prism_node.is_a?(Prism::DefNode)
+            def_node = root_node[method_memo.offset, Prism::DefNode]
+            raise RubyModKit::Error if !def_node || !def_node.prism_node.is_a?(Prism::DefNode)
 
             name_loc = def_node.prism_node.name_loc
             generation[name_loc.start_offset, name_loc.length] = overload_name
-            script << "  in [#{parts.join(", ")}]\n"
+            script << "  in [#{method_memo.parameters.map(&:type).join(", ")}]\n"
             script << "    #{overload_name}(*args)\n"
           end
           script << "  end\nend\n\n"
-          indent = first_def_node.offset - src_offset
-          script.gsub!(/^(?=.)/, " " * indent)
+
+          script.gsub!(/^(?=.)/, indent)
           generation[src_offset, 0] = script
         end
         true

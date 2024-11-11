@@ -102,7 +102,6 @@ module RubyModKit
       @missions.delete_if do |mission|
         mission.perform(self, @root_node, @parse_result, @memo) || break
       end
-      Mission::Overload.new(0, "").perform(self, @root_node, @parse_result, @memo) if first_generation?
     end
 
     # @rbs mission: Mission
