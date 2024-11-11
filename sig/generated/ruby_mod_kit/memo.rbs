@@ -3,7 +3,7 @@
 module RubyModKit
   # The class of transpiler generation.
   class Memo
-    @previous_error_count: Integer
+    @previous_error_messages: [ String ]
 
     @generation_num: Integer
 
@@ -11,7 +11,7 @@ module RubyModKit
 
     @parameters_memo: Hash[Integer, Memo::Parameter]
 
-    attr_reader previous_error_count: Integer
+    attr_reader previous_error_messages: [ String ]
 
     attr_reader generation_num: Integer
 
@@ -23,8 +23,8 @@ module RubyModKit
     def initialize: () -> void
 
     # @rbs offset_diff: OffsetDiff
-    # @rbs previous_error_count: Integer
+    # @rbs previous_error_messages: [String]
     # @rbs return: void
-    def succ: (OffsetDiff offset_diff, Integer previous_error_count) -> void
+    def succ: (OffsetDiff offset_diff, [ String ] previous_error_messages) -> void
   end
 end

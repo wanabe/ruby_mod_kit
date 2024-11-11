@@ -15,7 +15,6 @@ module RubyModKit
 
     # @rbs script: String
     # @rbs missions: Array[Mission]
-    # @rbs previous_error_count: Integer
     # @rbs generation_num: Integer
     # @rbs memo: Memo
     # @rbs return: void

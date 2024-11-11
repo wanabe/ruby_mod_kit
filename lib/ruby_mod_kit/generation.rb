@@ -26,7 +26,6 @@ module RubyModKit
 
     # @rbs script: String
     # @rbs missions: Array[Mission]
-    # @rbs previous_error_count: Integer
     # @rbs generation_num: Integer
     # @rbs memo: Memo
     # @rbs return: void
@@ -49,7 +48,7 @@ module RubyModKit
       @missions.each do |mission|
         mission.succ(@offset_diff)
       end
-      @memo.succ(@offset_diff, @parse_result.errors.size)
+      @memo.succ(@offset_diff, @parse_result.errors.map(&:message))
       Generation.new(
         @script,
         missions: @missions,
@@ -61,7 +60,7 @@ module RubyModKit
     def resolve
       if first_generation?
         add_mission(Mission::FixParseError.new(0, ""))
-      elsif !@parse_result.errors.empty? && @memo.previous_error_count <= @parse_result.errors.size
+      elsif !@parse_result.errors.empty? && @memo.previous_error_messages == @parse_result.errors.map(&:message)
         @parse_result.errors.each do |parse_error|
           warn(
             ":#{parse_error.location.start_line}:#{parse_error.message} (#{parse_error.type})",
