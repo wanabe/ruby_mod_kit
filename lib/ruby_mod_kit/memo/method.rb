@@ -18,7 +18,6 @@ module RubyModKit
 
       # @rbs memo: Memo
       # @rbs node: Node
-      # @rbs type: String
       # @rbs return: void
       def initialize(memo, node)
         @type = "untyped"

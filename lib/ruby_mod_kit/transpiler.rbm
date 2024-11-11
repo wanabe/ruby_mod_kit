@@ -7,9 +7,7 @@ require "ruby_mod_kit/generation"
 module RubyModKit
   # The class of transpiler.
   class Transpiler
-    # @rbs src: String
-    # @rbs return: String
-    def transpile(src)
+    def transpile(String => src): String
       generation = Generation.new(src.dup)
       until generation.completed?
         generation.resolve

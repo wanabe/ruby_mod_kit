@@ -22,7 +22,6 @@ module RubyModKit
 
       # @rbs memo: Memo
       # @rbs node: Node
-      # @rbs type: String
       # @rbs return: void
       def initialize: (Memo memo, Node node) -> void
 

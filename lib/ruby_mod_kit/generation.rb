@@ -26,7 +26,6 @@ module RubyModKit
 
     # @rbs script: String
     # @rbs missions: Array[Mission]
-    # @rbs generation_num: Integer
     # @rbs memo: Memo
     # @rbs return: void
     def initialize(script, missions: [], memo: Memo.new)

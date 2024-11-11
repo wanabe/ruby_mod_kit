@@ -100,7 +100,6 @@ module RubyModKit
       # @rbs parse_error: Prism::ParseError
       # @rbs generation: Generation
       # @rbs root_node: Node
-      # @rbs typed_parameter_offsets: Set[Integer]
       # @rbs return: void
       def fix_unexpected_colon(parse_error, generation, root_node)
         def_node = root_node[parse_error.location.start_offset, Prism::DefNode]

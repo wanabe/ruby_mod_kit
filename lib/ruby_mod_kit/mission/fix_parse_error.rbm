@@ -6,12 +6,7 @@ module RubyModKit
   class Mission
     # The mission for parameter types
     class FixParseError < Mission
-      # @rbs generation: Generation
-      # @rbs root_node: Node
-      # @rbs parse_result: Prism::ParseResult
-      # @rbs _memo: Memo
-      # @rbs return: bool
-      def perform(generation, root_node, parse_result, _memo)
+      def perform(Generation => generation, Node => root_node, (Prism::ParseResult) => parse_result, Memo => _memo): bool
         if parse_result.errors.empty?
           generation.add_mission(Mission::Overload.new(0, ""))
           return true
@@ -38,10 +33,7 @@ module RubyModKit
         false
       end
 
-      # @rbs parse_error: Prism::ParseError
-      # @rbs generation: Generation
-      # @rbs return: void
-      def fix_argument_formal_ivar(parse_error, generation)
+      def fix_argument_formal_ivar(Prism::ParseError => parse_error, Generation => generation): void
         src_offset = parse_error.location.start_offset
 
         name = parse_error.location.slice[1..]
@@ -51,11 +43,7 @@ module RubyModKit
         generation.add_mission(Mission::IvarArg.new(src_offset, "@#{name} = #{name}"))
       end
 
-      # @rbs parse_error: Prism::ParseError
-      # @rbs generation: Generation
-      # @rbs parse_result: Prism::ParseResult
-      # @rbs return: void
-      def fix_argument_formal_constant(parse_error, generation, parse_result)
+      def fix_argument_formal_constant(Prism::ParseError => parse_error, Generation => generation, Prism::ParseResult => parse_result): void
         line = parse_result.source.lines[parse_error.location.start_line - 1]
         line = line[parse_error.location.start_column..]
         return unless line
@@ -67,12 +55,7 @@ module RubyModKit
         generation[src_offset, parameter_type.length] = "(#{parameter_type})"
       end
 
-      # @rbs parse_error: Prism::ParseError
-      # @rbs generation: Generation
-      # @rbs root_node: Node
-      # @rbs typed_parameter_offsets: Set[Integer]
-      # @rbs return: void
-      def fix_unexpected_assoc(parse_error, generation, root_node, typed_parameter_offsets)
+      def fix_unexpected_assoc(Prism::ParseError => parse_error, Generation => generation, Node => root_node, Set[Integer] => typed_parameter_offsets): void
         def_node = root_node[parse_error.location.start_offset, Prism::DefNode]
         return unless def_node
 
@@ -97,12 +80,7 @@ module RubyModKit
         generation.add_mission(Mission::TypeParameter.new(last_parameter_offset, parameter_type))
       end
 
-      # @rbs parse_error: Prism::ParseError
-      # @rbs generation: Generation
-      # @rbs root_node: Node
-      # @rbs typed_parameter_offsets: Set[Integer]
-      # @rbs return: void
-      def fix_unexpected_colon(parse_error, generation, root_node)
+      def fix_unexpected_colon(Prism::ParseError => parse_error, Generation => generation, Node => root_node): void
         def_node = root_node[parse_error.location.start_offset, Prism::DefNode]
         return unless def_node
         return unless def_node.prism_node.is_a?(Prism::DefNode)

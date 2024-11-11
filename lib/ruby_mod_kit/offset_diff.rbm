@@ -9,14 +9,12 @@ module RubyModKit
   # The class of offset differences.
   class OffsetDiff
     # @rbs @diffs: SortedSet[[Integer, Integer, Integer]]
-    # @rbs return: void
-    def initialize
+
+    def initialize: void
       @diffs = SortedSet.new
     end
 
-    # @rbs src_offset: Integer
-    # @rbs return: Integer
-    def [](src_offset)
+    def [](Integer => src_offset): Integer
       dst_offset = src_offset
       @diffs.each do |(offset, _, diff)|
         break if offset > src_offset
@@ -27,10 +25,7 @@ module RubyModKit
       dst_offset
     end
 
-    # @rbs src_offset: Integer
-    # @rbs new_diff: Integer
-    # @rbs return: void
-    def insert(src_offset, new_diff)
+    def insert(Integer => src_offset, Integer => new_diff): void
       @diffs << [src_offset, @diffs.size, new_diff]
     end
   end

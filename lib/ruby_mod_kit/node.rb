@@ -13,7 +13,7 @@ module RubyModKit
     # @rbs @children: Array[Node]
     # @rbs @ancestors: Array[Node]
 
-    # @rbs prism_node: Prism::Node prism_node
+    # @rbs prism_node: Prism::Node
     # @rbs parent: Node
     # @rbs return: void
     def initialize(prism_node, parent: nil)

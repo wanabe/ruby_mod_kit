@@ -17,18 +17,14 @@ module RubyModKit
     attr_reader :methods_memo #: Hash[Integer, Memo::Method]
     attr_reader :parameters_memo #: Hash[Integer, Memo::Parameter]
 
-    # @rbs return: void
-    def initialize
+    def initialize: void
       @previous_error_messages = []
       @generation_num = 0
       @methods_memo = {}
       @parameters_memo = {}
     end
 
-    # @rbs offset_diff: OffsetDiff
-    # @rbs previous_error_messages: [String]
-    # @rbs return: void
-    def succ(offset_diff, @previous_error_messages)
+    def succ(OffsetDiff => offset_diff, ([String]) => @previous_error_messages): void
       [@methods_memo, @parameters_memo].each do |offset_node_memo|
         new_offset_node_memo = {}
         offset_node_memo.each_value do |node_memo|

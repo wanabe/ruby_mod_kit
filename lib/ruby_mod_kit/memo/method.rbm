@@ -16,11 +16,7 @@ module RubyModKit
       attr_reader :parameters #: Array[Parameter]
       attr_accessor :type #: String
 
-      # @rbs memo: Memo
-      # @rbs node: Node
-      # @rbs type: String
-      # @rbs return: void
-      def initialize(memo, node)
+      def initialize(Memo => memo, Node => node): void
         @type = "untyped"
         @parameters = []
         @name = node.name
@@ -31,9 +27,7 @@ module RubyModKit
         super(node)
       end
 
-      # @rbs parameter_memo: Parameter
-      # @rbs return: void
-      def add_parameter(parameter_memo)
+      def add_parameter(Parameter => parameter_memo): void
         @parameters << parameter_memo
       end
     end

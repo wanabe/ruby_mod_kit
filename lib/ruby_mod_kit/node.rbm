@@ -13,14 +13,10 @@ module RubyModKit
     # @rbs @children: Array[Node]
     # @rbs @ancestors: Array[Node]
 
-    # @rbs prism_node: Prism::Node prism_node
-    # @rbs parent: Node
-    # @rbs return: void
-    def initialize(@prism_node, @parent: nil)
+    def initialize(Prism::Node => @prism_node, Node => @parent: nil): void
     end
 
-    # @rbs return: Array[Node]
-    def children
+    def children : (Array[Node])
       return @children if @children
 
       @children = @prism_node.child_nodes.compact.map do |prism_child_node|
@@ -28,8 +24,7 @@ module RubyModKit
       end
     end
 
-    # @rbs return: Array[Node]
-    def ancestors
+    def ancestors : (Array[Node])
       return @ancestors if @ancestors
 
       parent = @parent
@@ -40,8 +35,7 @@ module RubyModKit
       end
     end
 
-    # @rbs return: Symbol
-    def name
+    def name: Symbol
       case prism_node
       when Prism::RequiredParameterNode, Prism::OptionalKeywordParameterNode,
            Prism::OptionalParameterNode, Prism::RequiredKeywordParameterNode, Prism::DefNode
@@ -51,10 +45,7 @@ module RubyModKit
       end
     end
 
-    # @rbs offset: Integer
-    # @rbs prism_klass: Class | nil
-    # @rbs return: Node | nil
-    def [](offset, prism_klass = nil)
+    def [](Integer => offset, (Class | nil) => prism_klass = nil): (Node | nil)
       return nil unless include?(offset)
 
       child = children.find { _1.include?(offset) }
@@ -65,19 +56,15 @@ module RubyModKit
       node.ancestors.find { _1.prism_node.is_a?(prism_klass) }
     end
 
-    # @rbs offset: Integer
-    # @rbs return: bool
-    def include?(offset)
+    def include?(Integer => offset): bool
       self.offset <= offset && offset <= prism_node.location.end_offset
     end
 
-    # @rbs return: Integer
-    def offset
+    def offset: Integer
       prism_node.location.start_offset
     end
 
-    # @rbs return: String
-    def inspect
+    def inspect: String
       str = +"#<#{self.class} "
       first = true
       instance_variables.each do |ivar_name|

@@ -8,30 +8,18 @@ module RubyModKit
     attr_accessor :offset #: Integer
     attr_reader :modify_script #: String
 
-    # @rbs offset: Integer
-    # @rbs modify_script: String
-    # @rbs return: void
-    def initialize(@offset, @modify_script)
+    def initialize(Integer => @offset, String => @modify_script): void
     end
 
-    # @rbs _generation: Generation
-    # @rbs _root_node: Node
-    # @rbs _parse_result: Prism::ParseResult
-    # @rbs _memo: Memo
-    # @rbs return: void
-    def perform(_generation, _root_node, _parse_result, _memo)
+    def perform(Generation => _generation, Node => _root_node, (Prism::ParseResult) => _parse_result, Memo => _memo): void
       raise RubyModKit::Error, "Unexpected type #{self.class}"
     end
 
-    # @rbs offset_diff: OffsetDiff
-    # @rbs return: void
-    def succ(offset_diff)
+    def succ(OffsetDiff => offset_diff): void
       @offset = offset_diff[@offset]
     end
 
-    # @rbs type: String
-    # @rbs return: String
-    def unify_type(type)
+    def unify_type(String => type): String
       type[/\A\(([^()]*)\)\z/, 1] || type
     end
   end

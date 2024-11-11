@@ -24,24 +24,17 @@ module RubyModKit
     attr_reader :parse_result #: Prism::ParseResult
     attr_reader :script #: String
 
-    # @rbs script: String
-    # @rbs missions: Array[Mission]
-    # @rbs generation_num: Integer
-    # @rbs memo: Memo
-    # @rbs return: void
-    def initialize(@script, @missions: [], @memo: Memo.new)
+    def initialize(String => @script, Array[Mission] => @missions: [], Memo => @memo: Memo.new): void
       @offset_diff = OffsetDiff.new
       @parse_result = Prism.parse(@script)
       @root_node = Node.new(@parse_result.value)
     end
 
-    # @rbs return: bool
-    def first_generation?
+    def first_generation? : bool
       @memo.generation_num == 0
     end
 
-    # @rbs return: Generation
-    def succ
+    def succ: Generation
       @missions.each do |mission|
         mission.succ(@offset_diff)
       end
@@ -53,8 +46,7 @@ module RubyModKit
       )
     end
 
-    # @rbs return: void
-    def resolve
+    def resolve: void
       if first_generation?
         add_mission(Mission::FixParseError.new(0, ""))
       elsif !@parse_result.errors.empty? && @memo.previous_error_messages == @parse_result.errors.map(&:message)
@@ -71,38 +63,28 @@ module RubyModKit
       perform_missions
     end
 
-    # @rbs return: bool
-    def completed?
+    def completed?: bool
       @parse_result.errors.empty? && @missions.empty?
     end
 
-    # @rbs src_offset: Integer
-    # @rbs length: Integer
-    # @rbs str: String
-    # @rbs return: String
-    def []=(src_offset, length, str)
+    def []=(Integer => src_offset, Integer => length, String => str): String
       diff = str.length - length
       @script[@offset_diff[src_offset], length] = str
       @offset_diff.insert(src_offset, diff)
     end
 
-    # @rbs src_range: Range[Integer]
-    # @rbs return: String
-    def [](src_range)
+    def [](Range[Integer] => src_range): String
       dst_range = Range.new(@offset_diff[src_range.first], @offset_diff[src_range.last], src_range.exclude_end?)
       @script[dst_range] || raise(RubyModKit::Error, "Invalid range")
     end
 
-    # @rbs return: void
-    def perform_missions
+    def perform_missions: void
       @missions.delete_if do |mission|
         mission.perform(self, @root_node, @parse_result, @memo) || break
       end
     end
 
-    # @rbs mission: Mission
-    # @rbs return: void
-    def add_mission(mission)
+    def add_mission(Mission => mission): void
       @missions << mission
     end
   end

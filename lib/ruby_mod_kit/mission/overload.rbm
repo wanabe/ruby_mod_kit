@@ -10,12 +10,7 @@ module RubyModKit
         "*": "_mul",
       }.freeze #: Hash[Symbol, String]
 
-      # @rbs generation: Generation
-      # @rbs root_node: Node
-      # @rbs parse_result: Prism::ParseResult
-      # @rbs memo: Memo
-      # @rbs return: bool
-      def perform(generation, root_node, parse_result, memo)
+      def perform(Generation => generation, Node => root_node, (Prism::ParseResult) => parse_result, Memo => memo): bool
         # Wait TypeParameter performed
         @call_count ||= 0
         if @call_count == 0
