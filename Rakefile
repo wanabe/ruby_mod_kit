@@ -21,9 +21,10 @@ task :rbs_inline do
 end
 
 desc "Transpile .rbm files under lib/"
-task lib: Dir.glob("lib/**/*.rbm").map { _1.ext(".rb") }
-rule ".rb" => %w[.rbm] do |t|
-  RubyModKit.transpile_file(t.source)
+task :lib do
+  Dir.glob("lib/**/*.rbm") do |rbm_path|
+    RubyModKit.transpile_file(rbm_path)
+  end
 end
 
 desc "Check untyped in rbs"
