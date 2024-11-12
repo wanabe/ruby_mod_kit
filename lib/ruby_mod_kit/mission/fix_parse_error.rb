@@ -30,7 +30,7 @@ module RubyModKit
             when "=>"
               fix_unexpected_assoc(parse_error, generation, root_node, typed_parameter_offsets)
             when ":"
-              fix_unexpected_colon(parse_error, generation, root_node)
+              fix_unexpected_colon(parse_error, generation, root_node, parse_result)
             end
           end
         end
@@ -100,16 +100,28 @@ module RubyModKit
       # @rbs parse_error: Prism::ParseError
       # @rbs generation: Generation
       # @rbs root_node: Node
+      # @rbs parse_result: Prism::ParseResult
       # @rbs return: void
-      def fix_unexpected_colon(parse_error, generation, root_node)
-        def_node = root_node[parse_error.location.start_offset, Prism::DefNode]
-        return unless def_node
-        return unless def_node.prism_node.is_a?(Prism::DefNode)
+      def fix_unexpected_colon(parse_error, generation, root_node, parse_result)
+        parent_prism_node = root_node[parse_error.location.start_offset, Prism::StatementsNode]&.parent&.prism_node
+        case parent_prism_node
+        when Prism::DefNode
+          fix_unexpected_colon_in_def(parse_error, generation, root_node, parent_prism_node)
+        when Prism::ClassNode, Prism::ModuleNode
+          fix_unexpected_colon_in_module(parse_error, generation, parse_result)
+        end
+      end
 
-        lparen_loc = def_node.prism_node.lparen_loc
-        rparen_loc = def_node.prism_node.rparen_loc
+      # @rbs parse_error: Prism::ParseError
+      # @rbs generation: Generation
+      # @rbs root_node: Node
+      # @rbs def_prism_node: Prism::DefNode
+      # @rbs return: void
+      def fix_unexpected_colon_in_def(parse_error, generation, root_node, def_prism_node)
+        lparen_loc = def_prism_node.lparen_loc
+        rparen_loc = def_prism_node.rparen_loc
         if !lparen_loc && !rparen_loc
-          src_offset = def_node.prism_node.name_loc.end_offset
+          src_offset = def_prism_node.name_loc.end_offset
         elsif lparen_loc && rparen_loc && lparen_loc.slice == "(" && rparen_loc.slice == ")"
           src_offset = rparen_loc.end_offset
         else
@@ -122,6 +134,23 @@ module RubyModKit
 
         generation[src_offset, return_type_location.end_offset - src_offset] = ""
         generation.add_mission(Mission::TypeReturn.new(src_offset, return_type_location.slice))
+      end
+
+      # @rbs parse_error: Prism::ParseError
+      # @rbs generation: Generation
+      # @rbs parse_result: Prism::ParseResult
+      # @rbs return: void
+      def fix_unexpected_colon_in_module(parse_error, generation, parse_result)
+        line = parse_result.source.lines[parse_error.location.start_line - 1]
+        line_offset = parse_result.source.offsets[parse_error.location.start_line - 1]
+        return if line !~ /(\A\s*)@(\w*)\s*:\s*(.*)/
+
+        indent = ::Regexp.last_match(1)
+        ivar_name = ::Regexp.last_match(2)
+        type = ::Regexp.last_match(3)
+        return if !indent || !ivar_name || !type
+
+        generation[line_offset + indent.length, 0] = "# @rbs "
       end
     end
   end

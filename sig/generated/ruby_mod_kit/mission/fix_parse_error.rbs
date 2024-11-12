@@ -32,8 +32,22 @@ module RubyModKit
       # @rbs parse_error: Prism::ParseError
       # @rbs generation: Generation
       # @rbs root_node: Node
+      # @rbs parse_result: Prism::ParseResult
       # @rbs return: void
-      def fix_unexpected_colon: (Prism::ParseError parse_error, Generation generation, Node root_node) -> void
+      def fix_unexpected_colon: (Prism::ParseError parse_error, Generation generation, Node root_node, Prism::ParseResult parse_result) -> void
+
+      # @rbs parse_error: Prism::ParseError
+      # @rbs generation: Generation
+      # @rbs root_node: Node
+      # @rbs def_prism_node: Prism::DefNode
+      # @rbs return: void
+      def fix_unexpected_colon_in_def: (Prism::ParseError parse_error, Generation generation, Node root_node, Prism::DefNode def_prism_node) -> void
+
+      # @rbs parse_error: Prism::ParseError
+      # @rbs generation: Generation
+      # @rbs parse_result: Prism::ParseResult
+      # @rbs return: void
+      def fix_unexpected_colon_in_module: (Prism::ParseError parse_error, Generation generation, Prism::ParseResult parse_result) -> void
     end
   end
 end

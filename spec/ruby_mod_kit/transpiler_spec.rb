@@ -154,5 +154,19 @@ describe RubyModKit::Transpiler do
         RB
       end
     end
+
+    describe "for instance variable type" do
+      it "converts instance variable type definition to rbs-inline annotation" do
+        expect(transpiler.transpile(<<~RBM)).to eq(<<~RB)
+          class Foo
+            @bar: Bar
+          end
+        RBM
+          class Foo
+            # @rbs @bar: Bar
+          end
+        RB
+      end
+    end
   end
 end
