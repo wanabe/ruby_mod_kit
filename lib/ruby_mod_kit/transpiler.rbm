@@ -2,8 +2,6 @@
 
 # rbs_inline: enabled
 
-require "ruby_mod_kit/generation"
-
 module RubyModKit
   # The class of transpiler.
   class Transpiler

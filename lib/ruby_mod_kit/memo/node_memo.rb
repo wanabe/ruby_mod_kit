@@ -22,6 +22,3 @@ module RubyModKit
     end
   end
 end
-
-require "ruby_mod_kit/memo/method"
-require "ruby_mod_kit/memo/parameter"

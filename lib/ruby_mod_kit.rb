@@ -3,9 +3,7 @@
 # rbs_inline: enabled
 
 require "rbconfig"
-
-require_relative "ruby_mod_kit/version"
-require_relative "ruby_mod_kit/transpiler"
+require "prism"
 
 # The root namespace for ruby_mod_kit.
 module RubyModKit
@@ -49,3 +47,11 @@ module RubyModKit
     end
   end
 end
+
+require_relative "ruby_mod_kit/version"
+require_relative "ruby_mod_kit/transpiler"
+require_relative "ruby_mod_kit/generation"
+require_relative "ruby_mod_kit/memo"
+require_relative "ruby_mod_kit/node"
+require_relative "ruby_mod_kit/mission"
+require_relative "ruby_mod_kit/offset_diff"

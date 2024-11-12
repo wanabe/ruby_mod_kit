@@ -2,22 +2,9 @@
 
 # rbs_inline: enabled
 
-require "prism"
-require "sorted_set"
-
-require "ruby_mod_kit/memo"
-require "ruby_mod_kit/node"
-require "ruby_mod_kit/mission"
-require "ruby_mod_kit/mission/ivar_arg"
-require "ruby_mod_kit/mission/type_parameter"
-require "ruby_mod_kit/mission/fix_parse_error"
-require "ruby_mod_kit/mission/overload"
-require "ruby_mod_kit/offset_diff"
-
 module RubyModKit
   # The class of transpiler generation.
   class Generation
-    @diffs: SortedSet[[Integer, Integer, Integer]]
     @missions: Array[Mission]
     @script: String
 

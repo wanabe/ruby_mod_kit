@@ -3,8 +3,6 @@
 module RubyModKit
   # The class of transpiler generation.
   class Generation
-    @diffs: SortedSet[[ Integer, Integer, Integer ]]
-
     @missions: Array[Mission]
 
     @script: String

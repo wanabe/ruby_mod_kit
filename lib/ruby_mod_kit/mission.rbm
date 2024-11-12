@@ -25,8 +25,8 @@ module RubyModKit
   end
 end
 
-require "ruby_mod_kit/mission/ivar_arg"
-require "ruby_mod_kit/mission/type_parameter"
-require "ruby_mod_kit/mission/type_return"
-require "ruby_mod_kit/mission/fix_parse_error"
-require "ruby_mod_kit/mission/overload"
+require_relative "mission/ivar_arg"
+require_relative "mission/type_parameter"
+require_relative "mission/type_return"
+require_relative "mission/fix_parse_error"
+require_relative "mission/overload"

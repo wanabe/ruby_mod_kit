@@ -2,7 +2,6 @@
 
 # rbs_inline: enabled
 
-require "prism"
 require "sorted_set"
 
 module RubyModKit
