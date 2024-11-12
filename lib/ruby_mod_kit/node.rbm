@@ -8,10 +8,10 @@ module RubyModKit
     attr_reader :prism_node #: Prism::Node & Prism::_Node
     attr_reader :parent #: Node | nil
 
-    # @rbs @prism_node: Prism::Node & Prism::_Node
-    # @rbs @parent: Node | nil
-    # @rbs @children: Array[Node]
-    # @rbs @ancestors: Array[Node]
+    @prism_node: Prism::Node & Prism::_Node
+    @parent: Node | nil
+    @children: Array[Node]
+    @ancestors: Array[Node]
 
     def initialize(Prism::Node => @prism_node, Node => @parent: nil): void
     end

@@ -17,9 +17,9 @@ require "ruby_mod_kit/offset_diff"
 module RubyModKit
   # The class of transpiler generation.
   class Generation
-    # @rbs @diffs: SortedSet[[Integer, Integer, Integer]]
-    # @rbs @missions: Array[Mission]
-    # @rbs @script: String
+    @diffs: SortedSet[[Integer, Integer, Integer]]
+    @missions: Array[Mission]
+    @script: String
 
     attr_reader :parse_result #: Prism::ParseResult
     attr_reader :script #: String

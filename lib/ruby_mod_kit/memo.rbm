@@ -7,10 +7,10 @@ require "ruby_mod_kit/memo/node_memo"
 module RubyModKit
   # The class of transpiler generation.
   class Memo
-    # @rbs @previous_error_messages: [String]
-    # @rbs @generation_num: Integer
-    # @rbs @methods_memo: Hash[Integer, Memo::Method]
-    # @rbs @parameters_memo: Hash[Integer, Memo::Parameter]
+    @previous_error_messages: [String]
+    @generation_num: Integer
+    @methods_memo: Hash[Integer, Memo::Method]
+    @parameters_memo: Hash[Integer, Memo::Parameter]
 
     attr_reader :previous_error_messages #: [String]
     attr_reader :generation_num #: Integer

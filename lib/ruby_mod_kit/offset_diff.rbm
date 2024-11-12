@@ -8,7 +8,7 @@ require "sorted_set"
 module RubyModKit
   # The class of offset differences.
   class OffsetDiff
-    # @rbs @diffs: SortedSet[[Integer, Integer, Integer]]
+    @diffs: SortedSet[[Integer, Integer, Integer]]
 
     def initialize: void
       @diffs = SortedSet.new

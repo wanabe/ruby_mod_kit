@@ -6,10 +6,10 @@ module RubyModKit
   class Memo
     # The memo for parameter type
     class Method < NodeMemo
-      # @rbs @parent_offset: Integer
-      # @rbs @name: Symbol
-      # @rbs @parameters: Array[Parameter]
-      # @rbs @type: String
+      @parent_offset: Integer
+      @name: Symbol
+      @parameters: Array[Parameter]
+      @type: String
 
       attr_reader :parent_offset #: Integer
       attr_reader :name #: Symbol
