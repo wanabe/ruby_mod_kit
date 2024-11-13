@@ -98,16 +98,16 @@ describe RubyModKit::Transpiler do
 
       it "treats same name method definitions as overloading" do
         expect(transpiler.transpile(<<~RBM)).to eq(<<~RB)
-          def foo(Bar => bar)
+          def foo(Bar => bar): (Foo | Bar)
             p :bar, bar
           end
 
-          def foo(Buz => buz)
+          def foo(Buz => buz): void
             p :buz, buz
           end
         RBM
-          # @rbs (Bar) -> untyped
-          #    | (Buz) -> untyped
+          # @rbs (Bar) -> (Foo | Bar)
+          #    | (Buz) -> void
           def foo(*args)
             case args
             in [Bar]
@@ -118,11 +118,13 @@ describe RubyModKit::Transpiler do
           end
 
           # @rbs bar: Bar
+          # @rbs return: Foo | Bar
           def foo__overload0(bar)
             p :bar, bar
           end
 
           # @rbs buz: Buz
+          # @rbs return: void
           def foo__overload1(buz)
             p :buz, buz
           end
