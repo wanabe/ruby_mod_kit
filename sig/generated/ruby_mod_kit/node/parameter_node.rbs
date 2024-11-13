@@ -15,6 +15,9 @@ module RubyModKit
 
       # @rbs return: Symbol
       def name: () -> Symbol
+
+      # @rbs return: Node::DefNode
+      def def_node: () -> Node::DefNode
     end
   end
 end

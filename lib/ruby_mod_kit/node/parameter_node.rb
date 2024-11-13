@@ -29,6 +29,14 @@ module RubyModKit
       def name
         @prism_node.name
       end
+
+      # @rbs return: Node::DefNode
+      def def_node
+        node = parent&.parent
+        raise RubyModKit::Error unless node.is_a?(Node::DefNode)
+
+        node
+      end
     end
   end
 end

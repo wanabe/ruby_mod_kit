@@ -73,39 +73,24 @@ module RubyModKit
     # @rbs offset: Integer
     # @rbs return: Node::StatementsNode | nil
     def statements_node_at(offset)
-      node = node_at(offset)
-      return node unless node
-      return node if node.is_a?(Node::StatementsNode)
-
-      node.ancestors.each do |ancestor|
-        return ancestor if ancestor.is_a?(Node::StatementsNode)
-      end
+      node = node_at(offset) || return
+      [node, *node.ancestors].each { return _1 if _1.is_a?(Node::StatementsNode) }
       nil
     end
 
     # @rbs offset: Integer
     # @rbs return: Node::DefNode | nil
     def def_node_at(offset)
-      node = node_at(offset)
-      return node unless node
-      return node if node.is_a?(Node::DefNode)
-
-      node.ancestors.each do |ancestor|
-        return ancestor if ancestor.is_a?(Node::DefNode)
-      end
+      node = node_at(offset) || return
+      [node, *node.ancestors].each { return _1 if _1.is_a?(Node::DefNode) }
       nil
     end
 
     # @rbs offset: Integer
     # @rbs return: Node::ParameterNode | nil
     def parameter_node_at(offset)
-      node = node_at(offset)
-      return node unless node
-      return node if node.is_a?(Node::ParameterNode)
-
-      node.ancestors.each do |ancestor|
-        return ancestor if ancestor.is_a?(Node::ParameterNode)
-      end
+      node = node_at(offset) || return
+      [node, *node.ancestors].each { return _1 if _1.is_a?(Node::ParameterNode) }
       nil
     end
 

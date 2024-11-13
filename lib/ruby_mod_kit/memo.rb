@@ -50,20 +50,12 @@ module RubyModKit
       @methods_memo[def_node.offset] ||= Memo::Method.new(def_node)
     end
 
-    # @rbs parameter_node: Node::ParameterNode
+    # @rbs node: Node::ParameterNode
     # @rbs type: String
     # @rbs return: Memo::Parameter
-    def parameter_memo(parameter_node, type)
-      parameter_memo = @parameters_memo[parameter_node.offset]
-      unless parameter_memo
-        parameter_memo = Memo::Parameter.new(parameter_node, type)
-        @parameters_memo[parameter_node.offset] = parameter_memo
-      end
-      def_node = parameter_node.parent&.parent
-      raise RubyModKit::Error unless def_node.is_a?(Node::DefNode)
-
-      method_memo(def_node).add_parameter(parameter_memo)
-      parameter_memo
+    def parameter_memo(node, type)
+      memo = @parameters_memo[node.offset] ||= Memo::Parameter.new(node, type)
+      method_memo(node.def_node).add_parameter(memo)
     end
   end
 end
