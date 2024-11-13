@@ -26,6 +26,7 @@ Layout/EndAlignment:
   EnforcedStyleAlignWith: start_of_line
 Layout/LineLength:
   Max: 120
+  AllowedPatterns: ['\A *#', ' #: ']
 Layout/LeadingCommentSpace:
   AllowRBSInlineAnnotation: true
 

@@ -7,7 +7,7 @@ describe RubyModKit::Mission do
 
   describe "#perform" do
     let(:generation) { RubyModKit::Generation.new("") }
-    let(:root_node) { RubyModKit::Node.new(parse_result.value) }
+    let(:root_node) { RubyModKit::Node::ProgramNode.new(parse_result.value) }
     let(:parse_result) { Prism.parse("") }
     let(:memo) { RubyModKit::Memo.new }
     let(:args) { [generation, root_node, parse_result, memo] }

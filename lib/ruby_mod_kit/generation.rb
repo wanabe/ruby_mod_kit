@@ -21,7 +21,7 @@ module RubyModKit
       @memo = memo
       @offset_diff = OffsetDiff.new
       @parse_result = Prism.parse(@script)
-      @root_node = Node.new(@parse_result.value)
+      @root_node = Node::ProgramNode.new(@parse_result.value)
     end
 
     # @rbs return: bool

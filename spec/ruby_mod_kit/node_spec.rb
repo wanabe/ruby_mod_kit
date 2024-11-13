@@ -3,7 +3,7 @@
 require "ruby_mod_kit/cli"
 
 describe RubyModKit::Node do
-  let(:node) { described_class.new(prism_node) }
+  let(:node) { RubyModKit::Node::ProgramNode.new(parse_result).wrap(prism_node) }
   let(:parse_result) { Prism.parse(script).value }
 
   describe "#name" do

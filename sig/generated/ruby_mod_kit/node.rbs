@@ -3,11 +3,7 @@
 module RubyModKit
   # The class of transpile node.
   class Node
-    attr_reader prism_node: Prism::Node & Prism::_Node
-
     attr_reader parent: Node | nil
-
-    @prism_node: Prism::Node & Prism::_Node
 
     @parent: Node | nil
 
@@ -15,13 +11,12 @@ module RubyModKit
 
     @ancestors: Array[Node]
 
-    # @rbs prism_node: Prism::Node
-    # @rbs parent: Node
-    # @rbs return: void
-    def initialize: (Prism::Node prism_node, ?parent: Node) -> void
-
     # @rbs return: Array[Node]
     def children: () -> Array[Node]
+
+    # @rbs prism_node: Prism::Node
+    # @rbs return: Node
+    def wrap: (Prism::Node prism_node) -> Node
 
     # @rbs return: Array[Node]
     def ancestors: () -> Array[Node]
@@ -37,6 +32,9 @@ module RubyModKit
     # @rbs offset: Integer
     # @rbs return: bool
     def include?: (Integer offset) -> bool
+
+    # @rbs return: Prism::Node & Prism::_Node
+    def prism_node: () -> (Prism::Node & Prism::_Node)
 
     # @rbs return: Integer
     def offset: () -> Integer

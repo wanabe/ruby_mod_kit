@@ -20,7 +20,7 @@ module RubyModKit
       # @rbs return: bool
       def perform(generation, root_node, parse_result, memo)
         def_node = root_node[@offset, Prism::DefNode]
-        raise RubyModKit::Error, "DefNode not found" if !def_node || !def_node.prism_node.is_a?(Prism::DefNode)
+        raise RubyModKit::Error, "DefNode not found" if !def_node || !def_node.is_a?(Node::DefNode)
 
         parameter_node = root_node[@offset]
         raise RubyModKit::Error, "ParameterNode not found" unless parameter_node

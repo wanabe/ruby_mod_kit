@@ -5,28 +5,38 @@
 module RubyModKit
   # The class of transpile node.
   class Node
-    attr_reader :prism_node #: Prism::Node & Prism::_Node
     attr_reader :parent #: Node | nil
 
-    # @rbs @prism_node: Prism::Node & Prism::_Node
     # @rbs @parent: Node | nil
     # @rbs @children: Array[Node]
     # @rbs @ancestors: Array[Node]
-
-    # @rbs prism_node: Prism::Node
-    # @rbs parent: Node
-    # @rbs return: void
-    def initialize(prism_node, parent: nil)
-      @prism_node = prism_node
-      @parent = parent
-    end
 
     # @rbs return: Array[Node]
     def children
       return @children if @children
 
-      @children = @prism_node.child_nodes.compact.map do |prism_child_node|
-        Node.new(prism_child_node, parent: self)
+      @children = prism_node.child_nodes.compact.map do |prism_child_node|
+        wrap(prism_child_node)
+      end
+    end
+
+    # @rbs prism_node: Prism::Node
+    # @rbs return: Node
+    def wrap(prism_node)
+      case prism_node
+      when Prism::ClassNode
+        Node::ClassNode.new(prism_node, parent: self)
+      when Prism::ModuleNode
+        Node::ModuleNode.new(prism_node, parent: self)
+      when Prism::DefNode
+        Node::DefNode.new(prism_node, parent: self)
+      when Prism::RequiredParameterNode, Prism::OptionalKeywordParameterNode,
+           Prism::OptionalParameterNode, Prism::RequiredKeywordParameterNode
+        Node::ParameterNode.new(prism_node, parent: self)
+      when Prism::StatementsNode
+        Node::StatementsNode.new(prism_node, parent: self)
+      else
+        Node::UntypedNode.new(prism_node, parent: self)
       end
     end
 
@@ -44,13 +54,7 @@ module RubyModKit
 
     # @rbs return: Symbol
     def name
-      case prism_node
-      when Prism::RequiredParameterNode, Prism::OptionalKeywordParameterNode,
-           Prism::OptionalParameterNode, Prism::RequiredKeywordParameterNode, Prism::DefNode
-        prism_node.name
-      else
-        raise(RubyModKit::Error, "Expected ParameterNode but #{prism_node.inspect}")
-      end
+      raise(RubyModKit::Error, "Expected ParameterNode but #{self.class}:#{prism_node.inspect}")
     end
 
     # @rbs offset: Integer
@@ -71,6 +75,11 @@ module RubyModKit
     # @rbs return: bool
     def include?(offset)
       self.offset <= offset && offset <= prism_node.location.end_offset
+    end
+
+    # @rbs return: Prism::Node & Prism::_Node
+    def prism_node
+      raise RubyModKit::Error
     end
 
     # @rbs return: Integer
@@ -109,3 +118,11 @@ module RubyModKit
     end
   end
 end
+
+require_relative "node/class_node"
+require_relative "node/def_node"
+require_relative "node/module_node"
+require_relative "node/parameter_node"
+require_relative "node/program_node"
+require_relative "node/statements_node"
+require_relative "node/untyped_node"

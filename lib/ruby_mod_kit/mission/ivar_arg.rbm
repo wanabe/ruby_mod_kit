@@ -8,15 +8,16 @@ module RubyModKit
     class IvarArg < Mission
       def perform(Generation => generation, Node => root_node, (Prism::ParseResult) => _parse_result, Memo => _memo): bool
         def_node = root_node[@offset, Prism::DefNode]
-        raise RubyModKit::Error, "DefNode not found" if !def_node || !def_node.prism_node.is_a?(Prism::DefNode)
+        raise RubyModKit::Error, "DefNode not found" if !def_node || !def_node.is_a?(Node::DefNode)
 
         def_body_location = def_node.prism_node.body&.location
+        end_loc = def_node.prism_node.end_keyword_loc
         if def_body_location
           indent = def_body_location.start_column
           src_offset = def_body_location.start_offset - indent
-        elsif def_node.prism_node.end_keyword_loc
-          indent = def_node.prism_node.end_keyword_loc.start_column + 2
-          src_offset = def_node.prism_node.end_keyword_loc.start_offset - indent + 2
+        elsif end_loc
+          indent = end_loc.start_column + 2
+          src_offset = end_loc.start_offset - indent + 2
         end
         raise RubyModKit::Error if !src_offset || !indent
 

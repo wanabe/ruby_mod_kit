@@ -1,0 +1,18 @@
+# frozen_string_literal: true
+
+# rbs_inline: enabled
+
+module RubyModKit
+  class Node
+    # Transpiler program node
+    class ProgramNode < Node
+      attr_reader :prism_node #: Prism::Node
+
+      def initialize(Prism::ProgramNode => @prism_node): void
+        raise RubyModKit::Error unless prism_node.is_a?(Prism::ProgramNode)
+
+        super()
+      end
+    end
+  end
+end

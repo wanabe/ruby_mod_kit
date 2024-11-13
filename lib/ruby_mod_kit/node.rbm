@@ -5,22 +5,35 @@
 module RubyModKit
   # The class of transpile node.
   class Node
-    attr_reader :prism_node #: Prism::Node & Prism::_Node
     attr_reader :parent #: Node | nil
 
-    @prism_node: Prism::Node & Prism::_Node
     @parent: Node | nil
     @children: Array[Node]
     @ancestors: Array[Node]
 
-    def initialize(Prism::Node => @prism_node, Node => @parent: nil): void
-    end
-
     def children : (Array[Node])
       return @children if @children
 
-      @children = @prism_node.child_nodes.compact.map do |prism_child_node|
-        Node.new(prism_child_node, parent: self)
+      @children = prism_node.child_nodes.compact.map do |prism_child_node|
+        wrap(prism_child_node)
+      end
+    end
+
+    def wrap(Prism::Node => prism_node): Node
+      case prism_node
+      when Prism::ClassNode
+        Node::ClassNode.new(prism_node, parent: self)
+      when Prism::ModuleNode
+        Node::ModuleNode.new(prism_node, parent: self)
+      when Prism::DefNode
+        Node::DefNode.new(prism_node, parent: self)
+      when Prism::RequiredParameterNode, Prism::OptionalKeywordParameterNode,
+           Prism::OptionalParameterNode, Prism::RequiredKeywordParameterNode
+        Node::ParameterNode.new(prism_node, parent: self)
+      when Prism::StatementsNode
+        Node::StatementsNode.new(prism_node, parent: self)
+      else
+        Node::UntypedNode.new(prism_node, parent: self)
       end
     end
 
@@ -36,13 +49,7 @@ module RubyModKit
     end
 
     def name: Symbol
-      case prism_node
-      when Prism::RequiredParameterNode, Prism::OptionalKeywordParameterNode,
-           Prism::OptionalParameterNode, Prism::RequiredKeywordParameterNode, Prism::DefNode
-        prism_node.name
-      else
-        raise(RubyModKit::Error, "Expected ParameterNode but #{prism_node.inspect}")
-      end
+      raise(RubyModKit::Error, "Expected ParameterNode but #{self.class}:#{prism_node.inspect}")
     end
 
     def [](Integer => offset, (Class | nil) => prism_klass = nil): (Node | nil)
@@ -58,6 +65,10 @@ module RubyModKit
 
     def include?(Integer => offset): bool
       self.offset <= offset && offset <= prism_node.location.end_offset
+    end
+
+    def prism_node: (Prism::Node & Prism::_Node)
+      raise RubyModKit::Error
     end
 
     def offset: Integer
@@ -94,3 +105,11 @@ module RubyModKit
     end
   end
 end
+
+require_relative "node/class_node"
+require_relative "node/def_node"
+require_relative "node/module_node"
+require_relative "node/parameter_node"
+require_relative "node/program_node"
+require_relative "node/statements_node"
+require_relative "node/untyped_node"
