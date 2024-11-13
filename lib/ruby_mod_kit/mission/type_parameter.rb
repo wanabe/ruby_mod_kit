@@ -25,7 +25,7 @@ module RubyModKit
         parameter_node = root_node.parameter_node_at(@offset)
         raise RubyModKit::Error, "ParameterNode not found" unless parameter_node
 
-        Memo::Parameter.new(memo, parameter_node, @modify_script)
+        memo.parameter_memo(parameter_node, @modify_script)
         src_offset = parse_result.source.offsets[def_node.location.start_line - 1]
         indent = def_node.offset - src_offset
         generation[src_offset, 0] = "#{" " * indent}# @rbs #{parameter_node.name}: #{@modify_script}\n"

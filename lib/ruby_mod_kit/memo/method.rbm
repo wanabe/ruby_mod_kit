@@ -26,8 +26,9 @@ module RubyModKit
         super
       end
 
-      def add_parameter(Parameter => parameter_memo): void
+      def add_parameter(Parameter => parameter_memo): (Memo::Parameter)
         @parameters << parameter_memo
+        parameter_memo
       end
     end
   end

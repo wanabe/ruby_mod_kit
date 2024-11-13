@@ -29,9 +29,10 @@ module RubyModKit
       end
 
       # @rbs parameter_memo: Parameter
-      # @rbs return: void
+      # @rbs return: Memo::Parameter
       def add_parameter(parameter_memo)
         @parameters << parameter_memo
+        parameter_memo
       end
     end
   end

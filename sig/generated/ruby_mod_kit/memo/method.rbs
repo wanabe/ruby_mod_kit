@@ -25,8 +25,8 @@ module RubyModKit
       def initialize: (Node node) -> void
 
       # @rbs parameter_memo: Parameter
-      # @rbs return: void
-      def add_parameter: (Parameter parameter_memo) -> void
+      # @rbs return: Memo::Parameter
+      def add_parameter: (Parameter parameter_memo) -> Memo::Parameter
     end
   end
 end

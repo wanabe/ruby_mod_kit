@@ -6,11 +6,10 @@ module RubyModKit
     class Parameter < NodeMemo
       attr_reader type: String
 
-      # @rbs memo: Memo
-      # @rbs node: Node
+      # @rbs node: Node::ParameterNode
       # @rbs type: String
       # @rbs return: void
-      def initialize: (Memo memo, Node node, String type) -> void
+      def initialize: (Node::ParameterNode node, String type) -> void
     end
   end
 end

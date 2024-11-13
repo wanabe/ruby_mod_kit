@@ -8,21 +8,12 @@ module RubyModKit
     class Parameter < NodeMemo
       attr_reader :type #: String
 
-      # @rbs memo: Memo
-      # @rbs node: Node
+      # @rbs node: Node::ParameterNode
       # @rbs type: String
       # @rbs return: void
-      def initialize(memo, node, type)
+      def initialize(node, type)
         @type = type
         @name = node.name
-
-        def_node = node.parent&.parent
-        raise RubyModKit::Error unless def_node.is_a?(Node::DefNode)
-
-        @method = memo.method_memo(def_node)
-        @method.add_parameter(self)
-
-        memo.parameters_memo[node.offset] = self
         super(node)
       end
     end
