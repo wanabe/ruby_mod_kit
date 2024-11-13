@@ -47,4 +47,27 @@ describe RubyModKit::Node do
       expect(node.inspect).not_to include("@children")
     end
   end
+
+  describe "#prism_node" do
+    context "with bare Node instance" do
+      let(:node) { described_class.new }
+
+      it "raises error" do
+        expect { node.prism_node }.to raise_error(RubyModKit::Error)
+      end
+    end
+  end
+
+  describe "#parameter_node_at" do
+    let(:script) { "def foo(bar); end" }
+    let(:prism_node) { parse_result }
+
+    it do
+      expect(node.parameter_node_at(8)).to be_a(RubyModKit::Node::ParameterNode)
+    end
+
+    it do
+      expect(node.parameter_node_at(0)).to be_nil
+    end
+  end
 end
