@@ -35,7 +35,7 @@ module RubyModKit
           raise RubyModKit::Error unless first_def_node.is_a?(Node::DefNode)
           raise RubyModKit::Error unless name.is_a?(Symbol)
 
-          start_line = first_def_node.prism_node.location.start_line - 1
+          start_line = first_def_node.location.start_line - 1
           indent = parse_result.source.lines[start_line][/\A */] || ""
           start_line -= 1 while parse_result.source.lines[start_line - 1] =~ /^ *# *@rbs /
           src_offset = parse_result.source.offsets[start_line]
@@ -56,7 +56,7 @@ module RubyModKit
             def_node = root_node.def_node_at(method_memo.offset)
             raise RubyModKit::Error if !def_node || !def_node.is_a?(Node::DefNode)
 
-            name_loc = def_node.prism_node.name_loc
+            name_loc = def_node.name_loc
             generation[name_loc.start_offset, name_loc.length] = overload_name
             script << "  in [#{method_memo.parameters.map(&:type).join(", ")}]\n"
             script << "    #{overload_name}(*args)\n"

@@ -17,6 +17,26 @@ module RubyModKit
       def name: Symbol
         @prism_node.name
       end
+
+      def body_location: (Prism::Location | nil)
+        prism_node.body&.location
+      end
+
+      def lparen_loc: (Prism::Location | nil)
+        @prism_node.lparen_loc
+      end
+
+      def rparen_loc: (Prism::Location | nil)
+        @prism_node.rparen_loc
+      end
+
+      def name_loc: (Prism::Location)
+        @prism_node.name_loc
+      end
+
+      def end_keyword_loc: (Prism::Location | nil)
+        @prism_node.end_keyword_loc
+      end
     end
   end
 end

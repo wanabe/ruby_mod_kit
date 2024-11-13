@@ -23,6 +23,31 @@ module RubyModKit
       def name
         @prism_node.name
       end
+
+      # @rbs return: Prism::Location | nil
+      def body_location
+        prism_node.body&.location
+      end
+
+      # @rbs return: Prism::Location | nil
+      def lparen_loc
+        @prism_node.lparen_loc
+      end
+
+      # @rbs return: Prism::Location | nil
+      def rparen_loc
+        @prism_node.rparen_loc
+      end
+
+      # @rbs return: Prism::Location
+      def name_loc
+        @prism_node.name_loc
+      end
+
+      # @rbs return: Prism::Location | nil
+      def end_keyword_loc
+        @prism_node.end_keyword_loc
+      end
     end
   end
 end

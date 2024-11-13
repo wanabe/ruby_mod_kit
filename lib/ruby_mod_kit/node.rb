@@ -26,8 +26,6 @@ module RubyModKit
       case prism_node
       when Prism::ClassNode
         Node::ClassNode.new(prism_node, parent: self)
-      when Prism::ModuleNode
-        Node::ModuleNode.new(prism_node, parent: self)
       when Prism::DefNode
         Node::DefNode.new(prism_node, parent: self)
       when Prism::RequiredParameterNode, Prism::OptionalKeywordParameterNode,
@@ -58,26 +56,12 @@ module RubyModKit
     end
 
     # @rbs offset: Integer
-    # @rbs prism_klass: Class | nil
-    # @rbs return: Node | nil
-    def [](offset, prism_klass = nil)
-      return nil unless include?(offset)
-
-      child = children.find { _1.include?(offset) }
-      node = child&.[](offset) || self
-      return node unless prism_klass
-      return node if node.prism_node.is_a?(prism_klass)
-
-      node.ancestors.find { _1.prism_node.is_a?(prism_klass) }
-    end
-
-    # @rbs offset: Integer
     # @rbs return: Node | nil
     def node_at(offset)
       return nil unless include?(offset)
 
       child = children.find { _1.include?(offset) }
-      child&.[](offset) || self
+      child&.node_at(offset) || self
     end
 
     # @rbs offset: Integer
@@ -107,6 +91,19 @@ module RubyModKit
     end
 
     # @rbs offset: Integer
+    # @rbs return: Node::ParameterNode | nil
+    def parameter_node_at(offset)
+      node = node_at(offset)
+      return node unless node
+      return node if node.is_a?(Node::ParameterNode)
+
+      node.ancestors.each do |ancestor|
+        return ancestor if ancestor.is_a?(Node::ParameterNode)
+      end
+      nil
+    end
+
+    # @rbs offset: Integer
     # @rbs return: bool
     def include?(offset)
       self.offset <= offset && offset <= prism_node.location.end_offset
@@ -120,6 +117,11 @@ module RubyModKit
     # @rbs return: Integer
     def offset
       prism_node.location.start_offset
+    end
+
+    # @rbs return: Prism::Location
+    def location
+      prism_node.location
     end
 
     # @rbs return: String
@@ -156,7 +158,6 @@ end
 
 require_relative "node/class_node"
 require_relative "node/def_node"
-require_relative "node/module_node"
 require_relative "node/parameter_node"
 require_relative "node/program_node"
 require_relative "node/statements_node"

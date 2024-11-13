@@ -25,7 +25,7 @@ module RubyModKit
         method_memo = memo.methods_memo[def_node.offset] || Memo::Method.new(memo, def_node)
         method_memo.type = @modify_script
 
-        src_offset = parse_result.source.offsets[def_node.prism_node.location.start_line - 1]
+        src_offset = parse_result.source.offsets[def_node.location.start_line - 1]
         indent = def_node.offset - src_offset
         generation[src_offset, 0] = "#{" " * indent}# @rbs return: #{@modify_script}\n"
         true

@@ -85,16 +85,16 @@ module RubyModKit
         case parent_node
         when Node::DefNode
           fix_unexpected_colon_in_def(parse_error, generation, root_node, parent_node)
-        when Node::ClassNode, Node::ModuleNode
+        when Node::ClassNode
           fix_unexpected_colon_in_module(parse_error, generation, parse_result)
         end
       end
 
       def fix_unexpected_colon_in_def(Prism::ParseError => parse_error, Generation => generation, Node => root_node, Node::DefNode => def_node): void
-        lparen_loc = def_node.prism_node.lparen_loc
-        rparen_loc = def_node.prism_node.rparen_loc
+        lparen_loc = def_node.lparen_loc
+        rparen_loc = def_node.rparen_loc
         if !lparen_loc && !rparen_loc
-          src_offset = def_node.prism_node.name_loc.end_offset
+          src_offset = def_node.name_loc.end_offset
         elsif lparen_loc && rparen_loc && lparen_loc.slice == "(" && rparen_loc.slice == ")"
           src_offset = rparen_loc.end_offset
         else
@@ -102,7 +102,7 @@ module RubyModKit
         end
         return if generation[src_offset...parse_error.location.start_offset] !~ /\A\s*\z/
 
-        return_type_location = root_node[parse_error.location.end_offset + 1]&.prism_node&.location
+        return_type_location = root_node.node_at(parse_error.location.end_offset + 1)&.location
         return unless return_type_location
 
         generation[src_offset, return_type_location.end_offset - src_offset] = ""

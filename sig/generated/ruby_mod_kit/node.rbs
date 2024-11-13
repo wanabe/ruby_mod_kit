@@ -25,11 +25,6 @@ module RubyModKit
     def name: () -> Symbol
 
     # @rbs offset: Integer
-    # @rbs prism_klass: Class | nil
-    # @rbs return: Node | nil
-    def []: (Integer offset, ?Class | nil prism_klass) -> (Node | nil)
-
-    # @rbs offset: Integer
     # @rbs return: Node | nil
     def node_at: (Integer offset) -> (Node | nil)
 
@@ -42,6 +37,10 @@ module RubyModKit
     def def_node_at: (Integer offset) -> (Node::DefNode | nil)
 
     # @rbs offset: Integer
+    # @rbs return: Node::ParameterNode | nil
+    def parameter_node_at: (Integer offset) -> (Node::ParameterNode | nil)
+
+    # @rbs offset: Integer
     # @rbs return: bool
     def include?: (Integer offset) -> bool
 
@@ -50,6 +49,9 @@ module RubyModKit
 
     # @rbs return: Integer
     def offset: () -> Integer
+
+    # @rbs return: Prism::Location
+    def location: () -> Prism::Location
 
     # @rbs return: String
     def inspect: () -> String
