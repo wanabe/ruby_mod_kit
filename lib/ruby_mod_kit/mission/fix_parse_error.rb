@@ -73,7 +73,7 @@ module RubyModKit
       # @rbs typed_parameter_offsets: Set[Integer]
       # @rbs return: void
       def fix_unexpected_assoc(parse_error, generation, root_node, typed_parameter_offsets)
-        def_node = root_node[parse_error.location.start_offset, Prism::DefNode]
+        def_node = root_node.def_node_at(parse_error.location.start_offset)
         return unless def_node
 
         def_parent_node = def_node.parent
@@ -103,11 +103,11 @@ module RubyModKit
       # @rbs parse_result: Prism::ParseResult
       # @rbs return: void
       def fix_unexpected_colon(parse_error, generation, root_node, parse_result)
-        parent_prism_node = root_node[parse_error.location.start_offset, Prism::StatementsNode]&.parent&.prism_node
-        case parent_prism_node
-        when Prism::DefNode
-          fix_unexpected_colon_in_def(parse_error, generation, root_node, parent_prism_node)
-        when Prism::ClassNode, Prism::ModuleNode
+        parent_node = root_node.statements_node_at(parse_error.location.start_offset)&.parent
+        case parent_node
+        when Node::DefNode
+          fix_unexpected_colon_in_def(parse_error, generation, root_node, parent_node)
+        when Node::ClassNode, Node::ModuleNode
           fix_unexpected_colon_in_module(parse_error, generation, parse_result)
         end
       end
@@ -115,13 +115,13 @@ module RubyModKit
       # @rbs parse_error: Prism::ParseError
       # @rbs generation: Generation
       # @rbs root_node: Node
-      # @rbs def_prism_node: Prism::DefNode
+      # @rbs def_node: Node::DefNode
       # @rbs return: void
-      def fix_unexpected_colon_in_def(parse_error, generation, root_node, def_prism_node)
-        lparen_loc = def_prism_node.lparen_loc
-        rparen_loc = def_prism_node.rparen_loc
+      def fix_unexpected_colon_in_def(parse_error, generation, root_node, def_node)
+        lparen_loc = def_node.prism_node.lparen_loc
+        rparen_loc = def_node.prism_node.rparen_loc
         if !lparen_loc && !rparen_loc
-          src_offset = def_prism_node.name_loc.end_offset
+          src_offset = def_node.prism_node.name_loc.end_offset
         elsif lparen_loc && rparen_loc && lparen_loc.slice == "(" && rparen_loc.slice == ")"
           src_offset = rparen_loc.end_offset
         else

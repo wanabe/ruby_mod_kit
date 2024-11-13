@@ -63,6 +63,35 @@ module RubyModKit
       node.ancestors.find { _1.prism_node.is_a?(prism_klass) }
     end
 
+    def node_at(Integer => offset): (Node | nil)
+      return nil unless include?(offset)
+
+      child = children.find { _1.include?(offset) }
+      child&.[](offset) || self
+    end
+
+    def statements_node_at(Integer => offset): (Node::StatementsNode | nil)
+      node = node_at(offset)
+      return node unless node
+      return node if node.is_a?(Node::StatementsNode)
+
+      node.ancestors.each do |ancestor|
+        return ancestor if ancestor.is_a?(Node::StatementsNode)
+      end
+      nil
+    end
+
+    def def_node_at(Integer => offset): (Node::DefNode | nil)
+      node = node_at(offset)
+      return node unless node
+      return node if node.is_a?(Node::DefNode)
+
+      node.ancestors.each do |ancestor|
+        return ancestor if ancestor.is_a?(Node::DefNode)
+      end
+      nil
+    end
+
     def include?(Integer => offset): bool
       self.offset <= offset && offset <= prism_node.location.end_offset
     end

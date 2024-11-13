@@ -31,7 +31,7 @@ module RubyModKit
 
           first_method_memo = method_memos.first
           name = first_method_memo.name
-          first_def_node = root_node[first_method_memo.offset, Prism::DefNode]
+          first_def_node = root_node.def_node_at(first_method_memo.offset)
           raise RubyModKit::Error unless first_def_node.is_a?(Node::DefNode)
           raise RubyModKit::Error unless name.is_a?(Symbol)
 
@@ -53,7 +53,7 @@ module RubyModKit
           overload_prefix = +"#{OVERLOAD_METHOD_MAP[name] || name}_"
           method_memos.each_with_index do |method_memo, i|
             overload_name = "#{overload_prefix}_overload#{i}"
-            def_node = root_node[method_memo.offset, Prism::DefNode]
+            def_node = root_node.def_node_at(method_memo.offset)
             raise RubyModKit::Error if !def_node || !def_node.is_a?(Node::DefNode)
 
             name_loc = def_node.prism_node.name_loc

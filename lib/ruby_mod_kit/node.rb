@@ -72,6 +72,41 @@ module RubyModKit
     end
 
     # @rbs offset: Integer
+    # @rbs return: Node | nil
+    def node_at(offset)
+      return nil unless include?(offset)
+
+      child = children.find { _1.include?(offset) }
+      child&.[](offset) || self
+    end
+
+    # @rbs offset: Integer
+    # @rbs return: Node::StatementsNode | nil
+    def statements_node_at(offset)
+      node = node_at(offset)
+      return node unless node
+      return node if node.is_a?(Node::StatementsNode)
+
+      node.ancestors.each do |ancestor|
+        return ancestor if ancestor.is_a?(Node::StatementsNode)
+      end
+      nil
+    end
+
+    # @rbs offset: Integer
+    # @rbs return: Node::DefNode | nil
+    def def_node_at(offset)
+      node = node_at(offset)
+      return node unless node
+      return node if node.is_a?(Node::DefNode)
+
+      node.ancestors.each do |ancestor|
+        return ancestor if ancestor.is_a?(Node::DefNode)
+      end
+      nil
+    end
+
+    # @rbs offset: Integer
     # @rbs return: bool
     def include?(offset)
       self.offset <= offset && offset <= prism_node.location.end_offset

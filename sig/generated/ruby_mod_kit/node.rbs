@@ -30,6 +30,18 @@ module RubyModKit
     def []: (Integer offset, ?Class | nil prism_klass) -> (Node | nil)
 
     # @rbs offset: Integer
+    # @rbs return: Node | nil
+    def node_at: (Integer offset) -> (Node | nil)
+
+    # @rbs offset: Integer
+    # @rbs return: Node::StatementsNode | nil
+    def statements_node_at: (Integer offset) -> (Node::StatementsNode | nil)
+
+    # @rbs offset: Integer
+    # @rbs return: Node::DefNode | nil
+    def def_node_at: (Integer offset) -> (Node::DefNode | nil)
+
+    # @rbs offset: Integer
     # @rbs return: bool
     def include?: (Integer offset) -> bool
 
