@@ -16,7 +16,7 @@ module RubyModKit
       @location = prism_node.location
     end
 
-    def children : (Array[Node])
+    def children: (Array[Node])
       return @children if @children
 
       @children = prism_node.child_nodes.compact.map do |prism_child_node|
@@ -40,7 +40,7 @@ module RubyModKit
       end
     end
 
-    def ancestors : (Array[Node])
+    def ancestors: (Array[Node])
       return @ancestors if @ancestors
 
       parent = @parent

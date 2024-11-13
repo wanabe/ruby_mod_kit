@@ -17,7 +17,7 @@ module RubyModKit
       @root_node = Node::ProgramNode.new(@parse_result.value)
     end
 
-    def first_generation? : bool
+    def first_generation?: bool
       @memo.generation_num == 0
     end
 
