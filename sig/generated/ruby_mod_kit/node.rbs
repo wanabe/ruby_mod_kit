@@ -3,13 +3,18 @@
 module RubyModKit
   # The class of transpile node.
   class Node
-    attr_reader parent: Node | nil
-
     @parent: Node | nil
 
     @children: Array[Node]
 
     @ancestors: Array[Node]
+
+    attr_reader parent: Node | nil
+
+    attr_reader location: Prism::Location
+
+    # @rbs return: void
+    def initialize: () -> void
 
     # @rbs return: Array[Node]
     def children: () -> Array[Node]
@@ -49,9 +54,6 @@ module RubyModKit
 
     # @rbs return: Integer
     def offset: () -> Integer
-
-    # @rbs return: Prism::Location
-    def location: () -> Prism::Location
 
     # @rbs return: String
     def inspect: () -> String

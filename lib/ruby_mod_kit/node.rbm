@@ -5,11 +5,16 @@
 module RubyModKit
   # The class of transpile node.
   class Node
-    attr_reader :parent #: Node | nil
-
     @parent: Node | nil
     @children: Array[Node]
     @ancestors: Array[Node]
+
+    attr_reader :parent #: Node | nil
+    attr_reader :location #: Prism::Location
+
+    def initialize: void
+      @location = prism_node.location
+    end
 
     def children : (Array[Node])
       return @children if @children
@@ -99,11 +104,7 @@ module RubyModKit
     end
 
     def offset: Integer
-      prism_node.location.start_offset
-    end
-
-    def location: (Prism::Location)
-      prism_node.location
+      location.start_offset
     end
 
     def inspect: String
