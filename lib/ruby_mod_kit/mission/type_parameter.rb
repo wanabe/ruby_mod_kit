@@ -10,7 +10,7 @@ module RubyModKit
       # @rbs type: String
       # @rbs return: void
       def initialize(offset, type)
-        @type = unify_type(type)
+        @type = Memo.unify_type(type)
         super(offset)
       end
 

@@ -35,5 +35,9 @@ module RubyModKit
     # @rbs type: String
     # @rbs return: Memo::Parameter
     def parameter_memo: (Node::ParameterNode node, String type) -> Memo::Parameter
+
+    # @rbs type: String
+    # @rbs return: String
+    def self.unify_type: (String type) -> String
   end
 end

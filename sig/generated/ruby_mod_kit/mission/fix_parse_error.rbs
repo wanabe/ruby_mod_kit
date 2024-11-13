@@ -10,9 +10,9 @@ module RubyModKit
       # @rbs generation: Generation
       # @rbs root_node: Node
       # @rbs parse_result: Prism::ParseResult
-      # @rbs _memo: Memo
+      # @rbs memo: Memo
       # @rbs return: bool
-      def perform: (Generation generation, Node root_node, Prism::ParseResult parse_result, untyped _memo) -> bool
+      def perform: (Generation generation, Node root_node, Prism::ParseResult parse_result, Memo memo) -> bool
 
       # @rbs parse_error: Prism::ParseError
       # @rbs generation: Generation
@@ -36,15 +36,17 @@ module RubyModKit
       # @rbs generation: Generation
       # @rbs root_node: Node
       # @rbs parse_result: Prism::ParseResult
+      # @rbs memo: Memo
       # @rbs return: void
-      def fix_unexpected_colon: (Prism::ParseError parse_error, Generation generation, Node root_node, Prism::ParseResult parse_result) -> void
+      def fix_unexpected_colon: (Prism::ParseError parse_error, Generation generation, Node root_node, Prism::ParseResult parse_result, Memo memo) -> void
 
       # @rbs parse_error: Prism::ParseError
       # @rbs generation: Generation
       # @rbs root_node: Node
       # @rbs def_node: Node::DefNode
+      # @rbs memo: Memo
       # @rbs return: void
-      def fix_unexpected_colon_in_def: (Prism::ParseError parse_error, Generation generation, Node root_node, Node::DefNode def_node) -> void
+      def fix_unexpected_colon_in_def: (Prism::ParseError parse_error, Generation generation, Node root_node, Node::DefNode def_node, Memo memo) -> void
 
       # @rbs parse_error: Prism::ParseError
       # @rbs generation: Generation

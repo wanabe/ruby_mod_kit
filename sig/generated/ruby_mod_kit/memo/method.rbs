@@ -18,7 +18,7 @@ module RubyModKit
 
       attr_reader parameters: Array[Parameter]
 
-      attr_accessor type: String
+      attr_reader type: String
 
       # @rbs node: Node
       # @rbs return: void
@@ -27,6 +27,10 @@ module RubyModKit
       # @rbs parameter_memo: Parameter
       # @rbs return: Memo::Parameter
       def add_parameter: (Parameter parameter_memo) -> Memo::Parameter
+
+      # @rbs type: String
+      # @rbs return: void
+      def type=: (String type) -> void
     end
   end
 end

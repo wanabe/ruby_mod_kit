@@ -47,5 +47,13 @@ module RubyModKit
       memo = @parameters_memo[node.offset] ||= Memo::Parameter.new(node, type)
       method_memo(node.def_node).add_parameter(memo)
     end
+
+    class << self
+      # @rbs type: String
+      # @rbs return: String
+      def unify_type(type)
+        type[/\A\(([^()]*)\)\z/, 1] || type
+      end
+    end
   end
 end

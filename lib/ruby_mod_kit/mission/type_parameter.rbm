@@ -7,7 +7,7 @@ module RubyModKit
     # The mission for parameter types
     class TypeParameter < Mission
       def initialize(Integer => offset, String => type): void
-        @type = unify_type(type)
+        @type = Memo.unify_type(type)
         super(offset)
       end
 

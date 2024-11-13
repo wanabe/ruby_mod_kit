@@ -14,7 +14,7 @@ module RubyModKit
       attr_reader :parent_offset #: Integer
       attr_reader :name #: Symbol
       attr_reader :parameters #: Array[Parameter]
-      attr_accessor :type #: String
+      attr_reader :type #: String
 
       # @rbs node: Node
       # @rbs return: void
@@ -33,6 +33,12 @@ module RubyModKit
       def add_parameter(parameter_memo)
         @parameters << parameter_memo
         parameter_memo
+      end
+
+      # @rbs type: String
+      # @rbs return: void
+      def type=(type)
+        @type = Memo.unify_type(type)
       end
     end
   end

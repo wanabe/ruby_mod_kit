@@ -14,9 +14,9 @@ module RubyModKit
       # @rbs generation: Generation
       # @rbs root_node: Node
       # @rbs parse_result: Prism::ParseResult
-      # @rbs _memo: Memo
+      # @rbs memo: Memo
       # @rbs return: bool
-      def perform(generation, root_node, parse_result, _memo)
+      def perform(generation, root_node, parse_result, memo)
         if parse_result.errors.empty?
           generation.add_mission(Mission::Overload.new)
           return true
@@ -35,7 +35,7 @@ module RubyModKit
             when "=>"
               fix_unexpected_assoc(parse_error, generation, root_node, typed_parameter_offsets)
             when ":"
-              fix_unexpected_colon(parse_error, generation, root_node, parse_result)
+              fix_unexpected_colon(parse_error, generation, root_node, parse_result, memo)
             end
           end
         end
@@ -106,12 +106,13 @@ module RubyModKit
       # @rbs generation: Generation
       # @rbs root_node: Node
       # @rbs parse_result: Prism::ParseResult
+      # @rbs memo: Memo
       # @rbs return: void
-      def fix_unexpected_colon(parse_error, generation, root_node, parse_result)
+      def fix_unexpected_colon(parse_error, generation, root_node, parse_result, memo)
         parent_node = root_node.statements_node_at(parse_error.location.start_offset)&.parent
         case parent_node
         when Node::DefNode
-          fix_unexpected_colon_in_def(parse_error, generation, root_node, parent_node)
+          fix_unexpected_colon_in_def(parse_error, generation, root_node, parent_node, memo)
         when Node::ClassNode
           fix_unexpected_colon_in_module(parse_error, generation, parse_result)
         end
@@ -121,8 +122,9 @@ module RubyModKit
       # @rbs generation: Generation
       # @rbs root_node: Node
       # @rbs def_node: Node::DefNode
+      # @rbs memo: Memo
       # @rbs return: void
-      def fix_unexpected_colon_in_def(parse_error, generation, root_node, def_node)
+      def fix_unexpected_colon_in_def(parse_error, generation, root_node, def_node, memo)
         lparen_loc = def_node.lparen_loc
         rparen_loc = def_node.rparen_loc
         if !lparen_loc && !rparen_loc
@@ -138,7 +140,8 @@ module RubyModKit
         return unless return_type_location
 
         generation[src_offset, return_type_location.end_offset - src_offset] = ""
-        generation.add_mission(Mission::TypeReturn.new(src_offset, return_type_location.slice))
+        memo.method_memo(def_node).type = return_type_location.slice
+        generation.add_mission(Mission::TypeReturn.new(src_offset))
       end
 
       # @rbs parse_error: Prism::ParseError
