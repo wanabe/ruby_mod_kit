@@ -12,9 +12,9 @@ module RubyModKit
         @name = node.name
 
         def_node = node.parent&.parent
-        raise RubyModKit::Error unless def_node
+        raise RubyModKit::Error unless def_node.is_a?(Node::DefNode)
 
-        @method = memo.methods_memo[def_node.offset] || Memo::Method.new(memo, def_node)
+        @method = memo.method_memo(def_node)
         @method.add_parameter(self)
 
         memo.parameters_memo[node.offset] = self

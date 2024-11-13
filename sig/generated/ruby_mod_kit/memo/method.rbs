@@ -20,10 +20,9 @@ module RubyModKit
 
       attr_accessor type: String
 
-      # @rbs memo: Memo
       # @rbs node: Node
       # @rbs return: void
-      def initialize: (Memo memo, Node node) -> void
+      def initialize: (Node node) -> void
 
       # @rbs parameter_memo: Parameter
       # @rbs return: void

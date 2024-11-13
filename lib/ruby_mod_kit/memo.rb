@@ -43,5 +43,11 @@ module RubyModKit
       @generation_num += 1
       self
     end
+
+    # @rbs def_node: Node::DefNode
+    # @rbs return: Memo::Method
+    def method_memo(def_node)
+      @methods_memo[def_node.offset] ||= Memo::Method.new(def_node)
+    end
   end
 end

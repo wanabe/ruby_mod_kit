@@ -16,18 +16,16 @@ module RubyModKit
       attr_reader :parameters #: Array[Parameter]
       attr_accessor :type #: String
 
-      # @rbs memo: Memo
       # @rbs node: Node
       # @rbs return: void
-      def initialize(memo, node)
+      def initialize(node)
         @type = "untyped"
         @parameters = []
         @name = node.name
         raise RubyModKit::Error unless node.parent
 
         @parent_offset = node.parent.offset
-        memo.methods_memo[node.offset] = self
-        super(node)
+        super
       end
 
       # @rbs parameter_memo: Parameter
