@@ -51,12 +51,12 @@ module RubyModKit
     end
 
     # @rbs parameter_node: Node::ParameterNode
-    # @rbs modify_script: String
+    # @rbs type: String
     # @rbs return: Memo::Parameter
-    def parameter_memo(parameter_node, modify_script)
+    def parameter_memo(parameter_node, type)
       parameter_memo = @parameters_memo[parameter_node.offset]
       unless parameter_memo
-        parameter_memo = Memo::Parameter.new(parameter_node, modify_script)
+        parameter_memo = Memo::Parameter.new(parameter_node, type)
         @parameters_memo[parameter_node.offset] = parameter_memo
       end
       def_node = parameter_node.parent&.parent

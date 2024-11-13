@@ -6,14 +6,11 @@ module RubyModKit
   # The class of transpiler mission.
   class Mission
     attr_accessor :offset #: Integer
-    attr_reader :modify_script #: String
 
     # @rbs offset: Integer
-    # @rbs modify_script: String
     # @rbs return: void
-    def initialize(offset, modify_script)
+    def initialize(offset)
       @offset = offset
-      @modify_script = modify_script
     end
 
     # @rbs _generation: Generation

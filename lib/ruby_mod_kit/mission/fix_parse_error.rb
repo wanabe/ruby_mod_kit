@@ -6,6 +6,11 @@ module RubyModKit
   class Mission
     # The mission for parameter types
     class FixParseError < Mission
+      # @rbs return: void
+      def initialize
+        super(0)
+      end
+
       # @rbs generation: Generation
       # @rbs root_node: Node
       # @rbs parse_result: Prism::ParseResult
@@ -13,7 +18,7 @@ module RubyModKit
       # @rbs return: bool
       def perform(generation, root_node, parse_result, _memo)
         if parse_result.errors.empty?
-          generation.add_mission(Mission::Overload.new(0, ""))
+          generation.add_mission(Mission::Overload.new)
           return true
         end
 

@@ -10,6 +10,10 @@ module RubyModKit
         "*": "_mul",
       }.freeze #: Hash[Symbol, String]
 
+      def initialize: void
+        super(0)
+      end
+
       def perform(Generation => generation, Node => root_node, (Prism::ParseResult) => parse_result, Memo => memo): bool
         # Wait TypeParameter performed
         @call_count ||= 0

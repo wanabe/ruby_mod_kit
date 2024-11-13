@@ -6,9 +6,8 @@ module RubyModKit
   # The class of transpiler mission.
   class Mission
     attr_accessor :offset #: Integer
-    attr_reader :modify_script #: String
 
-    def initialize(Integer => @offset, String => @modify_script): void
+    def initialize(Integer => @offset): void
     end
 
     def perform(Generation => _generation, Node => _root_node, (Prism::ParseResult) => _parse_result, Memo => _memo): void

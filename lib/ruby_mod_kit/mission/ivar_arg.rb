@@ -6,6 +6,16 @@ module RubyModKit
   class Mission
     # The mission for instance variable arguments
     class IvarArg < Mission
+      attr_reader :assignment #: String
+
+      # @rbs offset: Integer
+      # @rbs assignment: String
+      # @rbs return: void
+      def initialize(offset, assignment)
+        @assignment = assignment
+        super(offset)
+      end
+
       # @rbs generation: Generation
       # @rbs root_node: Node
       # @rbs _parse_result: Prism::ParseResult
@@ -26,7 +36,7 @@ module RubyModKit
         end
         raise RubyModKit::Error if !src_offset || !indent
 
-        generation[src_offset, 0] = "#{" " * indent}#{@modify_script}\n"
+        generation[src_offset, 0] = "#{" " * indent}#{@assignment}\n"
         true
       end
     end

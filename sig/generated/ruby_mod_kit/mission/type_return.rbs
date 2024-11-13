@@ -5,9 +5,9 @@ module RubyModKit
     # The mission for parameter types
     class TypeReturn < Mission
       # @rbs offset: Integer
-      # @rbs modify_script: String
+      # @rbs type: String
       # @rbs return: void
-      def initialize: (Integer offset, String modify_script) -> void
+      def initialize: (Integer offset, String type) -> void
 
       # @rbs generation: Generation
       # @rbs root_node: Node

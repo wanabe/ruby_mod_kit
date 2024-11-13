@@ -43,10 +43,10 @@ module RubyModKit
       @methods_memo[def_node.offset] ||= Memo::Method.new(def_node)
     end
 
-    def parameter_memo(Node::ParameterNode => parameter_node, String => modify_script): (Memo::Parameter)
+    def parameter_memo(Node::ParameterNode => parameter_node, String => type): (Memo::Parameter)
       parameter_memo = @parameters_memo[parameter_node.offset]
       unless parameter_memo
-        parameter_memo = Memo::Parameter.new(parameter_node, modify_script)
+        parameter_memo = Memo::Parameter.new(parameter_node, type)
         @parameters_memo[parameter_node.offset] = parameter_memo
       end
       def_node = parameter_node.parent&.parent

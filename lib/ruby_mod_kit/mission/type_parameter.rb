@@ -7,10 +7,11 @@ module RubyModKit
     # The mission for parameter types
     class TypeParameter < Mission
       # @rbs offset: Integer
-      # @rbs modify_script: String
+      # @rbs type: String
       # @rbs return: void
-      def initialize(offset, modify_script)
-        super(offset, unify_type(modify_script))
+      def initialize(offset, type)
+        @type = unify_type(type)
+        super(offset)
       end
 
       # @rbs generation: Generation
@@ -25,10 +26,10 @@ module RubyModKit
         parameter_node = root_node.parameter_node_at(@offset)
         raise RubyModKit::Error, "ParameterNode not found" unless parameter_node
 
-        memo.parameter_memo(parameter_node, @modify_script)
+        memo.parameter_memo(parameter_node, @type)
         src_offset = parse_result.source.offsets[def_node.location.start_line - 1]
         indent = def_node.offset - src_offset
-        generation[src_offset, 0] = "#{" " * indent}# @rbs #{parameter_node.name}: #{@modify_script}\n"
+        generation[src_offset, 0] = "#{" " * indent}# @rbs #{parameter_node.name}: #{@type}\n"
         true
       end
     end

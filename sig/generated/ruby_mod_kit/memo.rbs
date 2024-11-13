@@ -32,8 +32,8 @@ module RubyModKit
     def method_memo: (Node::DefNode def_node) -> Memo::Method
 
     # @rbs parameter_node: Node::ParameterNode
-    # @rbs modify_script: String
+    # @rbs type: String
     # @rbs return: Memo::Parameter
-    def parameter_memo: (Node::ParameterNode parameter_node, String modify_script) -> Memo::Parameter
+    def parameter_memo: (Node::ParameterNode parameter_node, String type) -> Memo::Parameter
   end
 end

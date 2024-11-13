@@ -6,6 +6,9 @@ module RubyModKit
     class Overload < Mission
       OVERLOAD_METHOD_MAP: Hash[Symbol, String]
 
+      # @rbs return: void
+      def initialize: () -> void
+
       # @rbs generation: Generation
       # @rbs root_node: Node
       # @rbs parse_result: Prism::ParseResult
