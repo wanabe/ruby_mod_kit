@@ -19,6 +19,7 @@ module RubyModKit
       def perform(generation, root_node, parse_result, memo)
         if parse_result.errors.empty?
           generation.add_mission(Mission::Overload.new)
+          generation.add_mission(Mission::TypeParameter.new)
           generation.add_mission(Mission::TypeReturn.new)
           return true
         end
@@ -105,8 +106,6 @@ module RubyModKit
 
         generation[last_parameter_offset, right_offset - last_parameter_offset] = ""
         memo.parameter_memo(last_parameter_node).type = parameter_type
-
-        generation.add_mission(Mission::TypeParameter.new(last_parameter_offset, parameter_type))
       end
 
       # @rbs parse_error: Prism::ParseError

@@ -13,6 +13,7 @@ module RubyModKit
       def perform(Generation => generation, Node => root_node, (Prism::ParseResult) => parse_result, Memo => memo): bool
         if parse_result.errors.empty?
           generation.add_mission(Mission::Overload.new)
+          generation.add_mission(Mission::TypeParameter.new)
           generation.add_mission(Mission::TypeReturn.new)
           return true
         end
@@ -86,8 +87,6 @@ module RubyModKit
 
         generation[last_parameter_offset, right_offset - last_parameter_offset] = ""
         memo.parameter_memo(last_parameter_node).type = parameter_type
-
-        generation.add_mission(Mission::TypeParameter.new(last_parameter_offset, parameter_type))
       end
 
       def fix_unexpected_colon(Prism::ParseError => parse_error, Generation => generation, Node => root_node, Prism::ParseResult => parse_result, Memo => memo): void

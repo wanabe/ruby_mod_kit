@@ -4,10 +4,8 @@ module RubyModKit
   class Mission
     # The mission for parameter types
     class TypeParameter < Mission
-      # @rbs offset: Integer
-      # @rbs type: String
       # @rbs return: void
-      def initialize: (Integer offset, String type) -> void
+      def initialize: () -> void
 
       # @rbs generation: Generation
       # @rbs root_node: Node
