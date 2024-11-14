@@ -48,9 +48,7 @@ module RubyModKit
     end
 
     class << self
-      # @rbs type: String
-      # @rbs return: String
-      def unify_type(type)
+      def unify_type(String => type): String
         type[/\A\(([^()]*)\)\z/, 1] || type
       end
     end
