@@ -10,8 +10,7 @@ module RubyModKit
   class Error < StandardError; end
 
   class << self
-    # @rbs *args: String
-    def execute_file(String => file, *args): void
+    def execute_file(String => file, *String => args): void
       rb_file = transpile_file(file)
       execute_rb_file(rb_file, *args)
     end
@@ -27,8 +26,7 @@ module RubyModKit
       Transpiler.new.transpile(src)
     end
 
-    # @rbs *args: String
-    def execute_rb_file(String => file, *args): void
+    def execute_rb_file(String => file, *String => args): void
       system(RbConfig.ruby, file, *args)
     end
 

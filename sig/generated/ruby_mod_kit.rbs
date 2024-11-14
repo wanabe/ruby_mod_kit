@@ -5,8 +5,8 @@ module RubyModKit
   class Error < StandardError
   end
 
-  # @rbs *args: String
   # @rbs file: String
+  # @rbs *args: String
   # @rbs return: void
   def self.execute_file: (String file, *String args) -> void
 
@@ -18,8 +18,8 @@ module RubyModKit
   # @rbs return: String
   def self.transpile: (String src) -> String
 
-  # @rbs *args: String
   # @rbs file: String
+  # @rbs *args: String
   # @rbs return: void
   def self.execute_rb_file: (String file, *String args) -> void
 

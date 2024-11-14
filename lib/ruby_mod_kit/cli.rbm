@@ -9,14 +9,12 @@ module RubyModKit
   # This class provides CLI commands of ruby_mod_kit.
   class CLI < Thor
     desc "exec", "execute rbm file"
-    # @rbs *args: String
-    def exec(*args): void
+    def exec(*String => args): void
       RubyModKit.execute_file(*args)
     end
 
     desc "transpile", "transpile rbm files"
-    # @rbs *args: String
-    def transpile(*args): void
+    def transpile(*String => args): void
       args.each do |path|
         RubyModKit.transpile_file(path)
       end
