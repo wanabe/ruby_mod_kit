@@ -6,11 +6,16 @@ module RubyModKit
   class Node
     # Transpiler program node
     class ParameterNode < Node
-      # @rbs @prism_node: (Prism::RequiredParameterNode | Prism::OptionalKeywordParameterNode | Prism::OptionalParameterNode | Prism::RequiredKeywordParameterNode | Prism::RestParameterNode)
+      # @rbs!
+      #   type prism_node = Prism::RequiredParameterNode | Prism::OptionalKeywordParameterNode
+      #                   | Prism::OptionalParameterNode | Prism::RequiredKeywordParameterNode
+      #                   | Prism::RestParameterNode
 
-      attr_reader :prism_node #: (Prism::RequiredParameterNode | Prism::OptionalKeywordParameterNode | Prism::OptionalParameterNode | Prism::RequiredKeywordParameterNode | Prism::RestParameterNode)
+      # @rbs @prism_node: prism_node
 
-      # @rbs prism_node: Prism::RequiredParameterNode | Prism::OptionalKeywordParameterNode | Prism::OptionalParameterNode | Prism::RequiredKeywordParameterNode | Prism::RestParameterNode
+      attr_reader :prism_node #: prism_node
+
+      # @rbs prism_node: prism_node
       # @rbs parent: Node
       # @rbs return: void
       def initialize(prism_node, parent:)
