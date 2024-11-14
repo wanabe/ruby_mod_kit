@@ -51,10 +51,9 @@ module RubyModKit
     end
 
     # @rbs node: Node::ParameterNode
-    # @rbs type: String
     # @rbs return: Memo::Parameter
-    def parameter_memo(node, type)
-      memo = @parameters_memo[node.offset] ||= Memo::Parameter.new(node, type)
+    def parameter_memo(node)
+      memo = @parameters_memo[node.offset] ||= Memo::Parameter.new(node)
       method_memo(node.def_node).add_parameter(memo)
     end
 

@@ -6,11 +6,11 @@ module RubyModKit
   class Memo
     # The memo for parameter type
     class Parameter < NodeMemo
-      attr_reader :type #: String
+      attr_accessor :type #: String
 
-      def initialize(Node::ParameterNode => node, String => @type): void
+      def initialize(Node::ParameterNode => node): void
         @name = node.name
-        super(node)
+        super
       end
     end
   end
