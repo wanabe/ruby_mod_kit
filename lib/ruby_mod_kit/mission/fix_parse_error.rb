@@ -29,7 +29,7 @@ module RubyModKit
         parse_result.errors.each do |parse_error|
           case parse_error.type
           when :argument_formal_ivar
-            fix_argument_formal_ivar(parse_error, generation)
+            fix_argument_formal_ivar(parse_error, generation, root_node, memo)
           when :argument_formal_constant
             fix_argument_formal_constant(parse_error, generation, parse_result)
           when :unexpected_token_ignore
@@ -47,15 +47,21 @@ module RubyModKit
 
       # @rbs parse_error: Prism::ParseError
       # @rbs generation: Generation
+      # @rbs root_node: Node
+      # @rbs memo: Memo
       # @rbs return: void
-      def fix_argument_formal_ivar(parse_error, generation)
+      def fix_argument_formal_ivar(parse_error, generation, root_node, memo)
         src_offset = parse_error.location.start_offset
 
         name = parse_error.location.slice[1..]
         raise RubyModKit::Error unless name
 
+        parameter_position_node = root_node.node_at(src_offset)
+        raise RubyModKit::Error unless parameter_position_node
+
         generation[src_offset, parse_error.location.length] = name
-        generation.add_mission(Mission::IvarArg.new(src_offset, "@#{name} = #{name}"))
+        memo.parameter_memo(parameter_position_node).ivar_parameter = true
+        generation.add_mission(Mission::IvarArg.new(src_offset))
       end
 
       # @rbs parse_error: Prism::ParseError

@@ -8,22 +8,17 @@ module RubyModKit
     class IvarArg < Mission
       attr_reader :assignment #: String
 
-      # @rbs offset: Integer
-      # @rbs assignment: String
-      # @rbs return: void
-      def initialize(offset, assignment)
-        @assignment = assignment
-        super(offset)
-      end
-
       # @rbs generation: Generation
       # @rbs root_node: Node
       # @rbs _parse_result: Prism::ParseResult
       # @rbs _memo: Memo
       # @rbs return: bool
       def perform(generation, root_node, _parse_result, _memo)
+        parameter_node = root_node.parameter_node_at(@offset)
+        raise RubyModKit::Error unless parameter_node
+
         def_node = root_node.def_node_at(@offset)
-        raise RubyModKit::Error, "DefNode not found" if !def_node || !def_node.is_a?(Node::DefNode)
+        raise RubyModKit::Error, "DefNode not found" unless def_node
 
         def_body_location = def_node.body_location
         end_loc = def_node.end_keyword_loc
@@ -36,7 +31,8 @@ module RubyModKit
         end
         raise RubyModKit::Error if !src_offset || !indent
 
-        generation[src_offset, 0] = "#{" " * indent}#{@assignment}\n"
+        name = parameter_node.name
+        generation[src_offset, 0] = "#{" " * indent}@#{name} = #{name}\n"
         true
       end
     end

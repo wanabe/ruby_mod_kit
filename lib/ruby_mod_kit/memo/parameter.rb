@@ -6,7 +6,23 @@ module RubyModKit
   class Memo
     # The memo for parameter type
     class Parameter < OffsetMemo
+      UNTYPED = "untyped"
+
       attr_reader :type #: String
+      attr_accessor :ivar_parameter #: bool
+
+      # @rbs offset: Integer
+      # @rbs return: void
+      def initialize(offset)
+        @type = UNTYPED
+        @ivar_parameter = false
+        super
+      end
+
+      # @rbs return: bool
+      def untyped?
+        @type == UNTYPED
+      end
 
       # @rbs type: String
       # @rbs return: void

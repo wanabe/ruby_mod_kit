@@ -16,8 +16,10 @@ module RubyModKit
 
       # @rbs parse_error: Prism::ParseError
       # @rbs generation: Generation
+      # @rbs root_node: Node
+      # @rbs memo: Memo
       # @rbs return: void
-      def fix_argument_formal_ivar: (Prism::ParseError parse_error, Generation generation) -> void
+      def fix_argument_formal_ivar: (Prism::ParseError parse_error, Generation generation, Node root_node, Memo memo) -> void
 
       # @rbs parse_error: Prism::ParseError
       # @rbs generation: Generation
