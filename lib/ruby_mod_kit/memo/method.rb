@@ -10,19 +10,19 @@ module RubyModKit
 
       # @rbs @parent_offset: Integer
       # @rbs @name: Symbol
-      # @rbs @parameters: Array[Parameter]
+      # @rbs @parameters: Set[Parameter]
       # @rbs @type: String
 
       attr_reader :parent_offset #: Integer
       attr_reader :name #: Symbol
-      attr_reader :parameters #: Array[Parameter]
+      attr_reader :parameters #: Set[Parameter]
       attr_reader :type #: String
 
       # @rbs node: Node::DefNode
       # @rbs return: void
       def initialize(node)
         @type = UNTYPED
-        @parameters = []
+        @parameters = Set.new
         @name = node.name
         raise RubyModKit::Error unless node.parent
 

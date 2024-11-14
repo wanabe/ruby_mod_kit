@@ -10,17 +10,17 @@ module RubyModKit
 
       @parent_offset: Integer
       @name: Symbol
-      @parameters: Array[Parameter]
+      @parameters: Set[Parameter]
       @type: String
 
       attr_reader :parent_offset #: Integer
       attr_reader :name #: Symbol
-      attr_reader :parameters #: Array[Parameter]
+      attr_reader :parameters #: Set[Parameter]
       attr_reader :type #: String
 
       def initialize(Node::DefNode => node): void
         @type = UNTYPED
-        @parameters = []
+        @parameters = Set.new
         @name = node.name
         raise RubyModKit::Error unless node.parent
 

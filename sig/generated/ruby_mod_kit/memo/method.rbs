@@ -10,7 +10,7 @@ module RubyModKit
 
       @name: Symbol
 
-      @parameters: Array[Parameter]
+      @parameters: Set[Parameter]
 
       @type: String
 
@@ -18,7 +18,7 @@ module RubyModKit
 
       attr_reader name: Symbol
 
-      attr_reader parameters: Array[Parameter]
+      attr_reader parameters: Set[Parameter]
 
       attr_reader type: String
 

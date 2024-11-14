@@ -39,9 +39,12 @@ module RubyModKit
       @methods_memo[def_node.offset] ||= Memo::Method.new(def_node)
     end
 
-    def parameter_memo(Node::ParameterNode => node): (Memo::Parameter)
-      memo = @parameters_memo[node.offset] ||= Memo::Parameter.new(node)
-      method_memo(node.def_node).add_parameter(memo)
+    def parameter_memo(Node => node): (Memo::Parameter)
+      memo = @parameters_memo[node.offset] ||= Memo::Parameter.new(node.offset)
+      def_node = node.def_node_at(node.offset)
+      raise RubyModKit::Error unless def_node.is_a?(Node::DefNode)
+
+      method_memo(def_node).add_parameter(memo)
     end
 
     class << self

@@ -34,7 +34,7 @@ module RubyModKit
           when :unexpected_token_ignore
             case parse_error.location.slice
             when "=>"
-              fix_unexpected_assoc(parse_error, generation, root_node, typed_parameter_offsets)
+              fix_unexpected_assoc(parse_error, generation, root_node, typed_parameter_offsets, memo)
             when ":"
               fix_unexpected_colon(parse_error, generation, root_node, parse_result, memo)
             end
@@ -77,8 +77,9 @@ module RubyModKit
       # @rbs generation: Generation
       # @rbs root_node: Node
       # @rbs typed_parameter_offsets: Set[Integer]
+      # @rbs memo: Memo
       # @rbs return: void
-      def fix_unexpected_assoc(parse_error, generation, root_node, typed_parameter_offsets)
+      def fix_unexpected_assoc(parse_error, generation, root_node, typed_parameter_offsets, memo)
         def_node = root_node.def_node_at(parse_error.location.start_offset)
         return unless def_node
 
@@ -86,7 +87,10 @@ module RubyModKit
         parameters_node, body_node, = def_node.children
         return if !def_parent_node || !parameters_node || !body_node
 
-        last_parameter_offset = parameters_node.children.map(&:offset).max
+        last_parameter_node = parameters_node.children.max_by(&:offset)
+        return unless last_parameter_node
+
+        last_parameter_offset = last_parameter_node.offset
         return if typed_parameter_offsets.include?(last_parameter_offset)
 
         typed_parameter_offsets << last_parameter_offset
@@ -100,6 +104,8 @@ module RubyModKit
         raise RubyModKit::Error unless parameter_type
 
         generation[last_parameter_offset, right_offset - last_parameter_offset] = ""
+        memo.parameter_memo(last_parameter_node).type = parameter_type
+
         generation.add_mission(Mission::TypeParameter.new(last_parameter_offset, parameter_type))
       end
 

@@ -6,12 +6,12 @@ module RubyModKit
   class Memo
     # The memo for parameter type
     class Parameter < OffsetMemo
-      attr_accessor :type #: String
+      attr_reader :type #: String
 
-      # @rbs node: Node::ParameterNode
+      # @rbs type: String
       # @rbs return: void
-      def initialize(node)
-        super(node.offset)
+      def type=(type)
+        @type = Memo.unify_type(type)
       end
     end
   end

@@ -4,11 +4,11 @@ module RubyModKit
   class Memo
     # The memo for parameter type
     class Parameter < OffsetMemo
-      attr_accessor type: String
+      attr_reader type: String
 
-      # @rbs node: Node::ParameterNode
+      # @rbs type: String
       # @rbs return: void
-      def initialize: (Node::ParameterNode node) -> void
+      def type=: (String type) -> void
     end
   end
 end
