@@ -19,9 +19,5 @@ module RubyModKit
     # @rbs offset_diff: OffsetDiff
     # @rbs return: void
     def succ: (OffsetDiff offset_diff) -> void
-
-    # @rbs type: String
-    # @rbs return: String
-    def unify_type: (String type) -> String
   end
 end

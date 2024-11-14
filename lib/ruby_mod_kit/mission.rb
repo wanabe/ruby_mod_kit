@@ -27,12 +27,6 @@ module RubyModKit
     def succ(offset_diff)
       @offset = offset_diff[@offset]
     end
-
-    # @rbs type: String
-    # @rbs return: String
-    def unify_type(type)
-      type[/\A\(([^()]*)\)\z/, 1] || type
-    end
   end
 end
 

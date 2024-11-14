@@ -23,13 +23,6 @@ module RubyModKit
       def name: Symbol
         @prism_node.name
       end
-
-      def def_node: (Node::DefNode)
-        node = parent&.parent
-        raise RubyModKit::Error unless node.is_a?(Node::DefNode)
-
-        node
-      end
     end
   end
 end
