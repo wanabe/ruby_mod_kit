@@ -6,6 +6,8 @@ module RubyModKit
   class Memo
     # The memo for parameter type
     class Method < NodeMemo
+      UNTYPED = "untyped"
+
       # @rbs @parent_offset: Integer
       # @rbs @name: Symbol
       # @rbs @parameters: Array[Parameter]
@@ -19,7 +21,7 @@ module RubyModKit
       # @rbs node: Node
       # @rbs return: void
       def initialize(node)
-        @type = "untyped"
+        @type = UNTYPED
         @parameters = []
         @name = node.name
         raise RubyModKit::Error unless node.parent
@@ -33,6 +35,11 @@ module RubyModKit
       def add_parameter(parameter_memo)
         @parameters << parameter_memo
         parameter_memo
+      end
+
+      # @rbs return: bool
+      def untyped?
+        @type == UNTYPED
       end
 
       # @rbs type: String
