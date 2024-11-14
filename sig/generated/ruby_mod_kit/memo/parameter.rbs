@@ -10,6 +10,8 @@ module RubyModKit
 
       attr_accessor ivar_parameter: bool
 
+      attr_accessor qualifier: String
+
       # @rbs offset: Integer
       # @rbs return: void
       def initialize: (Integer offset) -> void

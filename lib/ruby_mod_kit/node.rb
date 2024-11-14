@@ -35,7 +35,8 @@ module RubyModKit
       when Prism::DefNode
         Node::DefNode.new(prism_node, parent: self)
       when Prism::RequiredParameterNode, Prism::OptionalKeywordParameterNode,
-           Prism::OptionalParameterNode, Prism::RequiredKeywordParameterNode
+           Prism::OptionalParameterNode, Prism::RequiredKeywordParameterNode,
+           Prism::RestParameterNode
         Node::ParameterNode.new(prism_node, parent: self)
       when Prism::StatementsNode
         Node::StatementsNode.new(prism_node, parent: self)

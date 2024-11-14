@@ -130,6 +130,17 @@ describe RubyModKit::Transpiler do
           end
         RB
       end
+
+      it "receives rest parameter" do
+        expect(transpiler.transpile(<<~RBM)).to eq(<<~RB)
+          def foo(*Bar::Buz => bar)
+          end
+        RBM
+          # @rbs *bar: Bar::Buz
+          def foo(*bar)
+          end
+        RB
+      end
     end
 
     describe "typed return value" do

@@ -10,6 +10,7 @@ module RubyModKit
 
       attr_reader :type #: String
       attr_accessor :ivar_parameter #: bool
+      attr_accessor :qualifier #: String
 
       # @rbs offset: Integer
       # @rbs return: void

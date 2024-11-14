@@ -33,10 +33,34 @@ module RubyModKit
             when ":"
               fix_unexpected_colon(parse_error, generation, root_node, parse_result, memo)
             end
+          when :def_params_term_paren
+            fix_def_params_term_paren(parse_error, generation, root_node, parse_result, memo)
           end
         end
 
         false
+      end
+
+      def fix_def_params_term_paren(Prism::ParseError => parse_error, Generation => generation, Node => root_node, Prism::ParseResult => parse_result, Memo => memo): void
+        column = parse_error.location.start_column - 1
+        return if column < 0
+
+        line = parse_result.source.lines[parse_error.location.start_line - 1][column..]
+        return unless line
+        return if line !~ /\A\*(.*?)\s*=>\s*/
+
+        length = ::Regexp.last_match(0)&.length
+        type = ::Regexp.last_match(1)
+        return if !length || !type
+
+        offset = parse_error.location.start_offset - 1
+        parameter_position_node = root_node.node_at(offset + length)
+        return unless parameter_position_node
+
+        generation[parse_error.location.start_offset, length - 1] = ""
+        parameter_memo = memo.parameter_memo(parameter_position_node)
+        parameter_memo.type = type
+        parameter_memo.qualifier = "*"
       end
 
       def fix_argument_formal_ivar(Prism::ParseError => parse_error, Generation => generation, Node => root_node, Memo => memo): void
