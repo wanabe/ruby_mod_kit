@@ -5,18 +5,14 @@
 module RubyModKit
   class Memo
     # The base class for located memo
-    class NodeMemo
+    class OffsetMemo
       attr_reader :offset #: Integer
 
-      # @rbs node: Node
-      # @rbs return: void
-      def initialize(node)
-        @offset = node.offset
+      def initialize(Integer => offset): void
+        @offset = offset
       end
 
-      # @rbs offset_diff: OffsetDiff
-      # @rbs return: void
-      def succ(offset_diff)
+      def succ(OffsetDiff => offset_diff): void
         @offset = offset_diff[@offset]
       end
     end

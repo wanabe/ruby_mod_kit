@@ -5,14 +5,13 @@
 module RubyModKit
   class Memo
     # The memo for parameter type
-    class Parameter < NodeMemo
+    class Parameter < OffsetMemo
       attr_accessor :type #: String
 
       # @rbs node: Node::ParameterNode
       # @rbs return: void
       def initialize(node)
-        @name = node.name
-        super
+        super(node.offset)
       end
     end
   end

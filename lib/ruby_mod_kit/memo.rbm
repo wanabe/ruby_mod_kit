@@ -2,10 +2,6 @@
 
 # rbs_inline: enabled
 
-require_relative "memo/node_memo"
-require_relative "memo/method"
-require_relative "memo/parameter"
-
 module RubyModKit
   # The class of transpiler generation.
   class Memo
@@ -57,3 +53,7 @@ module RubyModKit
     end
   end
 end
+
+require_relative "memo/offset_memo"
+require_relative "memo/method"
+require_relative "memo/parameter"

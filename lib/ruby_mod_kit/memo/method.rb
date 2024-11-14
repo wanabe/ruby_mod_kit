@@ -5,7 +5,7 @@
 module RubyModKit
   class Memo
     # The memo for parameter type
-    class Method < NodeMemo
+    class Method < OffsetMemo
       UNTYPED = "untyped"
 
       # @rbs @parent_offset: Integer
@@ -18,7 +18,7 @@ module RubyModKit
       attr_reader :parameters #: Array[Parameter]
       attr_reader :type #: String
 
-      # @rbs node: Node
+      # @rbs node: Node::DefNode
       # @rbs return: void
       def initialize(node)
         @type = UNTYPED
@@ -27,7 +27,7 @@ module RubyModKit
         raise RubyModKit::Error unless node.parent
 
         @parent_offset = node.parent.offset
-        super
+        super(node.offset)
       end
 
       # @rbs parameter_memo: Parameter

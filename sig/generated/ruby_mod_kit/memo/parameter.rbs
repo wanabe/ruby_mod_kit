@@ -3,7 +3,7 @@
 module RubyModKit
   class Memo
     # The memo for parameter type
-    class Parameter < NodeMemo
+    class Parameter < OffsetMemo
       attr_accessor type: String
 
       # @rbs node: Node::ParameterNode
