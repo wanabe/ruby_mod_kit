@@ -27,9 +27,9 @@ module RubyModKit
     def initialize: () -> void
 
     # @rbs offset_diff: OffsetDiff
-    # @rbs previous_error_messages: [String]
+    # @rbs previous_error_messages: Array[String]
     # @rbs return: void
-    def succ: (OffsetDiff offset_diff, [ String ] previous_error_messages) -> void
+    def succ: (OffsetDiff offset_diff, Array[String] previous_error_messages) -> void
 
     # @rbs class_node: Node::ClassNode
     # @rbs return: Memo::Class

@@ -11,11 +11,11 @@ module RubyModKit
     @methods_memo: Hash[Integer, Memo::Method]
     @parameters_memo: Hash[Integer, Memo::Parameter]
 
-    attr_reader :previous_error_messages #: [String]
-    attr_reader :generation_num #: Integer
-    attr_reader :classes_memo #: Hash[Integer, Memo::Class]
-    attr_reader :methods_memo #: Hash[Integer, Memo::Method]
-    attr_reader :parameters_memo #: Hash[Integer, Memo::Parameter]
+    attr_reader :previous_error_messages
+    attr_reader :generation_num
+    attr_reader :classes_memo
+    attr_reader :methods_memo
+    attr_reader :parameters_memo
 
     def initialize: void
       @previous_error_messages = []
@@ -25,7 +25,7 @@ module RubyModKit
       @parameters_memo = {}
     end
 
-    def succ(OffsetDiff => offset_diff, ([String]) => @previous_error_messages): void
+    def succ(OffsetDiff => offset_diff, (Array[String]) => @previous_error_messages): void
       [@methods_memo, @parameters_memo, @classes_memo].each do |offset_node_memo|
         new_offset_node_memo = {}
         offset_node_memo.each_value do |node_memo|

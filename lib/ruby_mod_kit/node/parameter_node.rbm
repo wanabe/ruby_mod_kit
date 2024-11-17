@@ -13,7 +13,7 @@ module RubyModKit
 
       @prism_node: prism_node
 
-      attr_reader :prism_node #: prism_node
+      attr_reader :prism_node
 
       def initialize(prism_node => @prism_node, Node => @parent:): void
         case prism_node

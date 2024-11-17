@@ -6,6 +6,8 @@ module RubyModKit
   class Node
     # Transpiler program node
     class DefNode < Node
+      # @rbs @prism_node: Prism::DefNode
+
       attr_reader :prism_node #: Prism::DefNode
 
       # @rbs prism_node: Prism::DefNode

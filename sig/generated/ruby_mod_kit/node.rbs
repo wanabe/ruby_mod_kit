@@ -9,6 +9,8 @@ module RubyModKit
 
     @ancestors: Array[Node]
 
+    @location: Prism::Location
+
     attr_reader parent: Node | nil
 
     attr_reader location: Prism::Location

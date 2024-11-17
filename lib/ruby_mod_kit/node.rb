@@ -8,6 +8,7 @@ module RubyModKit
     # @rbs @parent: Node | nil
     # @rbs @children: Array[Node]
     # @rbs @ancestors: Array[Node]
+    # @rbs @location: Prism::Location
 
     attr_reader :parent #: Node | nil
     attr_reader :location #: Prism::Location

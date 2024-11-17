@@ -3,6 +3,8 @@
 module RubyModKit
   # The class of transpiler mission.
   class Mission
+    @offset: Integer
+
     attr_accessor offset: Integer
 
     # @rbs offset: Integer

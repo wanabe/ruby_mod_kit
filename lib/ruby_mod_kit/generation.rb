@@ -5,8 +5,12 @@
 module RubyModKit
   # The class of transpiler generation.
   class Generation
+    # @rbs @parse_result: Prism::ParseResult
     # @rbs @missions: Array[Mission]
     # @rbs @script: String
+    # @rbs @memo: Memo
+    # @rbs @root_node: Node::ProgramNode
+    # @rbs @offset_diff: OffsetDiff
 
     attr_reader :parse_result #: Prism::ParseResult
     attr_reader :script #: String

@@ -13,10 +13,10 @@ module RubyModKit
       @parameters: Set[Memo::Parameter]
       @type: String
 
-      attr_reader :parent_offset #: Integer
-      attr_reader :name #: Symbol
-      attr_reader :parameters #: Set[Memo::Parameter]
-      attr_reader :type #: String
+      attr_reader :parent_offset
+      attr_reader :name
+      attr_reader :parameters
+      attr_reader :type
 
       def initialize(Node::DefNode => node): void
         @type = UNTYPED

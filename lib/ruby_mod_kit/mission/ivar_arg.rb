@@ -6,6 +6,8 @@ module RubyModKit
   class Mission
     # The mission for instance variable arguments
     class IvarArg < Mission
+      # @rbs @assignment: String
+
       attr_reader :assignment #: String
 
       # @rbs generation: Generation

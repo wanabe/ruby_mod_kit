@@ -3,9 +3,17 @@
 module RubyModKit
   # The class of transpiler generation.
   class Generation
+    @parse_result: Prism::ParseResult
+
     @missions: Array[Mission]
 
     @script: String
+
+    @memo: Memo
+
+    @root_node: Node::ProgramNode
+
+    @offset_diff: OffsetDiff
 
     attr_reader parse_result: Prism::ParseResult
 

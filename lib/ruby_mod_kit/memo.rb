@@ -27,7 +27,7 @@ module RubyModKit
     end
 
     # @rbs offset_diff: OffsetDiff
-    # @rbs previous_error_messages: [String]
+    # @rbs previous_error_messages: Array[String]
     # @rbs return: void
     def succ(offset_diff, previous_error_messages)
       @previous_error_messages = previous_error_messages

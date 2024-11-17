@@ -6,6 +6,8 @@ module RubyModKit
   class Memo
     # The base class for located memo
     class OffsetMemo
+      # @rbs @offset: Integer
+
       attr_reader :offset #: Integer
 
       # @rbs offset: Integer
