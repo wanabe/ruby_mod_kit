@@ -25,11 +25,17 @@ module RubyModKit
     # @rbs return: void
     def initialize: (String script, ?missions: Array[Mission], ?memo: Memo) -> void
 
+    # @rbs return: void
+    def init_missions: () -> void
+
     # @rbs return: bool
     def first_generation?: () -> bool
 
     # @rbs return: Generation
     def succ: () -> Generation
+
+    # @rbs return: void
+    def check_prev_errors: () -> void
 
     # @rbs return: void
     def resolve: () -> void

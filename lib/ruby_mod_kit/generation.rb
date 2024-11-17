@@ -26,6 +26,18 @@ module RubyModKit
       @offset_diff = OffsetDiff.new
       @parse_result = Prism.parse(@script)
       @root_node = Node::ProgramNode.new(@parse_result.value)
+      init_missions
+    end
+
+    # @rbs return: void
+    def init_missions
+      return unless first_generation?
+
+      add_mission(Mission::FixParseError.new)
+      add_mission(Mission::TypeAttr.new)
+      add_mission(Mission::Overload.new)
+      add_mission(Mission::TypeParameter.new)
+      add_mission(Mission::TypeReturn.new)
     end
 
     # @rbs return: bool
@@ -47,24 +59,24 @@ module RubyModKit
     end
 
     # @rbs return: void
-    def resolve
-      if first_generation?
-        add_mission(Mission::FixParseError.new)
-        add_mission(Mission::TypeAttr.new)
-        add_mission(Mission::Overload.new)
-        add_mission(Mission::TypeParameter.new)
-        add_mission(Mission::TypeReturn.new)
-      elsif !@parse_result.errors.empty? && @memo.previous_error_messages == @parse_result.errors.map(&:message)
-        @parse_result.errors.each do |parse_error|
-          warn(
-            ":#{parse_error.location.start_line}:#{parse_error.message} (#{parse_error.type})",
-            @parse_result.source.lines[parse_error.location.start_line - 1],
-            "#{" " * parse_error.location.start_column}^#{"~" * [parse_error.location.length - 1, 0].max}",
-          )
-        end
-        raise RubyModKit::Error, "Syntax error"
-      end
+    def check_prev_errors
+      return if first_generation?
+      return if @parse_result.errors.empty?
+      return if @memo.previous_error_messages != @parse_result.errors.map(&:message)
 
+      @parse_result.errors.each do |parse_error|
+        warn(
+          ":#{parse_error.location.start_line}:#{parse_error.message} (#{parse_error.type})",
+          @parse_result.source.lines[parse_error.location.start_line - 1],
+          "#{" " * parse_error.location.start_column}^#{"~" * [parse_error.location.length - 1, 0].max}",
+        )
+      end
+      raise RubyModKit::Error, "Syntax error"
+    end
+
+    # @rbs return: void
+    def resolve
+      check_prev_errors
       perform_missions
     end
 
