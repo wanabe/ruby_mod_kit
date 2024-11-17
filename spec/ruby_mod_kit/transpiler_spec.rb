@@ -197,7 +197,24 @@ describe RubyModKit::Transpiler do
         RB
       end
 
-      it "supports attribute pattern" do
+      it "supports attribute pattern without class body" do
+        expect(transpiler.transpile(<<~RBM)).to eq(<<~RB)
+          class Foo
+            attr_reader @bar: Bar
+            property @buz: Buz
+          end
+        RBM
+          class Foo
+            # @rbs @bar: Bar
+            # @rbs @buz: Buz
+
+            attr_reader :bar #: Bar
+            attr_accessor :buz #: Buz
+          end
+        RB
+      end
+
+      it "supports attribute pattern with class body" do
         expect(transpiler.transpile(<<~RBM)).to eq(<<~RB)
           class Foo
             attr_reader @bar: Bar

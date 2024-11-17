@@ -36,14 +36,20 @@ module RubyModKit
           ivars_memo.keep_if { |_, ivar_memo| ivar_memo.attr_kind }
           next if ivars_memo.empty?
 
+          add_first_separator_line = false
           if attr_adding_line == 0
             attr_adding_line = class_node.prism_node.location.start_line
-            attr_adding_line += 1 while parse_result.source.lines[attr_adding_line] =~ /\A\s*#|\A\n\z/
+            prev_line = nil
+            while parse_result.source.lines[attr_adding_line] =~ /\A\s*#.*|\A$/
+              prev_line = ::Regexp.last_match(0)
+              attr_adding_line += 1
+            end
+            add_first_separator_line = prev_line != ""
           end
           line = parse_result.source.lines[attr_adding_line] || next
           add_separator_line = line != "\n" && line !~ /\A\s*end$/
-
           offset = parse_result.source.offsets[attr_adding_line] || next
+
           unless indent
             if class_node.body_node
               first_line = parse_result.source.lines[class_node.body_node.prism_node.location.start_line - 1]
@@ -53,6 +59,8 @@ module RubyModKit
               indent = "  #{class_line[/\A\s*/]}"
             end
           end
+
+          generation[offset, 0] = "\n" if add_first_separator_line
           ivars_memo.each do |name, ivar_memo|
             generation[offset, 0] = "#{indent}#{ivar_memo.attr_kind} :#{name} #: #{ivar_memo.type}\n"
           end
