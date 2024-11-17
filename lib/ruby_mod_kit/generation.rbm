@@ -66,17 +66,25 @@ module RubyModKit
       @script[dst_range] || raise(RubyModKit::Error, "Invalid range")
     end
 
-    def line(Node => node): String
-      line(node.prism_node.location.start_line - 1)
-    end
-
     def line(Integer => line_num): String
       offset = @offset_diff[@parse_result.source.offsets[line_num]]
       (@script.match(/.*\n?/, offset) && Regexp.last_match(0)) || raise(RubyModKit::Error)
     end
 
+    def line(Node => node): String
+      line(node.prism_node.location.start_line - 1)
+    end
+
+    def line(Prism::ParseError => parse_error): String
+      line(parse_error.location.start_line - 1)
+    end
+
     def src_offset(Integer => line_num): (Integer | nil)
       parse_result.source.offsets[line_num]
+    end
+
+    def src_offset(Prism::ParseError => parse_error): (Integer | nil)
+      src_offset(parse_error.location.start_line - 1)
     end
 
     def perform_missions: void

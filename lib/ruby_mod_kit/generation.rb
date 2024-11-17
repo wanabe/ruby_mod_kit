@@ -89,34 +89,60 @@ module RubyModKit
       @script[dst_range] || raise(RubyModKit::Error, "Invalid range")
     end
 
-    # @rbs (Node) -> String
-    #    | (Integer) -> String
+    # @rbs (Integer) -> String
+    #    | (Node) -> String
+    #    | (Prism::ParseError) -> String
     def line(*args)
       case args
-      in [Node]
-        line__overload0(*args)
       in [Integer]
+        line__overload0(*args)
+      in [Node]
         line__overload1(*args)
+      in [Prism::ParseError]
+        line__overload2(*args)
       end
-    end
-
-    # @rbs node: Node
-    # @rbs return: String
-    def line__overload0(node)
-      line(node.prism_node.location.start_line - 1)
     end
 
     # @rbs line_num: Integer
     # @rbs return: String
-    def line__overload1(line_num)
+    def line__overload0(line_num)
       offset = @offset_diff[@parse_result.source.offsets[line_num]]
       (@script.match(/.*\n?/, offset) && Regexp.last_match(0)) || raise(RubyModKit::Error)
     end
 
+    # @rbs node: Node
+    # @rbs return: String
+    def line__overload1(node)
+      line(node.prism_node.location.start_line - 1)
+    end
+
+    # @rbs parse_error: Prism::ParseError
+    # @rbs return: String
+    def line__overload2(parse_error)
+      line(parse_error.location.start_line - 1)
+    end
+
+    # @rbs (Integer) -> (Integer | nil)
+    #    | (Prism::ParseError) -> (Integer | nil)
+    def src_offset(*args)
+      case args
+      in [Integer]
+        src_offset__overload0(*args)
+      in [Prism::ParseError]
+        src_offset__overload1(*args)
+      end
+    end
+
     # @rbs line_num: Integer
     # @rbs return: Integer | nil
-    def src_offset(line_num)
+    def src_offset__overload0(line_num)
       parse_result.source.offsets[line_num]
+    end
+
+    # @rbs parse_error: Prism::ParseError
+    # @rbs return: Integer | nil
+    def src_offset__overload1(parse_error)
+      src_offset(parse_error.location.start_line - 1)
     end
 
     # @rbs return: void

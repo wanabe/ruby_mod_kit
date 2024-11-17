@@ -23,10 +23,9 @@ module RubyModKit
       # @rbs parse_error: Prism::ParseError
       # @rbs generation: Generation
       # @rbs root_node: Node
-      # @rbs parse_result: Prism::ParseResult
       # @rbs memo: Memo
       # @rbs return: void
-      def fix_def_params_term_paren: (Prism::ParseError parse_error, Generation generation, Node root_node, Prism::ParseResult parse_result, Memo memo) -> void
+      def fix_def_params_term_paren: (Prism::ParseError parse_error, Generation generation, Node root_node, Memo memo) -> void
 
       # @rbs parse_error: Prism::ParseError
       # @rbs generation: Generation
@@ -37,9 +36,8 @@ module RubyModKit
 
       # @rbs parse_error: Prism::ParseError
       # @rbs generation: Generation
-      # @rbs parse_result: Prism::ParseResult
       # @rbs return: void
-      def fix_argument_formal_constant: (Prism::ParseError parse_error, Generation generation, Prism::ParseResult parse_result) -> void
+      def fix_argument_formal_constant: (Prism::ParseError parse_error, Generation generation) -> void
 
       # @rbs parse_error: Prism::ParseError
       # @rbs generation: Generation
@@ -52,10 +50,9 @@ module RubyModKit
       # @rbs parse_error: Prism::ParseError
       # @rbs generation: Generation
       # @rbs root_node: Node
-      # @rbs parse_result: Prism::ParseResult
       # @rbs memo: Memo
       # @rbs return: void
-      def fix_unexpected_colon: (Prism::ParseError parse_error, Generation generation, Node root_node, Prism::ParseResult parse_result, Memo memo) -> void
+      def fix_unexpected_colon: (Prism::ParseError parse_error, Generation generation, Node root_node, Memo memo) -> void
 
       # @rbs parse_error: Prism::ParseError
       # @rbs generation: Generation
@@ -68,10 +65,9 @@ module RubyModKit
       # @rbs parse_error: Prism::ParseError
       # @rbs generation: Generation
       # @rbs class_node: Node::ClassNode
-      # @rbs parse_result: Prism::ParseResult
       # @rbs memo: Memo
       # @rbs return: void
-      def fix_unexpected_colon_in_module: (Prism::ParseError parse_error, Generation generation, Node::ClassNode class_node, Prism::ParseResult parse_result, Memo memo) -> void
+      def fix_unexpected_colon_in_module: (Prism::ParseError parse_error, Generation generation, Node::ClassNode class_node, Memo memo) -> void
     end
   end
 end

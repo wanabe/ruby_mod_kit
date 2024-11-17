@@ -53,22 +53,37 @@ module RubyModKit
     # @rbs return: String
     def []: (Range[Integer] src_range) -> String
 
-    # @rbs (Node) -> String
-    #    | (Integer) -> String
-    def line: (Node) -> String
-            | (Integer) -> String
+    # @rbs (Integer) -> String
+    #    | (Node) -> String
+    #    | (Prism::ParseError) -> String
+    def line: (Integer) -> String
+            | (Node) -> String
+            | (Prism::ParseError) -> String
+
+    # @rbs line_num: Integer
+    # @rbs return: String
+    def line__overload0: (Integer line_num) -> String
 
     # @rbs node: Node
     # @rbs return: String
-    def line__overload0: (Node node) -> String
+    def line__overload1: (Node node) -> String
 
-    # @rbs line_num: Integer
+    # @rbs parse_error: Prism::ParseError
     # @rbs return: String
-    def line__overload1: (Integer line_num) -> String
+    def line__overload2: (Prism::ParseError parse_error) -> String
+
+    # @rbs (Integer) -> (Integer | nil)
+    #    | (Prism::ParseError) -> (Integer | nil)
+    def src_offset: (Integer) -> (Integer | nil)
+                  | (Prism::ParseError) -> (Integer | nil)
 
     # @rbs line_num: Integer
     # @rbs return: Integer | nil
-    def src_offset: (Integer line_num) -> (Integer | nil)
+    def src_offset__overload0: (Integer line_num) -> (Integer | nil)
+
+    # @rbs parse_error: Prism::ParseError
+    # @rbs return: Integer | nil
+    def src_offset__overload1: (Prism::ParseError parse_error) -> (Integer | nil)
 
     # @rbs return: void
     def perform_missions: () -> void

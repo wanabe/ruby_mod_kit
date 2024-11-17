@@ -32,16 +32,16 @@ module RubyModKit
           when :argument_formal_ivar
             fix_argument_formal_ivar(parse_error, generation, root_node, memo)
           when :argument_formal_constant
-            fix_argument_formal_constant(parse_error, generation, parse_result)
+            fix_argument_formal_constant(parse_error, generation)
           when :unexpected_token_ignore
             case parse_error.location.slice
             when "=>"
               fix_unexpected_assoc(parse_error, generation, root_node, typed_parameter_offsets, memo)
             when ":"
-              fix_unexpected_colon(parse_error, generation, root_node, parse_result, memo)
+              fix_unexpected_colon(parse_error, generation, root_node, memo)
             end
           when :def_params_term_paren
-            fix_def_params_term_paren(parse_error, generation, root_node, parse_result, memo)
+            fix_def_params_term_paren(parse_error, generation, root_node, memo)
           end
         end
 
@@ -68,14 +68,13 @@ module RubyModKit
       # @rbs parse_error: Prism::ParseError
       # @rbs generation: Generation
       # @rbs root_node: Node
-      # @rbs parse_result: Prism::ParseResult
       # @rbs memo: Memo
       # @rbs return: void
-      def fix_def_params_term_paren(parse_error, generation, root_node, parse_result, memo)
+      def fix_def_params_term_paren(parse_error, generation, root_node, memo)
         column = parse_error.location.start_column - 1
         return if column < 0
 
-        line = parse_result.source.lines[parse_error.location.start_line - 1][column..] || return
+        line = generation.line(parse_error)[column..] || return
         line =~ /\A\*(.*?)\s*=>\s*/
         length = ::Regexp.last_match(0)&.length || return
         type = ::Regexp.last_match(1) || return
@@ -116,10 +115,9 @@ module RubyModKit
 
       # @rbs parse_error: Prism::ParseError
       # @rbs generation: Generation
-      # @rbs parse_result: Prism::ParseResult
       # @rbs return: void
-      def fix_argument_formal_constant(parse_error, generation, parse_result)
-        line = parse_result.source.lines[parse_error.location.start_line - 1]
+      def fix_argument_formal_constant(parse_error, generation)
+        line = generation.line(parse_error)
         line = line[parse_error.location.start_column..] || return
         parameter_type = line[/(\A[A-Z]\w*(?:::[A-Z]\w*)+)(?:\s*=>\s*)/, 1] || return
         src_offset = parse_error.location.start_offset
@@ -154,16 +152,15 @@ module RubyModKit
       # @rbs parse_error: Prism::ParseError
       # @rbs generation: Generation
       # @rbs root_node: Node
-      # @rbs parse_result: Prism::ParseResult
       # @rbs memo: Memo
       # @rbs return: void
-      def fix_unexpected_colon(parse_error, generation, root_node, parse_result, memo)
+      def fix_unexpected_colon(parse_error, generation, root_node, memo)
         parent_node = root_node.statements_node_at(parse_error.location.start_offset)&.parent
         case parent_node
         when Node::DefNode
           fix_unexpected_colon_in_def(parse_error, generation, root_node, parent_node, memo)
         when Node::ClassNode
-          fix_unexpected_colon_in_module(parse_error, generation, parent_node, parse_result, memo)
+          fix_unexpected_colon_in_module(parse_error, generation, parent_node, memo)
         end
       end
 
@@ -193,12 +190,11 @@ module RubyModKit
       # @rbs parse_error: Prism::ParseError
       # @rbs generation: Generation
       # @rbs class_node: Node::ClassNode
-      # @rbs parse_result: Prism::ParseResult
       # @rbs memo: Memo
       # @rbs return: void
-      def fix_unexpected_colon_in_module(parse_error, generation, class_node, parse_result, memo)
-        line = parse_result.source.lines[parse_error.location.start_line - 1]
-        line_offset = parse_result.source.offsets[parse_error.location.start_line - 1]
+      def fix_unexpected_colon_in_module(parse_error, generation, class_node, memo)
+        line = generation.line(parse_error)
+        line_offset = generation.src_offset(parse_error) || return
         attr_patterns = %i[attr_reader reader getter attr_writer writer setter attr_accessor accessor property]
         return if line !~ /(\A\s*)(?:(#{attr_patterns.join("|")}) )?@(\w*)\s*:\s*(.*)/
 
