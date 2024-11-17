@@ -7,6 +7,8 @@ module RubyModKit
 
     @generation_num: Integer
 
+    @classes_memo: Hash[Integer, Memo::Class]
+
     @methods_memo: Hash[Integer, Memo::Method]
 
     @parameters_memo: Hash[Integer, Memo::Parameter]
@@ -14,6 +16,8 @@ module RubyModKit
     attr_reader previous_error_messages: [ String ]
 
     attr_reader generation_num: Integer
+
+    attr_reader classes_memo: Hash[Integer, Memo::Class]
 
     attr_reader methods_memo: Hash[Integer, Memo::Method]
 
@@ -26,6 +30,10 @@ module RubyModKit
     # @rbs previous_error_messages: [String]
     # @rbs return: void
     def succ: (OffsetDiff offset_diff, [ String ] previous_error_messages) -> void
+
+    # @rbs class_node: Node::ClassNode
+    # @rbs return: Memo::Class
+    def class_memo: (Node::ClassNode class_node) -> Memo::Class
 
     # @rbs def_node: Node::DefNode
     # @rbs return: Memo::Method

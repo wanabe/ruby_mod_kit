@@ -1,0 +1,21 @@
+# frozen_string_literal: true
+
+# rbs_inline: enabled
+
+module RubyModKit
+  class Memo
+    # The memo for parameter type
+    class Class < OffsetMemo
+      @ivars_memo: Hash[Symbol, Memo::Ivar]
+
+      def initialize(Node::ClassNode => class_node): void
+        @ivars_memo = {}
+        super(class_node.offset)
+      end
+
+      def ivar_memo(Symbol => name): (Memo::Ivar)
+        @ivars_memo[name] ||= Memo::Ivar.new(name)
+      end
+    end
+  end
+end

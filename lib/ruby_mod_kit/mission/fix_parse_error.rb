@@ -156,7 +156,7 @@ module RubyModKit
         when Node::DefNode
           fix_unexpected_colon_in_def(parse_error, generation, root_node, parent_node, memo)
         when Node::ClassNode
-          fix_unexpected_colon_in_module(parse_error, generation, parse_result)
+          fix_unexpected_colon_in_module(parse_error, generation, parent_node, parse_result, memo)
         end
       end
 
@@ -187,9 +187,11 @@ module RubyModKit
 
       # @rbs parse_error: Prism::ParseError
       # @rbs generation: Generation
+      # @rbs class_node: Node::ClassNode
       # @rbs parse_result: Prism::ParseResult
+      # @rbs memo: Memo
       # @rbs return: void
-      def fix_unexpected_colon_in_module(parse_error, generation, parse_result)
+      def fix_unexpected_colon_in_module(parse_error, generation, class_node, parse_result, memo)
         line = parse_result.source.lines[parse_error.location.start_line - 1]
         line_offset = parse_result.source.offsets[parse_error.location.start_line - 1]
         return if line !~ /(\A\s*)@(\w*)\s*:\s*(.*)/
@@ -198,6 +200,8 @@ module RubyModKit
         ivar_name = ::Regexp.last_match(2)
         type = ::Regexp.last_match(3)
         return if !indent || !ivar_name || !type
+
+        memo.class_memo(class_node).ivar_memo(ivar_name.to_sym).type = type
 
         generation[line_offset + indent.length, 0] = "# @rbs "
       end

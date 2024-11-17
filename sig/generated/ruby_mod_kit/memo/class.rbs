@@ -1,0 +1,18 @@
+# Generated from lib/ruby_mod_kit/memo/class.rb with RBS::Inline
+
+module RubyModKit
+  class Memo
+    # The memo for parameter type
+    class Class < OffsetMemo
+      @ivars_memo: Hash[Symbol, Memo::Ivar]
+
+      # @rbs class_node: Node::ClassNode
+      # @rbs return: void
+      def initialize: (Node::ClassNode class_node) -> void
+
+      # @rbs name: Symbol
+      # @rbs return: Memo::Ivar
+      def ivar_memo: (Symbol name) -> Memo::Ivar
+    end
+  end
+end

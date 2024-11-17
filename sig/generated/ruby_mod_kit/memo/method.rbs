@@ -10,7 +10,7 @@ module RubyModKit
 
       @name: Symbol
 
-      @parameters: Set[Parameter]
+      @parameters: Set[Memo::Parameter]
 
       @type: String
 
@@ -18,7 +18,7 @@ module RubyModKit
 
       attr_reader name: Symbol
 
-      attr_reader parameters: Set[Parameter]
+      attr_reader parameters: Set[Memo::Parameter]
 
       attr_reader type: String
 
@@ -26,9 +26,9 @@ module RubyModKit
       # @rbs return: void
       def initialize: (Node::DefNode node) -> void
 
-      # @rbs parameter_memo: Parameter
+      # @rbs parameter_memo: Memo::Parameter
       # @rbs return: Memo::Parameter
-      def add_parameter: (Parameter parameter_memo) -> Memo::Parameter
+      def add_parameter: (Memo::Parameter parameter_memo) -> Memo::Parameter
 
       # @rbs return: bool
       def untyped?: () -> bool

@@ -1,0 +1,17 @@
+# frozen_string_literal: true
+
+# rbs_inline: enabled
+
+module RubyModKit
+  class Memo
+    # The memo for parameter type
+    class Ivar
+      @type: String
+
+      attr_accessor :type #: String
+
+      def initialize(Symbol => @name): void
+      end
+    end
+  end
+end

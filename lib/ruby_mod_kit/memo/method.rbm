@@ -10,12 +10,12 @@ module RubyModKit
 
       @parent_offset: Integer
       @name: Symbol
-      @parameters: Set[Parameter]
+      @parameters: Set[Memo::Parameter]
       @type: String
 
       attr_reader :parent_offset #: Integer
       attr_reader :name #: Symbol
-      attr_reader :parameters #: Set[Parameter]
+      attr_reader :parameters #: Set[Memo::Parameter]
       attr_reader :type #: String
 
       def initialize(Node::DefNode => node): void
@@ -28,7 +28,7 @@ module RubyModKit
         super(node.offset)
       end
 
-      def add_parameter(Parameter => parameter_memo): (Memo::Parameter)
+      def add_parameter(Memo::Parameter => parameter_memo): (Memo::Parameter)
         @parameters << parameter_memo
         parameter_memo
       end

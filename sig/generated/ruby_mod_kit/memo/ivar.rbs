@@ -1,0 +1,16 @@
+# Generated from lib/ruby_mod_kit/memo/ivar.rb with RBS::Inline
+
+module RubyModKit
+  class Memo
+    # The memo for parameter type
+    class Ivar
+      @type: String
+
+      attr_accessor type: String
+
+      # @rbs name: Symbol
+      # @rbs return: void
+      def initialize: (Symbol name) -> void
+    end
+  end
+end
