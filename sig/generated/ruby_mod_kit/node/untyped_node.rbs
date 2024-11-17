@@ -6,7 +6,11 @@ module RubyModKit
     class UntypedNode < Node
       @prism_node: Prism::Node
 
+      @parent: Node
+
       attr_reader prism_node: Prism::Node
+
+      attr_reader parent: Node
 
       # @rbs prism_node: Prism::Node
       # @rbs parent: Node

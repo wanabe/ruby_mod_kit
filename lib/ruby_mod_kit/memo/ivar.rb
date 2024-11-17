@@ -8,6 +8,7 @@ module RubyModKit
     class Ivar
       # @rbs @type: nil | String
       # @rbs @attr_kind: nil | Symbol
+      # @rbs @name: Symbol
 
       attr_reader :type #: nil | String
       attr_reader :attr_kind #: nil | Symbol

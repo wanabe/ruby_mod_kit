@@ -5,7 +5,6 @@
 module RubyModKit
   # The class of transpile node.
   class Node
-    getter @parent: Node | nil
     getter @location: Prism::Location
     @children: Array[Node]
     @ancestors: Array[Node]

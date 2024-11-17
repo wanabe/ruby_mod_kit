@@ -6,7 +6,11 @@ module RubyModKit
     class DefNode < Node
       @prism_node: Prism::DefNode
 
+      @parent: Node
+
       attr_reader prism_node: Prism::DefNode
+
+      attr_reader parent: Node
 
       # @rbs prism_node: Prism::DefNode
       # @rbs parent: Node

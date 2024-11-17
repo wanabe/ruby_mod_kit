@@ -3,7 +3,7 @@
 module RubyModKit
   # The class of transpiler generation.
   class Memo
-    @previous_error_messages: [ String ]
+    @previous_error_messages: Array[String]
 
     @generation_num: Integer
 
@@ -13,7 +13,7 @@ module RubyModKit
 
     @parameters_memo: Hash[Integer, Memo::Parameter]
 
-    attr_reader previous_error_messages: [ String ]
+    attr_reader previous_error_messages: Array[String]
 
     attr_reader generation_num: Integer
 

@@ -3,15 +3,11 @@
 module RubyModKit
   # The class of transpile node.
   class Node
-    @parent: Node | nil
-
     @location: Prism::Location
 
     @children: Array[Node]
 
     @ancestors: Array[Node]
-
-    attr_reader parent: Node | nil
 
     attr_reader location: Prism::Location
 

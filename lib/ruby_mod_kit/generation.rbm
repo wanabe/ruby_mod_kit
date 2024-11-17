@@ -12,7 +12,7 @@ module RubyModKit
     @root_node: Node::ProgramNode
     @offset_diff: OffsetDiff
 
-    def initialize(String => @script, Array[Mission] => @missions: [], Memo => @memo: Memo.new): void
+    def initialize(@script, @missions: [], @memo: Memo.new): void
       @offset_diff = OffsetDiff.new
       @parse_result = Prism.parse(@script)
       @root_node = Node::ProgramNode.new(@parse_result.value)

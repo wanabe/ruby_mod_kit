@@ -7,7 +7,7 @@ module RubyModKit
   class Mission
     property @offset: Integer
 
-    def initialize(Integer => @offset): void
+    def initialize(@offset): void
     end
 
     def perform(Generation => _generation, Node => _root_node, (Prism::ParseResult) => _parse_result, Memo => _memo): void

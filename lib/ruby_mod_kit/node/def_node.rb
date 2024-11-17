@@ -7,8 +7,10 @@ module RubyModKit
     # Transpiler program node
     class DefNode < Node
       # @rbs @prism_node: Prism::DefNode
+      # @rbs @parent: Node
 
       attr_reader :prism_node #: Prism::DefNode
+      attr_reader :parent #: Node
 
       # @rbs prism_node: Prism::DefNode
       # @rbs parent: Node

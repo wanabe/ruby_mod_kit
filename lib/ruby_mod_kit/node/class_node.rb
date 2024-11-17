@@ -8,9 +8,11 @@ module RubyModKit
     class ClassNode < Node
       # @rbs @prism_node: Prism::ClassNode
       # @rbs @body_node: nil | Node::StatementsNode
+      # @rbs @parent: Node
 
       attr_reader :prism_node #: Prism::ClassNode
       attr_reader :body_node #: nil | Node::StatementsNode
+      attr_reader :parent #: Node
 
       # @rbs prism_node: Prism::ClassNode
       # @rbs parent: Node

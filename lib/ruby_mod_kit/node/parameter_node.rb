@@ -12,8 +12,10 @@ module RubyModKit
       #                   | Prism::RestParameterNode
 
       # @rbs @prism_node: prism_node
+      # @rbs @parent: Node
 
       attr_reader :prism_node #: prism_node
+      attr_reader :parent #: Node
 
       # @rbs prism_node: prism_node
       # @rbs parent: Node

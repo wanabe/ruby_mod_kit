@@ -6,9 +6,9 @@ module RubyModKit
   class Node
     # Transpiler program node
     class ProgramNode < Node
-      getter @prism_node: Prism::Node
+      getter @prism_node: Prism::ProgramNode
 
-      def initialize(Prism::ProgramNode => @prism_node): void
+      def initialize(@prism_node): void
         raise RubyModKit::Error unless prism_node.is_a?(Prism::ProgramNode)
 
         super()

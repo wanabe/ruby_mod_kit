@@ -8,8 +8,9 @@ module RubyModKit
     class Ivar
       getter @type: (nil | String)
       getter @attr_kind: (nil | Symbol)
+      @name: Symbol
 
-      def initialize(Symbol => @name): void
+      def initialize(@name): void
       end
 
       def type=(String => type): void

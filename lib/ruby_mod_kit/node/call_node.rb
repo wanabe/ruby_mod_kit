@@ -8,9 +8,11 @@ module RubyModKit
     class CallNode < Node
       # @rbs @prism_node: Prism::CallNode
       # @rbs @name: Symbol
+      # @rbs @parent: Node
 
       attr_reader :prism_node #: Prism::CallNode
       attr_reader :name #: Symbol
+      attr_reader :parent #: Node
 
       # @rbs prism_node: Prism::CallNode
       # @rbs parent: Node
