@@ -25,8 +25,6 @@ module RubyModKit
         check_prev_errors(parse_result)
         @previous_error_messages = parse_result.errors.map(&:message)
 
-        typed_parameter_offsets = Set.new
-
         parse_result.errors.each do |parse_error|
           case parse_error.type
           when :argument_formal_ivar
@@ -36,7 +34,7 @@ module RubyModKit
           when :unexpected_token_ignore
             case parse_error.location.slice
             when "=>"
-              fix_unexpected_assoc(parse_error, generation, root_node, typed_parameter_offsets, memo)
+              fix_unexpected_assoc(parse_error, generation, root_node, memo)
             when ":"
               fix_unexpected_colon(parse_error, generation, root_node, memo)
             end
@@ -127,10 +125,9 @@ module RubyModKit
       # @rbs parse_error: Prism::ParseError
       # @rbs generation: Generation
       # @rbs root_node: Node
-      # @rbs typed_parameter_offsets: Set[Integer]
       # @rbs memo: Memo
       # @rbs return: void
-      def fix_unexpected_assoc(parse_error, generation, root_node, typed_parameter_offsets, memo)
+      def fix_unexpected_assoc(parse_error, generation, root_node, memo)
         def_node = root_node.def_node_at(parse_error.location.start_offset) || return
         def_parent_node = def_node.parent
         parameters_node, body_node, = def_node.children
@@ -138,9 +135,7 @@ module RubyModKit
 
         last_parameter_node = parameters_node.children.max_by(&:offset) || return
         last_parameter_offset = last_parameter_node.offset
-        return if typed_parameter_offsets.include?(last_parameter_offset)
 
-        typed_parameter_offsets << last_parameter_offset
         right_node = body_node.children.find { _1.offset >= parse_error.location.end_offset } || return
         right_offset = right_node.offset
         parameter_type = generation[last_parameter_offset...right_offset] || raise(RubyModKit::Error)
