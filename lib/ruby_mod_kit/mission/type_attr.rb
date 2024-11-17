@@ -21,13 +21,11 @@ module RubyModKit
           ivars_memo = class_memo.ivars_memo.dup
           class_node = root_node.class_node_at(class_memo.offset) || raise(RubyModKit::Error)
           attr_adding_line = 0
-          indent = nil
           class_node.body_node&.children&.each do |call_node|
             break if ivars_memo.empty?
             next unless call_node.is_a?(Node::CallNode)
             next unless %i[attr_reader attr_writer attr_accessor].include?(call_node.name)
 
-            indent ||= parse_result.source.lines[call_node.prism_node.location.start_line - 1][/\A\s*/] || ""
             attr_adding_line = call_node.prism_node.location.end_line
             argument_nodes = call_node.children[0].children
             next if argument_nodes.size != 1 || !argument_nodes[0].is_a?(Node::SymbolNode)
@@ -56,14 +54,12 @@ module RubyModKit
           add_separator_line = line != "\n" && line !~ /\A\s*end$/
           offset = parse_result.source.offsets[attr_adding_line] || next
 
-          unless indent
-            if class_node.body_node
-              first_line = parse_result.source.lines[class_node.body_node.prism_node.location.start_line - 1]
-              indent = first_line[/\A\s*/] || raise(RubyModKit::Error)
-            else
-              class_line = parse_result.source.lines[class_node.prism_node.location.start_line - 1]
-              indent = "  #{class_line[/\A\s*/]}"
-            end
+          if class_node.body_node
+            first_line = parse_result.source.lines[class_node.body_node.prism_node.location.start_line - 1]
+            indent = first_line[/\A\s*/] || raise(RubyModKit::Error)
+          else
+            class_line = parse_result.source.lines[class_node.prism_node.location.start_line - 1]
+            indent = "  #{class_line[/\A\s*/]}"
           end
 
           generation[offset, 0] = "\n" if add_first_separator_line
