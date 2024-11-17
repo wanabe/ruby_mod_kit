@@ -6,7 +6,11 @@ module RubyModKit
     class Ivar
       @type: String
 
+      @attr_kind: nil | Symbol
+
       attr_reader type: String
+
+      attr_reader attr_kind: nil | Symbol
 
       # @rbs name: Symbol
       # @rbs return: void
@@ -15,6 +19,10 @@ module RubyModKit
       # @rbs type: String
       # @rbs return: void
       def type=: (String type) -> void
+
+      # @rbs kind: Symbol | String
+      # @rbs return: void
+      def attr_kind=: (Symbol | String kind) -> void
     end
   end
 end

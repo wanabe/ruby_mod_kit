@@ -7,13 +7,21 @@ module RubyModKit
     # Transpiler program node
     class ClassNode < Node
       @prism_node: Prism::ClassNode
+      @body_node: (nil | Node::StatementsNode)
 
       attr_reader :prism_node
+      attr_reader :body_node
 
       def initialize(Prism::ClassNode => @prism_node, Node => @parent:): void
         raise RubyModKit::Error unless prism_node.is_a?(Prism::ClassNode)
 
         super()
+      end
+
+      def wrap(Prism::Node => child_prism_node): Node
+        node = super
+        @body_node = node if child_prism_node == prism_node.body && node.is_a?(Node::StatementsNode)
+        node
       end
     end
   end

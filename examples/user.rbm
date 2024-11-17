@@ -4,14 +4,10 @@
 
 # Example class
 class User
-  @email: String
+  attr_reader @email: String
   @tel: (nil | String)
-  @name: (nil | String)
-  @nick: (nil | String)
-
-  attr_reader :email
-  attr_reader :name
-  attr_reader :nick
+  attr_reader @name: (nil | String)
+  attr_reader @nick: (nil | String)
 
   def initialize(String => @email, (nil | String) => @tel = nil, (nil | String) => @name: nil, (nil | String) => @nick: nil): void
   end

@@ -5,9 +5,9 @@
 # Example class
 class User
   # @rbs @email: String
-  # @rbs @tel: (nil | String)
-  # @rbs @name: (nil | String)
-  # @rbs @nick: (nil | String)
+  # @rbs @tel: nil | String
+  # @rbs @name: nil | String
+  # @rbs @nick: nil | String
 
   attr_reader :email #: String
   attr_reader :name #: nil | String

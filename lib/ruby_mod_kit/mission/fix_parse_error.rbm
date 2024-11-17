@@ -130,16 +130,21 @@ module RubyModKit
       def fix_unexpected_colon_in_module(Prism::ParseError => parse_error, Generation => generation, Node::ClassNode => class_node, Prism::ParseResult => parse_result, Memo => memo): void
         line = parse_result.source.lines[parse_error.location.start_line - 1]
         line_offset = parse_result.source.offsets[parse_error.location.start_line - 1]
-        return if line !~ /(\A\s*)@(\w*)\s*:\s*(.*)/
+        attr_patterns = %i[attr_reader reader getter attr_writer writer setter attr_accessor accessor property]
+        return if line !~ /(\A\s*)(?:(#{attr_patterns.join("|")}) )?@(\w*)\s*:\s*(.*)/
 
+        length = ::Regexp.last_match(0)&.length
         indent = ::Regexp.last_match(1)
-        ivar_name = ::Regexp.last_match(2)
-        type = ::Regexp.last_match(3)
-        return if !indent || !ivar_name || !type
+        attr_kind = ::Regexp.last_match(2)
+        ivar_name = ::Regexp.last_match(3)
+        type = ::Regexp.last_match(4)
+        return if !length || !indent || !ivar_name || !type
 
-        memo.class_memo(class_node).ivar_memo(ivar_name.to_sym).type = type
+        ivar_memo = memo.class_memo(class_node).ivar_memo(ivar_name.to_sym)
+        ivar_memo.type = type
+        ivar_memo.attr_kind = attr_kind if attr_kind
 
-        generation[line_offset + indent.length, 0] = "# @rbs "
+        generation[line_offset, length] = "#{indent}# @rbs @#{ivar_name}: #{Memo.unify_type(type)}"
       end
     end
   end
