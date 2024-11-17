@@ -180,6 +180,22 @@ describe RubyModKit::Transpiler do
           end
         RB
       end
+
+      it "adds attr type definition as rbs-inline annotation" do
+        expect(transpiler.transpile(<<~RBM)).to eq(<<~RB)
+          class Foo
+            @bar: Bar
+
+            attr_reader :bar
+          end
+        RBM
+          class Foo
+            # @rbs @bar: Bar
+
+            attr_reader :bar #: Bar
+          end
+        RB
+      end
     end
   end
 end

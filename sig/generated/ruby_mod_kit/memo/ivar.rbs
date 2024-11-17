@@ -6,11 +6,15 @@ module RubyModKit
     class Ivar
       @type: String
 
-      attr_accessor type: String
+      attr_reader type: String
 
       # @rbs name: Symbol
       # @rbs return: void
       def initialize: (Symbol name) -> void
+
+      # @rbs type: String
+      # @rbs return: void
+      def type=: (String type) -> void
     end
   end
 end

@@ -1,0 +1,18 @@
+# Generated from lib/ruby_mod_kit/mission/type_attr.rb with RBS::Inline
+
+module RubyModKit
+  class Mission
+    # The mission for parameter types
+    class TypeAttr < Mission
+      # @rbs return: void
+      def initialize: () -> void
+
+      # @rbs generation: Generation
+      # @rbs root_node: Node
+      # @rbs parse_result: Prism::ParseResult
+      # @rbs memo: Memo
+      # @rbs return: bool
+      def perform: (Generation generation, Node root_node, Prism::ParseResult parse_result, Memo memo) -> bool
+    end
+  end
+end

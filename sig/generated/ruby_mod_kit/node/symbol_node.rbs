@@ -1,0 +1,20 @@
+# Generated from lib/ruby_mod_kit/node/symbol_node.rb with RBS::Inline
+
+module RubyModKit
+  class Node
+    # Transpiler program node
+    class SymbolNode < Node
+      @prism_node: Prism::SymbolNode
+
+      attr_reader prism_node: Prism::SymbolNode
+
+      # @rbs prism_node: Prism::SymbolNode
+      # @rbs parent: Node
+      # @rbs return: void
+      def initialize: (Prism::SymbolNode prism_node, parent: Node) -> void
+
+      # @rbs return: nil | Symbol
+      def value: () -> (nil | Symbol)
+    end
+  end
+end

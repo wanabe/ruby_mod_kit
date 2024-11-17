@@ -8,12 +8,18 @@ module RubyModKit
     class Ivar
       # @rbs @type: String
 
-      attr_accessor :type #: String
+      attr_reader :type #: String
 
       # @rbs name: Symbol
       # @rbs return: void
       def initialize(name)
         @name = name
+      end
+
+      # @rbs type: String
+      # @rbs return: void
+      def type=(type)
+        @type = Memo.unify_type(type)
       end
     end
   end

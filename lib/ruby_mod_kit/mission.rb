@@ -31,6 +31,7 @@ module RubyModKit
 end
 
 require_relative "mission/ivar_arg"
+require_relative "mission/type_attr"
 require_relative "mission/type_parameter"
 require_relative "mission/type_return"
 require_relative "mission/fix_parse_error"

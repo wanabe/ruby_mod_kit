@@ -18,6 +18,7 @@ module RubyModKit
       # @rbs return: bool
       def perform(generation, root_node, parse_result, memo)
         if parse_result.errors.empty?
+          generation.add_mission(Mission::TypeAttr.new)
           generation.add_mission(Mission::Overload.new)
           generation.add_mission(Mission::TypeParameter.new)
           generation.add_mission(Mission::TypeReturn.new)

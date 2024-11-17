@@ -6,6 +6,8 @@ module RubyModKit
     class Class < OffsetMemo
       @ivars_memo: Hash[Symbol, Memo::Ivar]
 
+      attr_reader ivars_memo: Hash[Symbol, Memo::Ivar]
+
       # @rbs class_node: Node::ClassNode
       # @rbs return: void
       def initialize: (Node::ClassNode class_node) -> void

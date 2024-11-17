@@ -12,6 +12,7 @@ module RubyModKit
 
       def perform(Generation => generation, Node => root_node, (Prism::ParseResult) => parse_result, Memo => memo): bool
         if parse_result.errors.empty?
+          generation.add_mission(Mission::TypeAttr.new)
           generation.add_mission(Mission::Overload.new)
           generation.add_mission(Mission::TypeParameter.new)
           generation.add_mission(Mission::TypeReturn.new)

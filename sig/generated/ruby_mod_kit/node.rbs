@@ -46,6 +46,10 @@ module RubyModKit
     def parameter_node_at: (Integer offset) -> (Node::ParameterNode | nil)
 
     # @rbs offset: Integer
+    # @rbs return: Node::ClassNode | nil
+    def class_node_at: (Integer offset) -> (Node::ClassNode | nil)
+
+    # @rbs offset: Integer
     # @rbs return: bool
     def include?: (Integer offset) -> bool
 

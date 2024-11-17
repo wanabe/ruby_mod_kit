@@ -4,7 +4,14 @@
 
 # Example class
 class User
-  attr_reader :email, :name, :nick
+  @email: String
+  @tel: (nil | String)
+  @name: (nil | String)
+  @nick: (nil | String)
+
+  attr_reader :email
+  attr_reader :name
+  attr_reader :nick
 
   def initialize(String => @email, (nil | String) => @tel = nil, (nil | String) => @name: nil, (nil | String) => @nick: nil): void
   end
@@ -12,7 +19,13 @@ end
 
 # Example class
 class Pos
-  attr_reader :x, :y, :z
+  @x: Integer
+  @y: Integer
+  @z: Integer
+
+  attr_reader :x
+  attr_reader :y
+  attr_reader :z
 
   def initialize(Integer => @x, Integer => @y, Integer => @z = 0): void
   end

@@ -26,6 +26,8 @@ module RubyModKit
 
     def wrap(Prism::Node => prism_node): Node
       case prism_node
+      when Prism::SymbolNode
+        Node::SymbolNode.new(prism_node, parent: self)
       when Prism::ClassNode
         Node::ClassNode.new(prism_node, parent: self)
       when Prism::DefNode
@@ -36,6 +38,8 @@ module RubyModKit
         Node::ParameterNode.new(prism_node, parent: self)
       when Prism::StatementsNode
         Node::StatementsNode.new(prism_node, parent: self)
+      when Prism::CallNode
+        Node::CallNode.new(prism_node, parent: self)
       else
         Node::UntypedNode.new(prism_node, parent: self)
       end
@@ -78,6 +82,12 @@ module RubyModKit
     def parameter_node_at(Integer => offset): (Node::ParameterNode | nil)
       node = node_at(offset) || return
       [node, *node.ancestors].each { return _1 if _1.is_a?(Node::ParameterNode) }
+      nil
+    end
+
+    def class_node_at(Integer => offset): (Node::ClassNode | nil)
+      node = node_at(offset) || return
+      [node, *node.ancestors].each { return _1 if _1.is_a?(Node::ClassNode) }
       nil
     end
 
@@ -124,7 +134,9 @@ module RubyModKit
   end
 end
 
+require_relative "node/symbol_node"
 require_relative "node/class_node"
+require_relative "node/call_node"
 require_relative "node/def_node"
 require_relative "node/parameter_node"
 require_relative "node/program_node"

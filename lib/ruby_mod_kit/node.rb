@@ -30,6 +30,8 @@ module RubyModKit
     # @rbs return: Node
     def wrap(prism_node)
       case prism_node
+      when Prism::SymbolNode
+        Node::SymbolNode.new(prism_node, parent: self)
       when Prism::ClassNode
         Node::ClassNode.new(prism_node, parent: self)
       when Prism::DefNode
@@ -40,6 +42,8 @@ module RubyModKit
         Node::ParameterNode.new(prism_node, parent: self)
       when Prism::StatementsNode
         Node::StatementsNode.new(prism_node, parent: self)
+      when Prism::CallNode
+        Node::CallNode.new(prism_node, parent: self)
       else
         Node::UntypedNode.new(prism_node, parent: self)
       end
@@ -96,6 +100,14 @@ module RubyModKit
     end
 
     # @rbs offset: Integer
+    # @rbs return: Node::ClassNode | nil
+    def class_node_at(offset)
+      node = node_at(offset) || return
+      [node, *node.ancestors].each { return _1 if _1.is_a?(Node::ClassNode) }
+      nil
+    end
+
+    # @rbs offset: Integer
     # @rbs return: bool
     def include?(offset)
       self.offset <= offset && offset <= prism_node.location.end_offset
@@ -143,7 +155,9 @@ module RubyModKit
   end
 end
 
+require_relative "node/symbol_node"
 require_relative "node/class_node"
+require_relative "node/call_node"
 require_relative "node/def_node"
 require_relative "node/parameter_node"
 require_relative "node/program_node"

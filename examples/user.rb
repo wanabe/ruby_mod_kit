@@ -4,7 +4,14 @@
 
 # Example class
 class User
-  attr_reader :email, :name, :nick
+  # @rbs @email: String
+  # @rbs @tel: (nil | String)
+  # @rbs @name: (nil | String)
+  # @rbs @nick: (nil | String)
+
+  attr_reader :email #: String
+  attr_reader :name #: nil | String
+  attr_reader :nick #: nil | String
 
   # @rbs email: String
   # @rbs tel: nil | String
@@ -21,7 +28,13 @@ end
 
 # Example class
 class Pos
-  attr_reader :x, :y, :z
+  # @rbs @x: Integer
+  # @rbs @y: Integer
+  # @rbs @z: Integer
+
+  attr_reader :x #: Integer
+  attr_reader :y #: Integer
+  attr_reader :z #: Integer
 
   # @rbs x: Integer
   # @rbs y: Integer
