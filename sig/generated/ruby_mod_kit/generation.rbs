@@ -53,6 +53,23 @@ module RubyModKit
     # @rbs return: String
     def []: (Range[Integer] src_range) -> String
 
+    # @rbs (Node) -> String
+    #    | (Integer) -> String
+    def line: (Node) -> String
+            | (Integer) -> String
+
+    # @rbs node: Node
+    # @rbs return: String
+    def line__overload0: (Node node) -> String
+
+    # @rbs line_num: Integer
+    # @rbs return: String
+    def line__overload1: (Integer line_num) -> String
+
+    # @rbs line_num: Integer
+    # @rbs return: Integer | nil
+    def src_offset: (Integer line_num) -> (Integer | nil)
+
     # @rbs return: void
     def perform_missions: () -> void
 
