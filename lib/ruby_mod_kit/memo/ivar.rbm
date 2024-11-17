@@ -6,7 +6,7 @@ module RubyModKit
   class Memo
     # The memo for parameter type
     class Ivar
-      getter @type: String
+      getter @type: (nil | String)
       getter @attr_kind: (nil | Symbol)
 
       def initialize(Symbol => @name): void

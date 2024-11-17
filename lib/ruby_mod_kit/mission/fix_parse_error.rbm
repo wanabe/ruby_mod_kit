@@ -63,8 +63,15 @@ module RubyModKit
         raise RubyModKit::Error unless parameter_position_node
 
         generation[src_offset, parse_error.location.length] = name
-        memo.parameter_memo(parameter_position_node).ivar_parameter = true
+        parameter_memo = memo.parameter_memo(parameter_position_node)
+        parameter_memo.ivar_parameter = true
         generation.add_mission(Mission::IvarArg.new(src_offset))
+
+        return unless parameter_memo.untyped?
+
+        class_node = root_node.class_node_at(parse_error.location.start_offset) || return
+        ivar_memo_type = memo.class_memo(class_node).ivar_memo(name.to_sym).type || return
+        parameter_memo.type = ivar_memo_type
       end
 
       def fix_argument_formal_constant(Prism::ParseError => parse_error, Generation => generation, Prism::ParseResult => parse_result): void

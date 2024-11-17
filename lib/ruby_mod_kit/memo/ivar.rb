@@ -6,10 +6,10 @@ module RubyModKit
   class Memo
     # The memo for parameter type
     class Ivar
-      # @rbs @type: String
+      # @rbs @type: nil | String
       # @rbs @attr_kind: nil | Symbol
 
-      attr_reader :type #: String
+      attr_reader :type #: nil | String
       attr_reader :attr_kind #: nil | Symbol
 
       # @rbs name: Symbol

@@ -9,7 +9,7 @@ class User
   attr_reader @name: (nil | String)
   attr_reader @nick: (nil | String)
 
-  def initialize(String => @email, (nil | String) => @tel = nil, (nil | String) => @name: nil, (nil | String) => @nick: nil): void
+  def initialize(@email, @tel = nil, @name: nil, @nick: nil): void
   end
 end
 
@@ -23,7 +23,7 @@ class Pos
   attr_reader :y
   attr_reader :z
 
-  def initialize(Integer => @x, Integer => @y, Integer => @z = 0): void
+  def initialize(@x, @y, @z = 0): void
   end
 
   def *(Pos => other): Integer

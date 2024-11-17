@@ -239,6 +239,26 @@ describe RubyModKit::Transpiler do
           end
         RB
       end
+
+      it "completes ivar parameter type" do
+        expect(transpiler.transpile(<<~RBM)).to eq(<<~RB)
+          class Foo
+            @bar: Bar
+
+            def foo(@bar)
+            end
+          end
+        RBM
+          class Foo
+            # @rbs @bar: Bar
+
+            # @rbs bar: Bar
+            def foo(bar)
+              @bar = bar
+            end
+          end
+        RB
+      end
     end
   end
 end
