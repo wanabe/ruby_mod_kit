@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ruby_mod_kit (0.1.0)
+    ruby_mod_kit (0.0.1)
       prism (~> 1.0)
       sorted_set (~> 1.0)
       thor (~> 1.3)
