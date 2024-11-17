@@ -21,13 +21,6 @@ module RubyModKit
       # @rbs memo: Memo
       # @rbs return: bool
       def perform(generation, root_node, parse_result, memo)
-        # Wait TypeParameter performed
-        @call_count ||= 0
-        if @call_count == 0
-          @call_count += 1
-          return false
-        end
-
         method_memo_groups = memo.methods_memo.each_value.group_by do |method_memo|
           [method_memo.parent_offset, method_memo.name]
         end

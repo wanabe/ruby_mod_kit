@@ -15,13 +15,6 @@ module RubyModKit
       end
 
       def perform(Generation => generation, Node => root_node, (Prism::ParseResult) => parse_result, Memo => memo): bool
-        # Wait TypeParameter performed
-        @call_count ||= 0
-        if @call_count == 0
-          @call_count += 1
-          return false
-        end
-
         method_memo_groups = memo.methods_memo.each_value.group_by do |method_memo|
           [method_memo.parent_offset, method_memo.name]
         end
