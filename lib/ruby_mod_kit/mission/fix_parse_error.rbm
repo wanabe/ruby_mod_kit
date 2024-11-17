@@ -11,13 +11,7 @@ module RubyModKit
       end
 
       def perform(Generation => generation, Node => root_node, (Prism::ParseResult) => parse_result, Memo => memo): bool
-        if parse_result.errors.empty?
-          generation.add_mission(Mission::TypeAttr.new)
-          generation.add_mission(Mission::Overload.new)
-          generation.add_mission(Mission::TypeParameter.new)
-          generation.add_mission(Mission::TypeReturn.new)
-          return true
-        end
+        return true if parse_result.errors.empty?
 
         typed_parameter_offsets = Set.new
 

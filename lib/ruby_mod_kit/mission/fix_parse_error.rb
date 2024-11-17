@@ -17,13 +17,7 @@ module RubyModKit
       # @rbs memo: Memo
       # @rbs return: bool
       def perform(generation, root_node, parse_result, memo)
-        if parse_result.errors.empty?
-          generation.add_mission(Mission::TypeAttr.new)
-          generation.add_mission(Mission::Overload.new)
-          generation.add_mission(Mission::TypeParameter.new)
-          generation.add_mission(Mission::TypeReturn.new)
-          return true
-        end
+        return true if parse_result.errors.empty?
 
         typed_parameter_offsets = Set.new
 

@@ -50,6 +50,10 @@ module RubyModKit
     def resolve
       if first_generation?
         add_mission(Mission::FixParseError.new)
+        add_mission(Mission::TypeAttr.new)
+        add_mission(Mission::Overload.new)
+        add_mission(Mission::TypeParameter.new)
+        add_mission(Mission::TypeReturn.new)
       elsif !@parse_result.errors.empty? && @memo.previous_error_messages == @parse_result.errors.map(&:message)
         @parse_result.errors.each do |parse_error|
           warn(
