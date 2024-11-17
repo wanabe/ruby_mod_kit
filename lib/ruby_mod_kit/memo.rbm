@@ -5,17 +5,11 @@
 module RubyModKit
   # The class of transpiler generation.
   class Memo
-    @previous_error_messages: [String]
-    @generation_num: Integer
-    @classes_memo: Hash[Integer, Memo::Class]
-    @methods_memo: Hash[Integer, Memo::Method]
-    @parameters_memo: Hash[Integer, Memo::Parameter]
-
-    attr_reader :previous_error_messages
-    attr_reader :generation_num
-    attr_reader :classes_memo
-    attr_reader :methods_memo
-    attr_reader :parameters_memo
+    getter @previous_error_messages: [String]
+    getter @generation_num: Integer
+    getter @classes_memo: Hash[Integer, Memo::Class]
+    getter @methods_memo: Hash[Integer, Memo::Method]
+    getter @parameters_memo: Hash[Integer, Memo::Parameter]
 
     def initialize: void
       @previous_error_messages = []

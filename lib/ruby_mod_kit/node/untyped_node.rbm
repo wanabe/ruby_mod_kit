@@ -6,9 +6,7 @@ module RubyModKit
   class Node
     # Transpiler program node
     class UntypedNode < Node
-      @prism_node: Prism::Node
-
-      attr_reader :prism_node
+      getter @prism_node: Prism::Node
 
       def initialize(Prism::Node => @prism_node, Node => @parent:): void
         super()

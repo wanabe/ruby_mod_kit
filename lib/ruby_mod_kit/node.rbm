@@ -5,13 +5,10 @@
 module RubyModKit
   # The class of transpile node.
   class Node
-    @parent: Node | nil
+    getter @parent: Node | nil
+    getter @location: Prism::Location
     @children: Array[Node]
     @ancestors: Array[Node]
-    @location: Prism::Location
-
-    attr_reader :parent
-    attr_reader :location
 
     def initialize: void
       @location = prism_node.location

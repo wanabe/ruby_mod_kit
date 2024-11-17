@@ -6,9 +6,7 @@ module RubyModKit
   class Mission
     # The mission for instance variable arguments
     class IvarArg < Mission
-      @assignment: String
-
-      attr_reader :assignment
+      getter @assignment: String
 
       def perform(Generation => generation, Node => root_node, (Prism::ParseResult) => _parse_result, Memo => _memo): bool
         parameter_node = root_node.parameter_node_at(@offset)

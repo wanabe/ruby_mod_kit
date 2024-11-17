@@ -5,15 +5,12 @@
 module RubyModKit
   # The class of transpiler generation.
   class Generation
-    @parse_result: Prism::ParseResult
+    getter @parse_result: Prism::ParseResult
+    getter @script: String
     @missions: Array[Mission]
-    @script: String
     @memo: Memo
     @root_node: Node::ProgramNode
     @offset_diff: OffsetDiff
-
-    attr_reader :parse_result
-    attr_reader :script
 
     def initialize(String => @script, Array[Mission] => @missions: [], Memo => @memo: Memo.new): void
       @offset_diff = OffsetDiff.new

@@ -6,17 +6,12 @@ module RubyModKit
   class Memo
     # The memo for parameter type
     class Method < OffsetMemo
+      getter @parent_offset: Integer
+      getter @name: Symbol
+      getter @parameters: Set[Memo::Parameter]
+      getter @type: String
+
       UNTYPED = "untyped"
-
-      @parent_offset: Integer
-      @name: Symbol
-      @parameters: Set[Memo::Parameter]
-      @type: String
-
-      attr_reader :parent_offset
-      attr_reader :name
-      attr_reader :parameters
-      attr_reader :type
 
       def initialize(Node::DefNode => node): void
         @type = UNTYPED

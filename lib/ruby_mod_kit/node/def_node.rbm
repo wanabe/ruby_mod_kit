@@ -6,9 +6,7 @@ module RubyModKit
   class Node
     # Transpiler program node
     class DefNode < Node
-      @prism_node: Prism::DefNode
-
-      attr_reader :prism_node
+      getter @prism_node: Prism::DefNode
 
       def initialize(Prism::DefNode => @prism_node, Node => @parent:): void
         raise RubyModKit::Error unless prism_node.is_a?(Prism::DefNode)

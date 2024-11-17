@@ -5,9 +5,9 @@ module RubyModKit
   class Generation
     @parse_result: Prism::ParseResult
 
-    @missions: Array[Mission]
-
     @script: String
+
+    @missions: Array[Mission]
 
     @memo: Memo
 

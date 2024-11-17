@@ -5,9 +5,7 @@
 module RubyModKit
   # The class of transpiler mission.
   class Mission
-    @offset: Integer
-
-    attr_accessor :offset
+    property @offset: Integer
 
     def initialize(Integer => @offset): void
     end

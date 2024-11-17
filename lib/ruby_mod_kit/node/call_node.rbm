@@ -6,11 +6,8 @@ module RubyModKit
   class Node
     # Transpiler method call node
     class CallNode < Node
-      @prism_node: Prism::CallNode
-      @name: Symbol
-
-      attr_reader :prism_node
-      attr_reader :name
+      getter @prism_node: Prism::CallNode
+      getter @name: Symbol
 
       def initialize(Prism::CallNode => @prism_node, Node => @parent:): void
         raise RubyModKit::Error unless prism_node.is_a?(Prism::CallNode)

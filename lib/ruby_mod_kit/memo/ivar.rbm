@@ -6,11 +6,8 @@ module RubyModKit
   class Memo
     # The memo for parameter type
     class Ivar
-      @type: String
-      @attr_kind: (nil | Symbol)
-
-      attr_reader :type
-      attr_reader :attr_kind
+      getter @type: String
+      getter @attr_kind: (nil | Symbol)
 
       def initialize(Symbol => @name): void
       end

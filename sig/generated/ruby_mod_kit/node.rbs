@@ -5,11 +5,11 @@ module RubyModKit
   class Node
     @parent: Node | nil
 
+    @location: Prism::Location
+
     @children: Array[Node]
 
     @ancestors: Array[Node]
-
-    @location: Prism::Location
 
     attr_reader parent: Node | nil
 
