@@ -202,14 +202,17 @@ describe RubyModKit::Transpiler do
           class Foo
             attr_reader @bar: Bar
             property @buz: Buz
+            writer @hoge: Hoge
           end
         RBM
           class Foo
             # @rbs @bar: Bar
             # @rbs @buz: Buz
+            # @rbs @hoge: Hoge
 
             attr_reader :bar #: Bar
             attr_accessor :buz #: Buz
+            attr_writer :hoge #: Hoge
           end
         RB
       end

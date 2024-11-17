@@ -24,8 +24,6 @@ module RubyModKit
           @attr_kind = :attr_writer
         when :attr_accessor, :accessor, :property
           @attr_kind = :attr_accessor
-        else
-          raise ArgumentError, "Invalid attribute kind: #{kind}"
         end
       end
     end
