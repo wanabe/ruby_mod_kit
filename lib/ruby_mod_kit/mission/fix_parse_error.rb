@@ -6,9 +6,12 @@ module RubyModKit
   class Mission
     # The mission for parameter types
     class FixParseError < Mission
+      # @rbs @previous_error_messages: Array[String]
+
       # @rbs return: void
       def initialize
         super(0)
+        @previous_error_messages = []
       end
 
       # @rbs generation: Generation
@@ -18,6 +21,9 @@ module RubyModKit
       # @rbs return: bool
       def perform(generation, root_node, parse_result, memo)
         return true if parse_result.errors.empty?
+
+        check_prev_errors(parse_result)
+        @previous_error_messages = parse_result.errors.map(&:message)
 
         typed_parameter_offsets = Set.new
 
@@ -40,6 +46,23 @@ module RubyModKit
         end
 
         false
+      end
+
+      # @rbs parse_result: Prism::ParseResult
+      # @rbs return: void
+      def check_prev_errors(parse_result)
+        return if @previous_error_messages.empty?
+        return if parse_result.errors.empty?
+        return if @previous_error_messages != parse_result.errors.map(&:message)
+
+        parse_result.errors.each do |parse_error|
+          warn(
+            ":#{parse_error.location.start_line}:#{parse_error.message} (#{parse_error.type})",
+            parse_result.source.lines[parse_error.location.start_line - 1],
+            "#{" " * parse_error.location.start_column}^#{"~" * [parse_error.location.length - 1, 0].max}",
+          )
+        end
+        raise RubyModKit::Error, "Syntax error"
       end
 
       # @rbs parse_error: Prism::ParseError

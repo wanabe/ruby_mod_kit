@@ -35,9 +35,6 @@ module RubyModKit
     def succ: () -> Generation
 
     # @rbs return: void
-    def check_prev_errors: () -> void
-
-    # @rbs return: void
     def resolve: () -> void
 
     # @rbs return: bool

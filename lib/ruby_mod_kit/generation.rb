@@ -50,7 +50,7 @@ module RubyModKit
       @missions.each do |mission|
         mission.succ(@offset_diff)
       end
-      @memo.succ(@offset_diff, @parse_result.errors.map(&:message))
+      @memo.succ(@offset_diff)
       Generation.new(
         @script,
         missions: @missions,
@@ -59,24 +59,7 @@ module RubyModKit
     end
 
     # @rbs return: void
-    def check_prev_errors
-      return if first_generation?
-      return if @parse_result.errors.empty?
-      return if @memo.previous_error_messages != @parse_result.errors.map(&:message)
-
-      @parse_result.errors.each do |parse_error|
-        warn(
-          ":#{parse_error.location.start_line}:#{parse_error.message} (#{parse_error.type})",
-          @parse_result.source.lines[parse_error.location.start_line - 1],
-          "#{" " * parse_error.location.start_column}^#{"~" * [parse_error.location.length - 1, 0].max}",
-        )
-      end
-      raise RubyModKit::Error, "Syntax error"
-    end
-
-    # @rbs return: void
     def resolve
-      check_prev_errors
       perform_missions
     end
 

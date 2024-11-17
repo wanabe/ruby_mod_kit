@@ -5,21 +5,19 @@
 module RubyModKit
   # The class of transpiler generation.
   class Memo
-    getter @previous_error_messages: Array[String]
     getter @generation_num: Integer
     getter @classes_memo: Hash[Integer, Memo::Class]
     getter @methods_memo: Hash[Integer, Memo::Method]
     getter @parameters_memo: Hash[Integer, Memo::Parameter]
 
     def initialize: void
-      @previous_error_messages = []
       @generation_num = 0
       @classes_memo = {}
       @methods_memo = {}
       @parameters_memo = {}
     end
 
-    def succ(OffsetDiff => offset_diff, @previous_error_messages): void
+    def succ(OffsetDiff => offset_diff): void
       [@methods_memo, @parameters_memo, @classes_memo].each do |offset_node_memo|
         new_offset_node_memo = {}
         offset_node_memo.each_value do |node_memo|

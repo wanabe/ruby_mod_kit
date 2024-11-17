@@ -11,14 +11,14 @@ describe RubyModKit::Transpiler do
     end
 
     it "raises error with invalid ruby script" do
-      generation = nil
-      allow(RubyModKit::Generation).to receive(:new).and_wrap_original do |m, *args, **kw|
-        generation = m.call(*args, **kw)
-        allow(generation).to receive(:warn)
-        generation
+      instance = nil
+      allow(RubyModKit::Mission::FixParseError).to receive(:new).and_wrap_original do |m, *args, **kw|
+        instance = m.call(*args, **kw)
+        allow(instance).to receive(:warn)
+        instance
       end
       expect { transpiler.transpile("@") }.to raise_error(RubyModKit::Error)
-      expect(generation).to have_received(:warn)
+      expect(instance).to have_received(:warn)
     end
 
     describe "for instance variable parameter" do
