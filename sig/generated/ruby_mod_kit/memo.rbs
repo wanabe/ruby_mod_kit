@@ -3,15 +3,11 @@
 module RubyModKit
   # The class of transpiler generation.
   class Memo
-    @generation_num: Integer
-
     @classes_memo: Hash[Integer, Memo::Class]
 
     @methods_memo: Hash[Integer, Memo::Method]
 
     @parameters_memo: Hash[Integer, Memo::Parameter]
-
-    attr_reader generation_num: Integer
 
     attr_reader classes_memo: Hash[Integer, Memo::Class]
 

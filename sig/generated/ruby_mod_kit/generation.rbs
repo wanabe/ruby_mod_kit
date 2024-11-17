@@ -15,6 +15,8 @@ module RubyModKit
 
     @offset_diff: OffsetDiff
 
+    @generation_num: Integer
+
     attr_reader parse_result: Prism::ParseResult
 
     attr_reader script: String
@@ -22,8 +24,9 @@ module RubyModKit
     # @rbs script: String
     # @rbs missions: Array[Mission]
     # @rbs memo: Memo
+    # @rbs generation_num: Integer
     # @rbs return: void
-    def initialize: (String script, ?missions: Array[Mission], ?memo: Memo) -> void
+    def initialize: (String script, ?missions: Array[Mission], ?memo: Memo, ?generation_num: Integer) -> void
 
     # @rbs return: void
     def init_missions: () -> void

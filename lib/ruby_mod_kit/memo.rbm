@@ -5,13 +5,11 @@
 module RubyModKit
   # The class of transpiler generation.
   class Memo
-    getter @generation_num: Integer
     getter @classes_memo: Hash[Integer, Memo::Class]
     getter @methods_memo: Hash[Integer, Memo::Method]
     getter @parameters_memo: Hash[Integer, Memo::Parameter]
 
     def initialize: void
-      @generation_num = 0
       @classes_memo = {}
       @methods_memo = {}
       @parameters_memo = {}
@@ -26,7 +24,6 @@ module RubyModKit
         end
         offset_node_memo.replace(new_offset_node_memo)
       end
-      @generation_num += 1
       self
     end
 

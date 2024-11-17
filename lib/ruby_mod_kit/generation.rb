@@ -11,6 +11,7 @@ module RubyModKit
     # @rbs @memo: Memo
     # @rbs @root_node: Node::ProgramNode
     # @rbs @offset_diff: OffsetDiff
+    # @rbs @generation_num: Integer
 
     attr_reader :parse_result #: Prism::ParseResult
     attr_reader :script #: String
@@ -18,11 +19,13 @@ module RubyModKit
     # @rbs script: String
     # @rbs missions: Array[Mission]
     # @rbs memo: Memo
+    # @rbs generation_num: Integer
     # @rbs return: void
-    def initialize(script, missions: [], memo: Memo.new)
+    def initialize(script, missions: [], memo: Memo.new, generation_num: 0)
       @script = script
       @missions = missions
       @memo = memo
+      @generation_num = generation_num
       @offset_diff = OffsetDiff.new
       @parse_result = Prism.parse(@script)
       @root_node = Node::ProgramNode.new(@parse_result.value)
@@ -42,7 +45,7 @@ module RubyModKit
 
     # @rbs return: bool
     def first_generation?
-      @memo.generation_num == 0
+      @generation_num == 0
     end
 
     # @rbs return: Generation
@@ -55,6 +58,7 @@ module RubyModKit
         @script,
         missions: @missions,
         memo: @memo,
+        generation_num: @generation_num + 1,
       )
     end
 

@@ -11,8 +11,9 @@ module RubyModKit
     @memo: Memo
     @root_node: Node::ProgramNode
     @offset_diff: OffsetDiff
+    @generation_num: Integer
 
-    def initialize(@script, @missions: [], @memo: Memo.new): void
+    def initialize(@script, @missions: [], @memo: Memo.new, @generation_num: 0): void
       @offset_diff = OffsetDiff.new
       @parse_result = Prism.parse(@script)
       @root_node = Node::ProgramNode.new(@parse_result.value)
@@ -30,7 +31,7 @@ module RubyModKit
     end
 
     def first_generation?: bool
-      @memo.generation_num == 0
+      @generation_num == 0
     end
 
     def succ: Generation
@@ -42,6 +43,7 @@ module RubyModKit
         @script,
         missions: @missions,
         memo: @memo,
+        generation_num: @generation_num + 1,
       )
     end
 
