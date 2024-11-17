@@ -16,9 +16,10 @@ module RubyModKit
       # @rbs return: bool
       def perform: (Generation generation, Node root_node, Prism::ParseResult parse_result, Memo memo) -> bool
 
+      # @rbs generation: Generation
       # @rbs parse_result: Prism::ParseResult
       # @rbs return: void
-      def check_prev_errors: (Prism::ParseResult parse_result) -> void
+      def check_prev_errors: (Generation generation, Prism::ParseResult parse_result) -> void
 
       # @rbs parse_error: Prism::ParseError
       # @rbs generation: Generation

@@ -22,7 +22,7 @@ module RubyModKit
       def perform(generation, root_node, parse_result, memo)
         return true if parse_result.errors.empty?
 
-        check_prev_errors(parse_result)
+        check_prev_errors(generation, parse_result)
         @previous_error_messages = parse_result.errors.map(&:message)
 
         parse_result.errors.each do |parse_error|
@@ -46,21 +46,23 @@ module RubyModKit
         false
       end
 
+      # @rbs generation: Generation
       # @rbs parse_result: Prism::ParseResult
       # @rbs return: void
-      def check_prev_errors(parse_result)
+      def check_prev_errors(generation, parse_result)
         return if @previous_error_messages.empty?
         return if parse_result.errors.empty?
         return if @previous_error_messages != parse_result.errors.map(&:message)
 
+        message = +""
         parse_result.errors.each do |parse_error|
-          warn(
-            ":#{parse_error.location.start_line}:#{parse_error.message} (#{parse_error.type})",
-            parse_result.source.lines[parse_error.location.start_line - 1],
-            "#{" " * parse_error.location.start_column}^#{"~" * [parse_error.location.length - 1, 0].max}",
-          )
+          message << "\n" unless message.empty?
+          message << "#{generation.name}:#{parse_error.location.start_line}:#{parse_error.message} "
+          message << "(#{parse_error.type})\n"
+          message << parse_result.source.lines[parse_error.location.start_line - 1].chomp << "\n"
+          message << "#{" " * parse_error.location.start_column}^#{"~" * [parse_error.location.length - 1, 0].max}"
         end
-        raise RubyModKit::Error, "Syntax error"
+        raise RubyModKit::SyntaxError, message
       end
 
       # @rbs parse_error: Prism::ParseError

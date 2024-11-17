@@ -12,8 +12,9 @@ module RubyModKit
     @root_node: Node::ProgramNode
     @offset_diff: OffsetDiff
     @generation_num: Integer
+    @filename: (String | nil)
 
-    def initialize(@script, @missions: [], @memo: Memo.new, @generation_num: 0): void
+    def initialize(@script, @missions: [], @memo: Memo.new, @generation_num: 0, @filename: nil): void
       @offset_diff = OffsetDiff.new
       @parse_result = Prism.parse(@script)
       @root_node = Node::ProgramNode.new(@parse_result.value)
@@ -44,7 +45,12 @@ module RubyModKit
         missions: @missions,
         memo: @memo,
         generation_num: @generation_num + 1,
+        filename: @filename,
       )
+    end
+
+    def name: String
+      "#{@filename || "(eval)"}[gen #{@generation_num}]"
     end
 
     def resolve: void

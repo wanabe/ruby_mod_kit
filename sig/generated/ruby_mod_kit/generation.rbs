@@ -17,6 +17,8 @@ module RubyModKit
 
     @generation_num: Integer
 
+    @filename: String | nil
+
     attr_reader parse_result: Prism::ParseResult
 
     attr_reader script: String
@@ -25,8 +27,9 @@ module RubyModKit
     # @rbs missions: Array[Mission]
     # @rbs memo: Memo
     # @rbs generation_num: Integer
+    # @rbs filename: String | nil
     # @rbs return: void
-    def initialize: (String script, ?missions: Array[Mission], ?memo: Memo, ?generation_num: Integer) -> void
+    def initialize: (String script, ?missions: Array[Mission], ?memo: Memo, ?generation_num: Integer, ?filename: String | nil) -> void
 
     # @rbs return: void
     def init_missions: () -> void
@@ -36,6 +39,9 @@ module RubyModKit
 
     # @rbs return: Generation
     def succ: () -> Generation
+
+    # @rbs return: String
+    def name: () -> String
 
     # @rbs return: void
     def resolve: () -> void

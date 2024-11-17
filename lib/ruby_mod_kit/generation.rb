@@ -12,6 +12,7 @@ module RubyModKit
     # @rbs @root_node: Node::ProgramNode
     # @rbs @offset_diff: OffsetDiff
     # @rbs @generation_num: Integer
+    # @rbs @filename: String | nil
 
     attr_reader :parse_result #: Prism::ParseResult
     attr_reader :script #: String
@@ -20,12 +21,14 @@ module RubyModKit
     # @rbs missions: Array[Mission]
     # @rbs memo: Memo
     # @rbs generation_num: Integer
+    # @rbs filename: String | nil
     # @rbs return: void
-    def initialize(script, missions: [], memo: Memo.new, generation_num: 0)
+    def initialize(script, missions: [], memo: Memo.new, generation_num: 0, filename: nil)
       @script = script
       @missions = missions
       @memo = memo
       @generation_num = generation_num
+      @filename = filename
       @offset_diff = OffsetDiff.new
       @parse_result = Prism.parse(@script)
       @root_node = Node::ProgramNode.new(@parse_result.value)
@@ -59,7 +62,13 @@ module RubyModKit
         missions: @missions,
         memo: @memo,
         generation_num: @generation_num + 1,
+        filename: @filename,
       )
+    end
+
+    # @rbs return: String
+    def name
+      "#{@filename || "(eval)"}[gen #{@generation_num}]"
     end
 
     # @rbs return: void

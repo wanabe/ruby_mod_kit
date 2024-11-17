@@ -8,6 +8,7 @@ require "prism"
 # The root namespace for ruby_mod_kit.
 module RubyModKit
   class Error < StandardError; end
+  class SyntaxError < ::SyntaxError; end
 
   class << self
     # @rbs file: String
@@ -21,16 +22,17 @@ module RubyModKit
     # @rbs file: String
     # @rbs return: String
     def transpile_file(file)
-      rb_src = transpile(File.read(file))
+      rb_src = transpile(File.read(file), filename: file)
       rb_path = rb_path(file)
       File.write(rb_path, rb_src)
       rb_path
     end
 
     # @rbs src: String
+    # @rbs filename: String | nil
     # @rbs return: String
-    def transpile(src)
-      Transpiler.new.transpile(src)
+    def transpile(src, filename: nil)
+      Transpiler.new.transpile(src, filename: filename)
     end
 
     # @rbs file: String

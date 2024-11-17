@@ -11,14 +11,7 @@ describe RubyModKit::Transpiler do
     end
 
     it "raises error with invalid ruby script" do
-      instance = nil
-      allow(RubyModKit::Mission::FixParseError).to receive(:new).and_wrap_original do |m, *args, **kw|
-        instance = m.call(*args, **kw)
-        allow(instance).to receive(:warn)
-        instance
-      end
-      expect { transpiler.transpile("@") }.to raise_error(RubyModKit::Error)
-      expect(instance).to have_received(:warn)
+      expect { transpiler.transpile("@") }.to raise_error(RubyModKit::SyntaxError)
     end
 
     describe "for instance variable parameter" do

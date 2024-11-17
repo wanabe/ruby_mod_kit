@@ -22,7 +22,7 @@ describe RubyModKit do
       described_class.transpile(script)
 
       expect(RubyModKit::Transpiler).to have_received(:new).with(no_args).once
-      expect(transpiler).to have_received(:transpile).with(script).once
+      expect(transpiler).to have_received(:transpile).with(script, filename: nil).once
     end
   end
 
@@ -48,7 +48,7 @@ describe RubyModKit do
       described_class.execute_file(rbm_path)
 
       expect(RubyModKit::Transpiler).to have_received(:new).with(no_args).once
-      expect(transpiler).to have_received(:transpile).with(script).once
+      expect(transpiler).to have_received(:transpile).with(script, filename: instance_of(String)).once
       expect(described_class).to have_received(:system).with(RbConfig.ruby, match(/\.rb\z/))
     end
   end
