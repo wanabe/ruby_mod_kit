@@ -58,17 +58,12 @@ module RubyModKit
         column = parse_error.location.start_column - 1
         return if column < 0
 
-        line = parse_result.source.lines[parse_error.location.start_line - 1][column..]
-        return unless line
-        return if line !~ /\A\*(.*?)\s*=>\s*/
-
-        length = ::Regexp.last_match(0)&.length
-        type = ::Regexp.last_match(1)
-        return if !length || !type
-
+        line = parse_result.source.lines[parse_error.location.start_line - 1][column..] || return
+        line =~ /\A\*(.*?)\s*=>\s*/
+        length = ::Regexp.last_match(0)&.length || return
+        type = ::Regexp.last_match(1) || return
         offset = parse_error.location.start_offset - 1
-        parameter_position_node = root_node.node_at(offset + length)
-        return unless parameter_position_node
+        parameter_position_node = root_node.node_at(offset + length) || return
 
         generation[parse_error.location.start_offset, length - 1] = ""
         parameter_memo = memo.parameter_memo(parameter_position_node)
@@ -101,12 +96,8 @@ module RubyModKit
       # @rbs return: void
       def fix_argument_formal_constant(parse_error, generation, parse_result)
         line = parse_result.source.lines[parse_error.location.start_line - 1]
-        line = line[parse_error.location.start_column..]
-        return unless line
-
-        parameter_type = line[/(\A[A-Z]\w*(?:::[A-Z]\w*)+)(?:\s*=>\s*)/, 1]
-        return unless parameter_type
-
+        line = line[parse_error.location.start_column..] || return
+        parameter_type = line[/(\A[A-Z]\w*(?:::[A-Z]\w*)+)(?:\s*=>\s*)/, 1] || return
         src_offset = parse_error.location.start_offset
         generation[src_offset, parameter_type.length] = "(#{parameter_type})"
       end
@@ -118,29 +109,20 @@ module RubyModKit
       # @rbs memo: Memo
       # @rbs return: void
       def fix_unexpected_assoc(parse_error, generation, root_node, typed_parameter_offsets, memo)
-        def_node = root_node.def_node_at(parse_error.location.start_offset)
-        return unless def_node
-
+        def_node = root_node.def_node_at(parse_error.location.start_offset) || return
         def_parent_node = def_node.parent
         parameters_node, body_node, = def_node.children
         return if !def_parent_node || !parameters_node || !body_node
 
-        last_parameter_node = parameters_node.children.max_by(&:offset)
-        return unless last_parameter_node
-
+        last_parameter_node = parameters_node.children.max_by(&:offset) || return
         last_parameter_offset = last_parameter_node.offset
         return if typed_parameter_offsets.include?(last_parameter_offset)
 
         typed_parameter_offsets << last_parameter_offset
-        right_node = body_node.children.find do |child_node|
-          child_node.offset >= parse_error.location.end_offset
-        end
-        return unless right_node
-
+        right_node = body_node.children.find { _1.offset >= parse_error.location.end_offset } || return
         right_offset = right_node.offset
-        parameter_type = generation[last_parameter_offset...right_offset]&.sub(/\s*=>\s*\z/, "")
-        raise RubyModKit::Error unless parameter_type
-
+        parameter_type = generation[last_parameter_offset...right_offset] || raise(RubyModKit::Error)
+        parameter_type = parameter_type.sub(/\s*=>\s*\z/, "")
         generation[last_parameter_offset, right_offset - last_parameter_offset] = ""
         memo.parameter_memo(last_parameter_node).type = parameter_type
       end
@@ -179,9 +161,7 @@ module RubyModKit
         end
         return if generation[src_offset...parse_error.location.start_offset] !~ /\A\s*\z/
 
-        return_type_location = root_node.node_at(parse_error.location.end_offset + 1)&.location
-        return unless return_type_location
-
+        return_type_location = root_node.node_at(parse_error.location.end_offset + 1)&.location || return_type_location
         generation[src_offset, return_type_location.end_offset - src_offset] = ""
         memo.method_memo(def_node).type = return_type_location.slice
       end

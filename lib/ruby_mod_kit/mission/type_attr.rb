@@ -27,13 +27,9 @@ module RubyModKit
             next if argument_nodes.size != 1 || !argument_nodes[0].is_a?(Node::SymbolNode)
 
             name = argument_nodes[0].value
-            ivar_memo = name && class_memo.ivars_memo[name]
-            next unless ivar_memo
-
+            ivar_memo = (name && class_memo.ivars_memo[name]) || next
             line = parse_result.source.lines[call_node.prism_node.location.end_line - 1]
-            length = line[/\A\s*(#{call_node.name}\s+:#{name})(?=\n\z)/, 1]&.length
-            next unless length
-
+            length = line[/\A\s*(#{call_node.name}\s+:#{name})(?=\n\z)/, 1]&.length || next
             generation[call_node.location.start_offset + length, 0] = " #: #{ivar_memo.type}"
           end
         end
