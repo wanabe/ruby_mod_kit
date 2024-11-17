@@ -6,12 +6,10 @@ module RubyModKit
   class Memo
     # The memo for parameter type
     class Method < OffsetMemo
-      # @rbs @parent_offset: Integer
       # @rbs @name: Symbol
       # @rbs @parameters: Set[Memo::Parameter]
       # @rbs @type: String
 
-      attr_reader :parent_offset #: Integer
       attr_reader :name #: Symbol
       attr_reader :parameters #: Set[Memo::Parameter]
       attr_reader :type #: String
@@ -26,7 +24,6 @@ module RubyModKit
         @name = node.name
         raise RubyModKit::Error unless node.parent
 
-        @parent_offset = node.parent.offset
         super(node.offset)
       end
 

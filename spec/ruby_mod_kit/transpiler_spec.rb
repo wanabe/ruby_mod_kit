@@ -141,6 +141,45 @@ describe RubyModKit::Transpiler do
           end
         RB
       end
+
+      it do
+        expect(transpiler.transpile(<<~RBM)).to eq(<<~RB)
+          class Foo
+            @bar: Bar
+
+            def buz(Foo => foo): Buz
+            end
+
+            def buz(Foo::Bar => bar): Buz
+            end
+          end
+        RBM
+          class Foo
+            # @rbs @bar: Bar
+
+            # @rbs (Foo) -> Buz
+            #    | (Foo::Bar) -> Buz
+            def buz(*args)
+              case args
+              in [Foo]
+                buz__overload0(*args)
+              in [Foo::Bar]
+                buz__overload1(*args)
+              end
+            end
+
+            # @rbs foo: Foo
+            # @rbs return: Buz
+            def buz__overload0(foo)
+            end
+
+            # @rbs bar: Foo::Bar
+            # @rbs return: Buz
+            def buz__overload1(bar)
+            end
+          end
+        RB
+      end
     end
 
     describe "typed return value" do

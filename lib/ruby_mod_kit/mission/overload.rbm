@@ -16,7 +16,7 @@ module RubyModKit
 
       def perform(Generation => generation, Node => root_node, (Prism::ParseResult) => parse_result, Memo => memo): bool
         method_memo_groups = memo.methods_memo.each_value.group_by do |method_memo|
-          [method_memo.parent_offset, method_memo.name]
+          [root_node.class_node_at(method_memo.offset), method_memo.name]
         end
         method_memo_groups.each_value do |method_memos|
           next if method_memos.length <= 1

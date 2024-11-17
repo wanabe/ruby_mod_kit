@@ -4,15 +4,11 @@ module RubyModKit
   class Memo
     # The memo for parameter type
     class Method < OffsetMemo
-      @parent_offset: Integer
-
       @name: Symbol
 
       @parameters: Set[Memo::Parameter]
 
       @type: String
-
-      attr_reader parent_offset: Integer
 
       attr_reader name: Symbol
 
