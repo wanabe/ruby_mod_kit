@@ -135,7 +135,7 @@ describe RubyModKit::Transpiler do
         RB
       end
 
-      it do
+      it "converts correctly with ivar and namespaced type" do
         expect(transpiler.transpile(<<~RBM)).to eq(<<~RB)
           class Foo
             @bar: Bar
@@ -169,6 +169,56 @@ describe RubyModKit::Transpiler do
             # @rbs bar: Foo::Bar
             # @rbs return: Buz
             def buz__overload1(bar)
+            end
+          end
+        RB
+      end
+
+      it "can separate with modules" do
+        expect(transpiler.transpile(<<~RBM)).to eq(<<~RB)
+          class Foo
+            module Bar
+              def buz: Buz
+              end
+
+              def buz(Integer => n): Buz
+              end
+            end
+
+            module Buz
+              def buz(String => s): Buz
+              end
+            end
+          end
+        RBM
+          class Foo
+            module Bar
+              # @rbs () -> Buz
+              #    | (Integer) -> Buz
+              def buz(*args)
+                case args
+                in []
+                  buz__overload0(*args)
+                in [Integer]
+                  buz__overload1(*args)
+                end
+              end
+
+              # @rbs return: Buz
+              def buz__overload0
+              end
+
+              # @rbs n: Integer
+              # @rbs return: Buz
+              def buz__overload1(n)
+              end
+            end
+
+            module Buz
+              # @rbs s: String
+              # @rbs return: Buz
+              def buz(s)
+              end
             end
           end
         RB

@@ -3,13 +3,13 @@
 module RubyModKit
   # The class of transpiler generation.
   class Memo
-    @classes_memo: Hash[Integer, Memo::Class]
+    @def_parents_memo: Hash[Integer, Memo::DefParent]
 
     @methods_memo: Hash[Integer, Memo::Method]
 
     @parameters_memo: Hash[Integer, Memo::Parameter]
 
-    attr_reader classes_memo: Hash[Integer, Memo::Class]
+    attr_reader def_parents_memo: Hash[Integer, Memo::DefParent]
 
     attr_reader methods_memo: Hash[Integer, Memo::Method]
 
@@ -22,9 +22,9 @@ module RubyModKit
     # @rbs return: void
     def succ: (OffsetDiff offset_diff) -> void
 
-    # @rbs class_node: Node::ClassNode
-    # @rbs return: Memo::Class
-    def class_memo: (Node::ClassNode class_node) -> Memo::Class
+    # @rbs def_parent_node: Node::DefParentNode
+    # @rbs return: Memo::DefParent
+    def def_parent_memo: (Node::DefParentNode def_parent_node) -> Memo::DefParent
 
     # @rbs def_node: Node::DefNode
     # @rbs return: Memo::Method

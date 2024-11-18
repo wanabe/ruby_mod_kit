@@ -64,10 +64,10 @@ module RubyModKit
 
       # @rbs parse_error: Prism::ParseError
       # @rbs generation: Generation
-      # @rbs class_node: Node::ClassNode
+      # @rbs def_parent_node: Node::DefParentNode
       # @rbs memo: Memo
       # @rbs return: void
-      def fix_unexpected_colon_in_module: (Prism::ParseError parse_error, Generation generation, Node::ClassNode class_node, Memo memo) -> void
+      def fix_unexpected_colon_in_module: (Prism::ParseError parse_error, Generation generation, Node::DefParentNode def_parent_node, Memo memo) -> void
     end
   end
 end

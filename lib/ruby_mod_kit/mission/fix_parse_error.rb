@@ -108,8 +108,8 @@ module RubyModKit
 
         return unless parameter_memo.untyped?
 
-        class_node = root_node.class_node_at(parse_error.location.start_offset) || return
-        ivar_memo_type = memo.class_memo(class_node).ivar_memo(name.to_sym).type || return
+        def_parent_node = root_node.def_parent_node_at(parse_error.location.start_offset) || return
+        ivar_memo_type = memo.def_parent_memo(def_parent_node).ivar_memo(name.to_sym).type || return
         parameter_memo.type = ivar_memo_type
       end
 
@@ -156,7 +156,7 @@ module RubyModKit
         case parent_node
         when Node::DefNode
           fix_unexpected_colon_in_def(parse_error, generation, root_node, parent_node, memo)
-        when Node::ClassNode
+        when Node::DefParentNode
           fix_unexpected_colon_in_module(parse_error, generation, parent_node, memo)
         end
       end
@@ -186,10 +186,10 @@ module RubyModKit
 
       # @rbs parse_error: Prism::ParseError
       # @rbs generation: Generation
-      # @rbs class_node: Node::ClassNode
+      # @rbs def_parent_node: Node::DefParentNode
       # @rbs memo: Memo
       # @rbs return: void
-      def fix_unexpected_colon_in_module(parse_error, generation, class_node, memo)
+      def fix_unexpected_colon_in_module(parse_error, generation, def_parent_node, memo)
         line = generation.line(parse_error)
         line_offset = generation.src_offset(parse_error) || return
         attr_patterns = %i[attr_reader reader getter attr_writer writer setter attr_accessor accessor property]
@@ -202,7 +202,7 @@ module RubyModKit
         type = ::Regexp.last_match(4)
         return if !length || !indent || !ivar_name || !type
 
-        ivar_memo = memo.class_memo(class_node).ivar_memo(ivar_name.to_sym)
+        ivar_memo = memo.def_parent_memo(def_parent_node).ivar_memo(ivar_name.to_sym)
         ivar_memo.type = type
         ivar_memo.attr_kind = attr_kind if attr_kind
 

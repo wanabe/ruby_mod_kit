@@ -5,13 +5,13 @@
 module RubyModKit
   class Node
     # Transpiler program node
-    class ClassNode < Node
-      getter @prism_node: Prism::ClassNode
+    class DefParentNode < Node
+      getter @prism_node: (Prism::ClassNode | Prism::ModuleNode)
       getter @body_node: (nil | Node::StatementsNode)
       getter @parent: Node
 
       def initialize(@prism_node, @parent:): void
-        raise RubyModKit::Error unless prism_node.is_a?(Prism::ClassNode)
+        raise RubyModKit::Error if !prism_node.is_a?(Prism::ClassNode) && !prism_node.is_a?(Prism::ModuleNode)
 
         super()
       end

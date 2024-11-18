@@ -4,17 +4,17 @@
 
 module RubyModKit
   class Memo
-    # The memo for parameter type
-    class Class < OffsetMemo
+    # The memo for def parent (class, module)
+    class DefParent < OffsetMemo
       # @rbs @ivars_memo: Hash[Symbol, Memo::Ivar]
 
       attr_reader :ivars_memo #: Hash[Symbol, Memo::Ivar]
 
-      # @rbs class_node: Node::ClassNode
+      # @rbs def_parent_node: Node::DefParentNode
       # @rbs return: void
-      def initialize(class_node)
+      def initialize(def_parent_node)
         @ivars_memo = {}
-        super(class_node.offset)
+        super(def_parent_node.offset)
       end
 
       # @rbs name: Symbol

@@ -31,8 +31,8 @@ module RubyModKit
       case prism_node
       when Prism::SymbolNode
         Node::SymbolNode.new(prism_node, parent: self)
-      when Prism::ClassNode
-        Node::ClassNode.new(prism_node, parent: self)
+      when Prism::ClassNode, Prism::ModuleNode
+        Node::DefParentNode.new(prism_node, parent: self)
       when Prism::DefNode
         Node::DefNode.new(prism_node, parent: self)
       when Prism::RequiredParameterNode, Prism::OptionalKeywordParameterNode,
@@ -99,10 +99,10 @@ module RubyModKit
     end
 
     # @rbs offset: Integer
-    # @rbs return: Node::ClassNode | nil
-    def class_node_at(offset)
+    # @rbs return: Node::DefParentNode | nil
+    def def_parent_node_at(offset)
       node = node_at(offset) || return
-      [node, *node.ancestors].each { return _1 if _1.is_a?(Node::ClassNode) }
+      [node, *node.ancestors].each { return _1 if _1.is_a?(Node::DefParentNode) }
       nil
     end
 
@@ -155,7 +155,7 @@ module RubyModKit
 end
 
 require_relative "node/symbol_node"
-require_relative "node/class_node"
+require_relative "node/def_parent_node"
 require_relative "node/call_node"
 require_relative "node/def_node"
 require_relative "node/parameter_node"
