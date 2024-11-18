@@ -4,9 +4,13 @@ require_relative "lib/ruby_mod_kit/version"
 
 Gem::Specification.new do |spec|
   spec.name = "ruby_mod_kit"
-  spec.version = RubyModKit::VERSION
   spec.authors = ["wanabe"]
   spec.email = ["s.wanabe@gmail.com"]
+
+  version = RubyModKit::VERSION
+  tag_version = `git tag --points-at HEAD`.chomp.sub("v", "")
+  version += "-#{`git rev-parse --short HEAD`}" if version != tag_version
+  spec.version = version
 
   spec.summary = "ruby_mod_kit"
   spec.description = "ruby_mod_kit"
