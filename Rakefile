@@ -43,4 +43,28 @@ task :rbs_typed do
   raise "untyped found" if untyped_found
 end
 
+desc "Check git tag"
+task :tag do
+  tag = "v#{RubyModKit::VERSION}"
+  unless system("git tag --points-at HEAD|grep '^#{tag}$'")
+    system("git tag #{tag}") || raise
+    system("bundle")
+  end
+
+  unless system("git diff-index --quiet HEAD")
+    system("git status")
+    raise
+  end
+end
+
+gem_file = "ruby_mod_kit-#{RubyModKit::VERSION}.gem"
+file gem_file => :tag do
+  system("gem build ruby_mod_kit.gemspec") || raise
+end
+
+desc "Push gem file to rubygems.org"
+task push: gem_file do
+  system("gem push #{gem_file}") || raise
+end
+
 task default: %i[lib spec rbs_inline rbs_typed rubocop:autocorrect_all steep:check]
