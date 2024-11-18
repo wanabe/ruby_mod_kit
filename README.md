@@ -21,17 +21,13 @@ If bundler is not being used to manage dependencies, install the gem by executin
 
 You can get transpiled ruby script from .rbm file by `ruby_mod_kit transpile` command.
 
-```
-ruby_mod_kit transpile path/to/script.rbm
-```
+    $ ruby_mod_kit transpile path/to/script.rbm
 
 #### `exec`
 
 You can run transpiled ruby script by `ruby_mod_kit exec` command.
 
-```
-ruby_mod_kit transpile path/to/script.rbm
-```
+    $ ruby_mod_kit exec path/to/script.rbm
 
 The command also creates/updates ruby script before running.
 
