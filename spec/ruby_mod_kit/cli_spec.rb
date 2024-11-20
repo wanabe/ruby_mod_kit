@@ -27,8 +27,8 @@ describe RubyModKit::CLI do
 
     it "calls RubyModKit.transpile_file" do
       cli.transpile(*args)
-      expect(RubyModKit).to have_received(:transpile_file).with(args[0]).once
-      expect(RubyModKit).to have_received(:transpile_file).with(args[1]).once
+      expect(RubyModKit).to have_received(:transpile_file).with("script1.rbm", output: "script1.rb").once
+      expect(RubyModKit).to have_received(:transpile_file).with("script2.rbm", output: "script2.rb").once
     end
   end
 end

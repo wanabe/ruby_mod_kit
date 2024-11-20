@@ -15,17 +15,18 @@ module RubyModKit
     # @rbs *args: String
     # @rbs return: void
     def execute_file(file, *args)
-      rb_file = transpile_file(file)
+      rb_file = rb_path(file)
+      transpile_file(file, output: rb_file)
       execute_rb_file(rb_file, *args)
     end
 
     # @rbs file: String
+    # @rbs output: String | nil
     # @rbs return: String
-    def transpile_file(file)
-      rb_src = transpile(File.read(file), filename: file)
-      rb_path = rb_path(file)
-      File.write(rb_path, rb_src)
-      rb_path
+    def transpile_file(file, output: nil)
+      rb_script = transpile(File.read(file), filename: file)
+      File.write(output, rb_script) if output
+      rb_script
     end
 
     # @rbs src: String

@@ -20,7 +20,7 @@ module RubyModKit
     # @rbs return: void
     def transpile(*args)
       args.each do |path|
-        RubyModKit.transpile_file(path)
+        RubyModKit.transpile_file(path, output: RubyModKit.rb_path(path))
       end
     end
   end

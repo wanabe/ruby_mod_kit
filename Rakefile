@@ -23,7 +23,7 @@ end
 desc "Transpile .rbm files under lib/"
 task :lib do
   Dir.glob("lib/**/*.rbm") do |rbm_path|
-    RubyModKit.transpile_file(rbm_path)
+    RubyModKit.transpile_file(rbm_path, output: RubyModKit.rb_path(rbm_path))
   end
 end
 
