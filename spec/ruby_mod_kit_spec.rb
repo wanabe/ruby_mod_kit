@@ -27,29 +27,42 @@ describe RubyModKit do
   end
 
   describe ".execute_file" do
-    let(:tempfile) { Tempfile.open(["scr", ".rbm"]) }
-    let(:script) { "some script" }
+    let(:tmpdir) { +"" }
+    let(:rbm_path) { File.join(tmpdir, "scr.rbm") }
+    let(:rb_path) { File.join(tmpdir, "scr.rb") }
+    let(:rbm_script) { "rbm script" }
+    let(:rb_script) { "rb script" }
     let(:transpiler) { double }
-    let(:rbm_path) { tempfile.path }
+
+    around do |example|
+      Dir.mktmpdir do |dir|
+        tmpdir.replace(dir)
+        example.run
+      end
+    end
 
     before do
       allow(RubyModKit::Transpiler).to receive(:new).and_return(transpiler)
-      allow(transpiler).to receive(:transpile).and_return(script)
+      allow(transpiler).to receive(:transpile).and_return(rb_script)
+      allow(described_class).to receive(:eval)
       allow(described_class).to receive(:system)
-      tempfile.write(script)
-      tempfile.flush
+      File.write(rbm_path, rbm_script)
     end
 
-    after do
-      tempfile.close(true)
-    end
-
-    it "creates .rb from .rbm" do
+    it "evaluates ruby script" do
       described_class.execute_file(rbm_path)
 
       expect(RubyModKit::Transpiler).to have_received(:new).with(no_args).once
-      expect(transpiler).to have_received(:transpile).with(script, filename: instance_of(String)).once
-      expect(described_class).to have_received(:system).with(RbConfig.ruby, match(/\.rb\z/))
+      expect(transpiler).to have_received(:transpile).with(rbm_script, filename: instance_of(String)).once
+      expect(described_class).to have_received(:eval).with(rb_script, TOPLEVEL_BINDING)
+    end
+
+    it "creates .rb from .rbm" do
+      described_class.execute_file(rbm_path, output: rb_path)
+
+      expect(RubyModKit::Transpiler).to have_received(:new).with(no_args).once
+      expect(transpiler).to have_received(:transpile).with(rbm_script, filename: instance_of(String)).once
+      expect(described_class).to have_received(:system).with(RbConfig.ruby, rb_path)
     end
   end
 end

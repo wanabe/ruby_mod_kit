@@ -13,11 +13,15 @@ module RubyModKit
   class << self
     # @rbs file: String
     # @rbs *args: String
+    # @rbs output: String | nil
     # @rbs return: void
-    def execute_file(file, *args)
-      rb_file = rb_path(file)
-      transpile_file(file, output: rb_file)
-      execute_rb_file(rb_file, *args)
+    def execute_file(file, *args, output: nil)
+      rb_script = transpile_file(file, output: output)
+      if output
+        execute_rb_file(output, *args)
+      else
+        execute_rb(rb_script, *args)
+      end
     end
 
     # @rbs file: String
@@ -47,6 +51,14 @@ module RubyModKit
     # @rbs return: String
     def rb_path(path)
       path.sub(/(?:\.rbm)?$/, ".rb")
+    end
+
+    # @rbs rb_script: String
+    # @rbs *args: String
+    # @rbs return: void
+    def execute_rb(rb_script, *args)
+      ARGV.replace(args)
+      eval(rb_script, TOPLEVEL_BINDING) # rubocop:disable Security/Eval
     end
   end
 end

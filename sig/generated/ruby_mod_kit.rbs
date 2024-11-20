@@ -10,8 +10,9 @@ module RubyModKit
 
   # @rbs file: String
   # @rbs *args: String
+  # @rbs output: String | nil
   # @rbs return: void
-  def self.execute_file: (String file, *String args) -> void
+  def self.execute_file: (String file, *String args, ?output: String | nil) -> void
 
   # @rbs file: String
   # @rbs output: String | nil
@@ -31,4 +32,9 @@ module RubyModKit
   # @rbs path: String
   # @rbs return: String
   def self.rb_path: (String path) -> String
+
+  # @rbs rb_script: String
+  # @rbs *args: String
+  # @rbs return: void
+  def self.execute_rb: (String rb_script, *String args) -> void
 end

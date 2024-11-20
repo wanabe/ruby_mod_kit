@@ -29,8 +29,6 @@ You can run transpiled ruby script by `ruby_mod_kit exec` command.
 
     $ ruby_mod_kit exec path/to/script.rbm
 
-The command also creates/updates ruby script before running.
-
 ## Feature
 
 1. Type definition

@@ -11,10 +11,13 @@ module RubyModKit
   class SyntaxError < ::SyntaxError; end
 
   class << self
-    def execute_file(String => file, *String => args): void
-      rb_file = rb_path(file)
-      transpile_file(file, output: rb_file)
-      execute_rb_file(rb_file, *args)
+    def execute_file(String => file, *String => args, (String | nil) => output: nil): void
+      rb_script = transpile_file(file, output: output)
+      if output
+        execute_rb_file(output, *args)
+      else
+        execute_rb(rb_script, *args)
+      end
     end
 
     def transpile_file(String => file, (String | nil) => output: nil): String
@@ -33,6 +36,11 @@ module RubyModKit
 
     def rb_path(String => path): String
       path.sub(/(?:\.rbm)?$/, ".rb")
+    end
+
+    def execute_rb(String => rb_script, *String => args): void
+      ARGV.replace(args)
+      eval(rb_script, TOPLEVEL_BINDING) # rubocop:disable Security/Eval
     end
   end
 end
