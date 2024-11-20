@@ -49,9 +49,12 @@ module RubyModKit
         parse_result.errors.each do |parse_error|
           message << "\n" unless message.empty?
           message << "#{generation.name}:#{parse_error.location.start_line}:#{parse_error.message} "
-          message << "(#{parse_error.type})\n"
-          message << parse_result.source.lines[parse_error.location.start_line - 1].chomp << "\n"
-          message << "#{" " * parse_error.location.start_column}^#{"~" * [parse_error.location.length - 1, 0].max}"
+          message << "(#{parse_error.type})"
+          line = parse_result.source.lines[parse_error.location.start_line - 1]
+          if line
+            message << "\n#{line.chomp}\n"
+            message << "#{" " * parse_error.location.start_column}^#{"~" * [parse_error.location.length - 1, 0].max}"
+          end
         end
         raise RubyModKit::SyntaxError, message
       end
