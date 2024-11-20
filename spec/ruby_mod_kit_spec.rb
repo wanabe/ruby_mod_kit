@@ -26,6 +26,45 @@ describe RubyModKit do
     end
   end
 
+  describe ".transpile_file" do
+    let(:rbm_path) { "some path" }
+    let(:rbm_script) { "some rbm" }
+    let(:rb_script) { "some rb" }
+
+    before do
+      allow(described_class).to receive(:transpile).and_return(rb_script)
+      allow(File).to receive(:read).and_return(rbm_script)
+      allow(File).to receive(:write)
+    end
+
+    it "passes script to .transpile" do
+      described_class.transpile_file(rbm_path)
+
+      expect(File).to have_received(:read).with(rbm_path).once
+      expect(described_class).to have_received(:transpile).with(rbm_script, filename: rbm_path).once
+      expect(File).not_to have_received(:write)
+    end
+
+    it "writes ruby script with given io" do
+      allow($stdout).to receive(:write)
+      described_class.transpile_file(rbm_path, output: $stdout)
+
+      expect(File).to have_received(:read).with(rbm_path).once
+      expect(described_class).to have_received(:transpile).with(rbm_script, filename: rbm_path).once
+      expect($stdout).to have_received(:write).with(rb_script)
+      expect(File).not_to have_received(:write)
+    end
+
+    it "writes ruby script with given path" do
+      rb_path = "some rb path"
+      described_class.transpile_file(rbm_path, output: rb_path)
+
+      expect(File).to have_received(:read).with(rbm_path).once
+      expect(described_class).to have_received(:transpile).with(rbm_script, filename: rbm_path).once
+      expect(File).to have_received(:write).with(rb_path, rb_script)
+    end
+  end
+
   describe ".execute_file" do
     let(:tmpdir) { +"" }
     let(:rbm_path) { File.join(tmpdir, "scr.rbm") }

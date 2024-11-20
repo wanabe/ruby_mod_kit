@@ -1,3 +1,5 @@
 class Thor
   def self.desc: (String usage, String description, ?Hash[untyped, untyped] options) -> (String | false)?
+  def self.method_option: (Symbol name, Hash[Symbol, untyped] option) -> untyped
+  def options: () -> Hash[Symbol, untyped]
 end

@@ -20,9 +20,14 @@ module RubyModKit
       end
     end
 
-    def transpile_file(String => file, (String | nil) => output: nil): String
+    def transpile_file(String => file, (String | IO | nil) => output: nil): String
       rb_script = transpile(File.read(file), filename: file)
-      File.write(output, rb_script) if output
+      case output
+      when IO
+        output.write(rb_script)
+      when String
+        File.write(output, rb_script)
+      end
       rb_script
     end
 

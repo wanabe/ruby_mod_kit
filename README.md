@@ -20,8 +20,20 @@ If bundler is not being used to manage dependencies, install the gem by executin
 #### `transpile`
 
 You can get transpiled ruby script from .rbm file by `ruby_mod_kit transpile` command.
+`transpile` command outputs script to stdout by default. `--output` can change output target.
+`--output=.rb` is a special pattern that means "Output the original script file name with the extension changed to .rb".
+
+These below have the same meaning: "Output ruby script to stdout".
 
     $ ruby_mod_kit transpile path/to/script.rbm
+    $ ruby_mod_kit transpile --output=- path/to/script.rbm
+    $ ruby_mod_kit transpile --output=/dev/stdout path/to/script.rbm
+
+These below have the same meaning: "Output ruby script to `path/to/script.rb`".
+
+    $ ruby_mod_kit transpile path/to/script.rbm > path/to/script.rb
+    $ ruby_mod_kit transpile --output=path/to/script.rb path/to/script.rbm
+    $ ruby_mod_kit transpile --output=.rb path/to/script.rbm
 
 #### `exec`
 
