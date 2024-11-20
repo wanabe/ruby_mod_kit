@@ -2,23 +2,24 @@
 
 # rbs_inline: enabled
 
-require "sorted_set"
-
 module RubyModKit
   # The class of offset differences.
   class OffsetDiff
-    # @rbs @diffs: SortedSet[[Integer, Integer, Integer]]
+    # @rbs @diffs: Hash[Integer, Integer]
+    # @rbs @offsets: Array[Integer]
 
     # @rbs return: void
     def initialize
-      @diffs = SortedSet.new
+      @diffs = {}
+      @offsets = []
     end
 
     # @rbs src_offset: Integer
     # @rbs return: Integer
     def [](src_offset)
       dst_offset = src_offset
-      @diffs.each do |(offset, _, diff)|
+      @offsets.each do |offset|
+        diff = @diffs[offset]
         break if offset > src_offset
         break if offset == src_offset && diff < 0
 
@@ -31,7 +32,12 @@ module RubyModKit
     # @rbs new_diff: Integer
     # @rbs return: void
     def insert(src_offset, new_diff)
-      @diffs << [src_offset, @diffs.size, new_diff]
+      if @diffs[src_offset]
+        @diffs[src_offset] += new_diff
+      else
+        @diffs[src_offset] = new_diff
+        @offsets.insert(@offsets.bsearch_index { _1 > src_offset } || -1, src_offset)
+      end
     end
   end
 end
