@@ -5,10 +5,10 @@
 module RubyModKit
   class Memo
     # The memo for def parent (class, module)
-    class DefParent < OffsetMemo
-      # @rbs @ivars_memo: Hash[Symbol, Memo::Ivar]
+    class DefParentMemo < OffsetMemo
+      # @rbs @ivars_memo: Hash[Symbol, Memo::IvarMemo]
 
-      attr_reader :ivars_memo #: Hash[Symbol, Memo::Ivar]
+      attr_reader :ivars_memo #: Hash[Symbol, Memo::IvarMemo]
 
       # @rbs def_parent_node: Node::DefParentNode
       # @rbs return: void
@@ -18,9 +18,9 @@ module RubyModKit
       end
 
       # @rbs name: Symbol
-      # @rbs return: Memo::Ivar
+      # @rbs return: Memo::IvarMemo
       def ivar_memo(name)
-        @ivars_memo[name] ||= Memo::Ivar.new(name)
+        @ivars_memo[name] ||= Memo::IvarMemo.new(name)
       end
     end
   end

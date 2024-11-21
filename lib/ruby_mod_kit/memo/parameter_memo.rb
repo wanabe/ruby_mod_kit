@@ -5,7 +5,7 @@
 module RubyModKit
   class Memo
     # The memo for parameter type
-    class Parameter < OffsetMemo
+    class ParameterMemo < OffsetMemo
       # @rbs @type: String
       # @rbs @ivar_parameter: bool
       # @rbs @qualifier: String

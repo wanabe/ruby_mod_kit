@@ -1,0 +1,20 @@
+# Generated from lib/ruby_mod_kit/memo/def_parent_memo.rb with RBS::Inline
+
+module RubyModKit
+  class Memo
+    # The memo for def parent (class, module)
+    class DefParentMemo < OffsetMemo
+      @ivars_memo: Hash[Symbol, Memo::IvarMemo]
+
+      attr_reader ivars_memo: Hash[Symbol, Memo::IvarMemo]
+
+      # @rbs def_parent_node: Node::DefParentNode
+      # @rbs return: void
+      def initialize: (Node::DefParentNode def_parent_node) -> void
+
+      # @rbs name: Symbol
+      # @rbs return: Memo::IvarMemo
+      def ivar_memo: (Symbol name) -> Memo::IvarMemo
+    end
+  end
+end

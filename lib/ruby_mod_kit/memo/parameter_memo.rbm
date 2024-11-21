@@ -5,7 +5,7 @@
 module RubyModKit
   class Memo
     # The memo for parameter type
-    class Parameter < OffsetMemo
+    class ParameterMemo < OffsetMemo
       getter @type: String
       property @ivar_parameter: bool
       property @qualifier: String

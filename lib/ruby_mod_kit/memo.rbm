@@ -5,9 +5,9 @@
 module RubyModKit
   # The class of transpiler generation.
   class Memo
-    getter @def_parents_memo: Hash[Integer, Memo::DefParent]
-    getter @methods_memo: Hash[Integer, Memo::Method]
-    getter @parameters_memo: Hash[Integer, Memo::Parameter]
+    getter @def_parents_memo: Hash[Integer, Memo::DefParentMemo]
+    getter @methods_memo: Hash[Integer, Memo::MethodMemo]
+    getter @parameters_memo: Hash[Integer, Memo::ParameterMemo]
 
     def initialize: void
       @def_parents_memo = {}
@@ -27,16 +27,16 @@ module RubyModKit
       self
     end
 
-    def def_parent_memo(Node::DefParentNode => def_parent_node): (Memo::DefParent)
-      @def_parents_memo[def_parent_node.offset] ||= Memo::DefParent.new(def_parent_node)
+    def def_parent_memo(Node::DefParentNode => def_parent_node): (Memo::DefParentMemo)
+      @def_parents_memo[def_parent_node.offset] ||= Memo::DefParentMemo.new(def_parent_node)
     end
 
-    def method_memo(Node::DefNode => def_node): (Memo::Method)
-      @methods_memo[def_node.offset] ||= Memo::Method.new(def_node)
+    def method_memo(Node::DefNode => def_node): (Memo::MethodMemo)
+      @methods_memo[def_node.offset] ||= Memo::MethodMemo.new(def_node)
     end
 
-    def parameter_memo(Node => node): (Memo::Parameter)
-      memo = @parameters_memo[node.offset] ||= Memo::Parameter.new(node.offset)
+    def parameter_memo(Node => node): (Memo::ParameterMemo)
+      memo = @parameters_memo[node.offset] ||= Memo::ParameterMemo.new(node.offset)
       def_node = node.def_node_at(node.offset)
       raise RubyModKit::Error unless def_node.is_a?(Node::DefNode)
 
@@ -52,7 +52,7 @@ module RubyModKit
 end
 
 require_relative "memo/offset_memo"
-require_relative "memo/def_parent"
-require_relative "memo/ivar"
-require_relative "memo/method"
-require_relative "memo/parameter"
+require_relative "memo/def_parent_memo"
+require_relative "memo/ivar_memo"
+require_relative "memo/method_memo"
+require_relative "memo/parameter_memo"

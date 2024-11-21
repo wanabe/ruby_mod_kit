@@ -1,9 +1,9 @@
-# Generated from lib/ruby_mod_kit/memo/parameter.rb with RBS::Inline
+# Generated from lib/ruby_mod_kit/memo/parameter_memo.rb with RBS::Inline
 
 module RubyModKit
   class Memo
     # The memo for parameter type
-    class Parameter < OffsetMemo
+    class ParameterMemo < OffsetMemo
       @type: String
 
       @ivar_parameter: bool

@@ -5,7 +5,7 @@
 module RubyModKit
   class Memo
     # The memo for parameter type
-    class Ivar
+    class IvarMemo
       # @rbs @type: nil | String
       # @rbs @attr_kind: nil | Symbol
       # @rbs @name: Symbol

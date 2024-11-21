@@ -5,13 +5,13 @@
 module RubyModKit
   # The class of transpiler generation.
   class Memo
-    # @rbs @def_parents_memo: Hash[Integer, Memo::DefParent]
-    # @rbs @methods_memo: Hash[Integer, Memo::Method]
-    # @rbs @parameters_memo: Hash[Integer, Memo::Parameter]
+    # @rbs @def_parents_memo: Hash[Integer, Memo::DefParentMemo]
+    # @rbs @methods_memo: Hash[Integer, Memo::MethodMemo]
+    # @rbs @parameters_memo: Hash[Integer, Memo::ParameterMemo]
 
-    attr_reader :def_parents_memo #: Hash[Integer, Memo::DefParent]
-    attr_reader :methods_memo #: Hash[Integer, Memo::Method]
-    attr_reader :parameters_memo #: Hash[Integer, Memo::Parameter]
+    attr_reader :def_parents_memo #: Hash[Integer, Memo::DefParentMemo]
+    attr_reader :methods_memo #: Hash[Integer, Memo::MethodMemo]
+    attr_reader :parameters_memo #: Hash[Integer, Memo::ParameterMemo]
 
     # @rbs return: void
     def initialize
@@ -35,21 +35,21 @@ module RubyModKit
     end
 
     # @rbs def_parent_node: Node::DefParentNode
-    # @rbs return: Memo::DefParent
+    # @rbs return: Memo::DefParentMemo
     def def_parent_memo(def_parent_node)
-      @def_parents_memo[def_parent_node.offset] ||= Memo::DefParent.new(def_parent_node)
+      @def_parents_memo[def_parent_node.offset] ||= Memo::DefParentMemo.new(def_parent_node)
     end
 
     # @rbs def_node: Node::DefNode
-    # @rbs return: Memo::Method
+    # @rbs return: Memo::MethodMemo
     def method_memo(def_node)
-      @methods_memo[def_node.offset] ||= Memo::Method.new(def_node)
+      @methods_memo[def_node.offset] ||= Memo::MethodMemo.new(def_node)
     end
 
     # @rbs node: Node
-    # @rbs return: Memo::Parameter
+    # @rbs return: Memo::ParameterMemo
     def parameter_memo(node)
-      memo = @parameters_memo[node.offset] ||= Memo::Parameter.new(node.offset)
+      memo = @parameters_memo[node.offset] ||= Memo::ParameterMemo.new(node.offset)
       def_node = node.def_node_at(node.offset)
       raise RubyModKit::Error unless def_node.is_a?(Node::DefNode)
 
@@ -67,7 +67,7 @@ module RubyModKit
 end
 
 require_relative "memo/offset_memo"
-require_relative "memo/def_parent"
-require_relative "memo/ivar"
-require_relative "memo/method"
-require_relative "memo/parameter"
+require_relative "memo/def_parent_memo"
+require_relative "memo/ivar_memo"
+require_relative "memo/method_memo"
+require_relative "memo/parameter_memo"

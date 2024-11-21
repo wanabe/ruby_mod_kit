@@ -5,16 +5,16 @@
 module RubyModKit
   class Memo
     # The memo for def parent (class, module)
-    class DefParent < OffsetMemo
-      getter @ivars_memo: Hash[Symbol, Memo::Ivar]
+    class DefParentMemo < OffsetMemo
+      getter @ivars_memo: Hash[Symbol, Memo::IvarMemo]
 
       def initialize(Node::DefParentNode => def_parent_node): void
         @ivars_memo = {}
         super(def_parent_node.offset)
       end
 
-      def ivar_memo(Symbol => name): (Memo::Ivar)
-        @ivars_memo[name] ||= Memo::Ivar.new(name)
+      def ivar_memo(Symbol => name): (Memo::IvarMemo)
+        @ivars_memo[name] ||= Memo::IvarMemo.new(name)
       end
     end
   end

@@ -3,17 +3,17 @@
 module RubyModKit
   # The class of transpiler generation.
   class Memo
-    @def_parents_memo: Hash[Integer, Memo::DefParent]
+    @def_parents_memo: Hash[Integer, Memo::DefParentMemo]
 
-    @methods_memo: Hash[Integer, Memo::Method]
+    @methods_memo: Hash[Integer, Memo::MethodMemo]
 
-    @parameters_memo: Hash[Integer, Memo::Parameter]
+    @parameters_memo: Hash[Integer, Memo::ParameterMemo]
 
-    attr_reader def_parents_memo: Hash[Integer, Memo::DefParent]
+    attr_reader def_parents_memo: Hash[Integer, Memo::DefParentMemo]
 
-    attr_reader methods_memo: Hash[Integer, Memo::Method]
+    attr_reader methods_memo: Hash[Integer, Memo::MethodMemo]
 
-    attr_reader parameters_memo: Hash[Integer, Memo::Parameter]
+    attr_reader parameters_memo: Hash[Integer, Memo::ParameterMemo]
 
     # @rbs return: void
     def initialize: () -> void
@@ -23,16 +23,16 @@ module RubyModKit
     def succ: (OffsetDiff offset_diff) -> void
 
     # @rbs def_parent_node: Node::DefParentNode
-    # @rbs return: Memo::DefParent
-    def def_parent_memo: (Node::DefParentNode def_parent_node) -> Memo::DefParent
+    # @rbs return: Memo::DefParentMemo
+    def def_parent_memo: (Node::DefParentNode def_parent_node) -> Memo::DefParentMemo
 
     # @rbs def_node: Node::DefNode
-    # @rbs return: Memo::Method
-    def method_memo: (Node::DefNode def_node) -> Memo::Method
+    # @rbs return: Memo::MethodMemo
+    def method_memo: (Node::DefNode def_node) -> Memo::MethodMemo
 
     # @rbs node: Node
-    # @rbs return: Memo::Parameter
-    def parameter_memo: (Node node) -> Memo::Parameter
+    # @rbs return: Memo::ParameterMemo
+    def parameter_memo: (Node node) -> Memo::ParameterMemo
 
     # @rbs type: String
     # @rbs return: String

@@ -5,9 +5,9 @@
 module RubyModKit
   class Memo
     # The memo for parameter type
-    class Method < OffsetMemo
+    class MethodMemo < OffsetMemo
       getter @name: Symbol
-      getter @parameters: Set[Memo::Parameter]
+      getter @parameters: Set[Memo::ParameterMemo]
       getter @type: String
 
       UNTYPED = "untyped"
@@ -21,7 +21,7 @@ module RubyModKit
         super(node.offset)
       end
 
-      def add_parameter(Memo::Parameter => parameter_memo): (Memo::Parameter)
+      def add_parameter(Memo::ParameterMemo => parameter_memo): (Memo::ParameterMemo)
         @parameters << parameter_memo
         parameter_memo
       end

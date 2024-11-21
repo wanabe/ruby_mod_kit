@@ -1,18 +1,18 @@
-# Generated from lib/ruby_mod_kit/memo/method.rb with RBS::Inline
+# Generated from lib/ruby_mod_kit/memo/method_memo.rb with RBS::Inline
 
 module RubyModKit
   class Memo
     # The memo for parameter type
-    class Method < OffsetMemo
+    class MethodMemo < OffsetMemo
       @name: Symbol
 
-      @parameters: Set[Memo::Parameter]
+      @parameters: Set[Memo::ParameterMemo]
 
       @type: String
 
       attr_reader name: Symbol
 
-      attr_reader parameters: Set[Memo::Parameter]
+      attr_reader parameters: Set[Memo::ParameterMemo]
 
       attr_reader type: String
 
@@ -22,9 +22,9 @@ module RubyModKit
       # @rbs return: void
       def initialize: (Node::DefNode node) -> void
 
-      # @rbs parameter_memo: Memo::Parameter
-      # @rbs return: Memo::Parameter
-      def add_parameter: (Memo::Parameter parameter_memo) -> Memo::Parameter
+      # @rbs parameter_memo: Memo::ParameterMemo
+      # @rbs return: Memo::ParameterMemo
+      def add_parameter: (Memo::ParameterMemo parameter_memo) -> Memo::ParameterMemo
 
       # @rbs return: bool
       def untyped?: () -> bool
