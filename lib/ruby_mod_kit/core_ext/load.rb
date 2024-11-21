@@ -3,6 +3,7 @@
 # rbs_inline: enabled
 
 require "ruby_mod_kit"
+require "ruby_mod_kit/core_ext/eval"
 
 module RubyModKit
   module CoreExt
@@ -19,7 +20,7 @@ module RubyModKit
         return super unless path.end_with?(".rbm")
 
         b = wrap ? binding : TOPLEVEL_BINDING
-        eval(RubyModKit.transpile(File.read(path), filename: path), b, path) # rubocop:disable Security/Eval
+        RubyModKit::CoreExt::Eval.eval(File.read(path), b, path)
       end
 
       # @rbs path: String

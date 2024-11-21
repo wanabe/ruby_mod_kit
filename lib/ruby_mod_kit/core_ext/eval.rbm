@@ -1,0 +1,26 @@
+# frozen_string_literal: true
+
+# rbs_inline: enabled
+
+require "ruby_mod_kit"
+
+module RubyModKit
+  module CoreExt
+    # the extension for eval
+    module Eval
+      module_function
+
+      def eval(String => expr, *Object => rest, bool => transpile: true): Object
+        if transpile
+          fname = rest[1].is_a?(String) ? rest[1] : "(eval)"
+          expr = RubyModKit.transpile(expr, filename: fname)
+        end
+
+        case rest
+        in [] | [Binding] | [Binding, String] | [Binding, String, Integer]
+          super(expr, *rest)
+        end
+      end
+    end
+  end
+end

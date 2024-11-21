@@ -25,12 +25,6 @@ describe RubyModKit::CoreExt::Load do
       end
       foo(1)
     RBM
-    let(:rb_script) { <<~RB }
-      # @rbs bar: Integer
-      def foo(bar)
-      end
-      foo(1)
-    RB
 
     around do |example|
       Dir.mktmpdir do |dir|
@@ -42,17 +36,17 @@ describe RubyModKit::CoreExt::Load do
     before do
       File.write(path, rbm_script)
       allow(described_class).to receive_messages(load_path: [tmpdir], loaded_features: [])
-      allow(described_class).to receive(:eval)
+      allow(RubyModKit::CoreExt::Eval).to receive(:eval)
     end
 
     it "evaluates transpiled script" do
       described_class.require(name)
-      expect(described_class).to have_received(:eval).with(rb_script, TOPLEVEL_BINDING, path)
+      expect(RubyModKit::CoreExt::Eval).to have_received(:eval).with(rbm_script, TOPLEVEL_BINDING, path)
     end
 
     it "allows filename with ext" do
       described_class.require("#{name}.rbm")
-      expect(described_class).to have_received(:eval).with(rb_script, TOPLEVEL_BINDING, path)
+      expect(RubyModKit::CoreExt::Eval).to have_received(:eval).with(rbm_script, TOPLEVEL_BINDING, path)
     end
   end
 end
