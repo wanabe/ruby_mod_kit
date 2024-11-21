@@ -1,0 +1,55 @@
+# frozen_string_literal: true
+
+# rbs_inline: enabled
+
+require "ruby_mod_kit"
+
+module RubyModKit
+  module CoreExt
+    # the extension for load/require
+    module Load
+      LOADABLE_EXTS = %w[.rb .rbm .so .o .dll].freeze #: Array[String]
+
+      module_function
+
+      def load(String => path, bool => wrap = false): void # rubocop:disable Style/OptionalBooleanParameter
+        return super unless path.end_with?(".rbm")
+
+        b = wrap ? binding : TOPLEVEL_BINDING
+        eval(RubyModKit.transpile(File.read(path), filename: path), b, path) # rubocop:disable Security/Eval
+      end
+
+      def require(String => path): void
+        require_path = Load.require_path(path)
+        return super unless require_path&.end_with?(".rbm")
+        return if Load.loaded_features.include?(require_path)
+
+        Load.loaded_features << require_path
+        load(require_path)
+      end
+
+      class << self
+        def loaded_features: (Array[String])
+          $LOADED_FEATURES
+        end
+
+        def load_path: (Array[String])
+          $LOAD_PATH
+        end
+
+        def require_path(String => path, bool => expanded: false): (String | nil)
+          if !expanded && !File.absolute_path?(path)
+            return load_path.each.lazy.map { require_path(File.join(_1, path), expanded: true) }.find(&:itself)
+          end
+
+          pathes = if path.end_with?(*LOADABLE_EXTS)
+            [path]
+          else
+            LOADABLE_EXTS.map { "#{path}#{_1}" }
+          end
+          pathes.find { File.exist?(_1) }
+        end
+      end
+    end
+  end
+end

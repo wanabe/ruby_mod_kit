@@ -4,6 +4,7 @@ require "simplecov"
 SimpleCov.start do
   track_files "lib/**/*.rb"
   add_filter "/spec/"
+  add_filter "lib/ruby_mod_kit/core_ext.rb"
   # No coverage measurement as it is read from gemspec.
   add_filter "lib/ruby_mod_kit/version.rb"
 end
