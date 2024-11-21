@@ -5,10 +5,17 @@
 module RubyModKit
   class Mission
     # The mission for instance variable arguments
-    class IvarArg < Mission
-      getter @assignment: String
+    class InstanceVariableParameterMission < Mission
+      # @rbs @assignment: String
 
-      def perform(Generation => generation, Node => root_node, (Prism::ParseResult) => _parse_result, Memo => _memo): bool
+      attr_reader :assignment #: String
+
+      # @rbs generation: Generation
+      # @rbs root_node: Node
+      # @rbs _parse_result: Prism::ParseResult
+      # @rbs _memo: Memo
+      # @rbs return: bool
+      def perform(generation, root_node, _parse_result, _memo)
         parameter_node = root_node.parameter_node_at(@offset)
         raise RubyModKit::Error unless parameter_node
 

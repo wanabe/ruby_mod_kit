@@ -24,11 +24,11 @@ module RubyModKit
     def init_missions: void
       return unless first_generation?
 
-      add_mission(Mission::FixParseError.new)
-      add_mission(Mission::TypeAttr.new)
-      add_mission(Mission::Overload.new)
-      add_mission(Mission::TypeParameter.new)
-      add_mission(Mission::TypeReturn.new)
+      add_mission(Mission::FixParseErrorMission.new)
+      add_mission(Mission::TypeAttrMission.new)
+      add_mission(Mission::OverloadMission.new)
+      add_mission(Mission::TypeParameterMission.new)
+      add_mission(Mission::TypeReturnMission.new)
     end
 
     def first_generation?: bool

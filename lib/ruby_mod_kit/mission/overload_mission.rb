@@ -5,7 +5,7 @@
 module RubyModKit
   class Mission
     # The mission for overload
-    class Overload < Mission
+    class OverloadMission < Mission
       OVERLOAD_METHOD_MAP = {
         "*": "_mul",
       }.freeze #: Hash[Symbol, String]

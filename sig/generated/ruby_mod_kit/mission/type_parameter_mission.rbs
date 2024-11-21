@@ -1,9 +1,9 @@
-# Generated from lib/ruby_mod_kit/mission/type_return.rb with RBS::Inline
+# Generated from lib/ruby_mod_kit/mission/type_parameter_mission.rb with RBS::Inline
 
 module RubyModKit
   class Mission
     # The mission for parameter types
-    class TypeReturn < Mission
+    class TypeParameterMission < Mission
       # @rbs return: void
       def initialize: () -> void
 

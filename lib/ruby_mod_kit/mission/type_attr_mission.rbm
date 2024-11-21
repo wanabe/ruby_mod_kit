@@ -5,7 +5,7 @@
 module RubyModKit
   class Mission
     # The mission for parameter types
-    class TypeAttr < Mission
+    class TypeAttrMission < Mission
       def initialize: void
         super(0)
       end

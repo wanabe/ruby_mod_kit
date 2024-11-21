@@ -5,21 +5,15 @@
 module RubyModKit
   class Mission
     # The mission for parameter types
-    class FixParseError < Mission
-      # @rbs @previous_error_messages: Array[String]
+    class FixParseErrorMission < Mission
+      @previous_error_messages: Array[String]
 
-      # @rbs return: void
-      def initialize
+      def initialize: void
         super(0)
         @previous_error_messages = []
       end
 
-      # @rbs generation: Generation
-      # @rbs root_node: Node
-      # @rbs parse_result: Prism::ParseResult
-      # @rbs memo: Memo
-      # @rbs return: bool
-      def perform(generation, root_node, parse_result, memo)
+      def perform(Generation => generation, Node => root_node, (Prism::ParseResult) => parse_result, Memo => memo): bool
         return true if parse_result.errors.empty?
 
         check_prev_errors(generation, parse_result)
@@ -46,10 +40,7 @@ module RubyModKit
         false
       end
 
-      # @rbs generation: Generation
-      # @rbs parse_result: Prism::ParseResult
-      # @rbs return: void
-      def check_prev_errors(generation, parse_result)
+      def check_prev_errors(Generation => generation, Prism::ParseResult => parse_result): void
         return if @previous_error_messages.empty?
         return if parse_result.errors.empty?
         return if @previous_error_messages != parse_result.errors.map(&:message)
@@ -68,12 +59,7 @@ module RubyModKit
         raise RubyModKit::SyntaxError, message
       end
 
-      # @rbs parse_error: Prism::ParseError
-      # @rbs generation: Generation
-      # @rbs root_node: Node
-      # @rbs memo: Memo
-      # @rbs return: void
-      def fix_def_params_term_paren(parse_error, generation, root_node, memo)
+      def fix_def_params_term_paren(Prism::ParseError => parse_error, Generation => generation, Node => root_node, Memo => memo): void
         column = parse_error.location.start_column - 1
         return if column < 0
 
@@ -90,12 +76,7 @@ module RubyModKit
         parameter_memo.qualifier = "*"
       end
 
-      # @rbs parse_error: Prism::ParseError
-      # @rbs generation: Generation
-      # @rbs root_node: Node
-      # @rbs memo: Memo
-      # @rbs return: void
-      def fix_argument_formal_ivar(parse_error, generation, root_node, memo)
+      def fix_argument_formal_ivar(Prism::ParseError => parse_error, Generation => generation, Node => root_node, Memo => memo): void
         src_offset = parse_error.location.start_offset
 
         name = parse_error.location.slice[1..]
@@ -107,7 +88,7 @@ module RubyModKit
         generation[src_offset, parse_error.location.length] = name
         parameter_memo = memo.parameter_memo(parameter_position_node)
         parameter_memo.ivar_parameter = true
-        generation.add_mission(Mission::IvarArg.new(src_offset))
+        generation.add_mission(Mission::InstanceVariableParameterMission.new(src_offset))
 
         return unless parameter_memo.untyped?
 
@@ -116,10 +97,7 @@ module RubyModKit
         parameter_memo.type = ivar_memo_type
       end
 
-      # @rbs parse_error: Prism::ParseError
-      # @rbs generation: Generation
-      # @rbs return: void
-      def fix_argument_formal_constant(parse_error, generation)
+      def fix_argument_formal_constant(Prism::ParseError => parse_error, Generation => generation): void
         line = generation.line(parse_error)
         line = line[parse_error.location.start_column..] || return
         parameter_type = line[/(\A[A-Z]\w*(?:::[A-Z]\w*)+)(?:\s*=>\s*)/, 1] || return
@@ -127,12 +105,7 @@ module RubyModKit
         generation[src_offset, parameter_type.length] = "(#{parameter_type})"
       end
 
-      # @rbs parse_error: Prism::ParseError
-      # @rbs generation: Generation
-      # @rbs root_node: Node
-      # @rbs memo: Memo
-      # @rbs return: void
-      def fix_unexpected_assoc(parse_error, generation, root_node, memo)
+      def fix_unexpected_assoc(Prism::ParseError => parse_error, Generation => generation, Node => root_node, Memo => memo): void
         def_node = root_node.def_node_at(parse_error.location.start_offset) || return
         def_parent_node = def_node.parent
         parameters_node, body_node, = def_node.children
@@ -149,12 +122,7 @@ module RubyModKit
         memo.parameter_memo(last_parameter_node).type = parameter_type
       end
 
-      # @rbs parse_error: Prism::ParseError
-      # @rbs generation: Generation
-      # @rbs root_node: Node
-      # @rbs memo: Memo
-      # @rbs return: void
-      def fix_unexpected_colon(parse_error, generation, root_node, memo)
+      def fix_unexpected_colon(Prism::ParseError => parse_error, Generation => generation, Node => root_node, Memo => memo): void
         parent_node = root_node.statements_node_at(parse_error.location.start_offset)&.parent
         case parent_node
         when Node::DefNode
@@ -164,13 +132,7 @@ module RubyModKit
         end
       end
 
-      # @rbs parse_error: Prism::ParseError
-      # @rbs generation: Generation
-      # @rbs root_node: Node
-      # @rbs def_node: Node::DefNode
-      # @rbs memo: Memo
-      # @rbs return: void
-      def fix_unexpected_colon_in_def(parse_error, generation, root_node, def_node, memo)
+      def fix_unexpected_colon_in_def(Prism::ParseError => parse_error, Generation => generation, Node => root_node, Node::DefNode => def_node, Memo => memo): void
         lparen_loc = def_node.lparen_loc
         rparen_loc = def_node.rparen_loc
         if !lparen_loc && !rparen_loc
@@ -187,12 +149,7 @@ module RubyModKit
         memo.method_memo(def_node).type = return_type_location.slice
       end
 
-      # @rbs parse_error: Prism::ParseError
-      # @rbs generation: Generation
-      # @rbs def_parent_node: Node::DefParentNode
-      # @rbs memo: Memo
-      # @rbs return: void
-      def fix_unexpected_colon_in_module(parse_error, generation, def_parent_node, memo)
+      def fix_unexpected_colon_in_module(Prism::ParseError => parse_error, Generation => generation, Node::DefParentNode => def_parent_node, Memo => memo): void
         line = generation.line(parse_error)
         line_offset = generation.src_offset(parse_error) || return
         attr_patterns = %i[attr_reader reader getter attr_writer writer setter attr_accessor accessor property]

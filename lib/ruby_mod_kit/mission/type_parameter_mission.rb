@@ -5,12 +5,18 @@
 module RubyModKit
   class Mission
     # The mission for parameter types
-    class TypeParameter < Mission
-      def initialize: void
+    class TypeParameterMission < Mission
+      # @rbs return: void
+      def initialize
         super(0)
       end
 
-      def perform(Generation => generation, Node => root_node, (Prism::ParseResult) => parse_result, Memo => memo): bool
+      # @rbs generation: Generation
+      # @rbs root_node: Node
+      # @rbs parse_result: Prism::ParseResult
+      # @rbs memo: Memo
+      # @rbs return: bool
+      def perform(generation, root_node, parse_result, memo)
         memo.parameters_memo.each do |offset, parameter_memo|
           next if parameter_memo.untyped?
 

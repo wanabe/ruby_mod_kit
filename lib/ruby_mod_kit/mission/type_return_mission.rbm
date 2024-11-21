@@ -5,7 +5,7 @@
 module RubyModKit
   class Mission
     # The mission for parameter types
-    class TypeReturn < Mission
+    class TypeReturnMission < Mission
       def initialize: void
         super(0)
       end

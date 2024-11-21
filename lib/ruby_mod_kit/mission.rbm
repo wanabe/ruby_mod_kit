@@ -20,9 +20,9 @@ module RubyModKit
   end
 end
 
-require_relative "mission/ivar_arg"
-require_relative "mission/type_attr"
-require_relative "mission/type_parameter"
-require_relative "mission/type_return"
-require_relative "mission/fix_parse_error"
-require_relative "mission/overload"
+require_relative "mission/instance_variable_parameter_mission"
+require_relative "mission/type_attr_mission"
+require_relative "mission/type_parameter_mission"
+require_relative "mission/type_return_mission"
+require_relative "mission/fix_parse_error_mission"
+require_relative "mission/overload_mission"

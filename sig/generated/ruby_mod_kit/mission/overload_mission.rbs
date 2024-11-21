@@ -1,9 +1,9 @@
-# Generated from lib/ruby_mod_kit/mission/overload.rb with RBS::Inline
+# Generated from lib/ruby_mod_kit/mission/overload_mission.rb with RBS::Inline
 
 module RubyModKit
   class Mission
     # The mission for overload
-    class Overload < Mission
+    class OverloadMission < Mission
       OVERLOAD_METHOD_MAP: Hash[Symbol, String]
 
       # @rbs return: void
