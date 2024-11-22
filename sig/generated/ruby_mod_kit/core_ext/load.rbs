@@ -8,12 +8,12 @@ module RubyModKit
 
       # @rbs path: String
       # @rbs wrap: bool
-      # @rbs return: void
-      def self?.load: (String path, ?bool wrap) -> void
+      # @rbs return: bool
+      def self?.load: (String path, ?bool wrap) -> bool
 
       # @rbs path: String
-      # @rbs return: void
-      def self?.require: (String path) -> void
+      # @rbs return: bool
+      def self?.require: (String path) -> bool
 
       # @rbs return: Array[String]
       def self.loaded_features: () -> Array[String]

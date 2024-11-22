@@ -15,23 +15,25 @@ module RubyModKit
 
       # @rbs path: String
       # @rbs wrap: bool
-      # @rbs return: void
+      # @rbs return: bool
       def load(path, wrap = false) # rubocop:disable Style/OptionalBooleanParameter
         return super unless path.end_with?(".rbm")
 
         b = wrap ? binding : TOPLEVEL_BINDING
         RubyModKit::CoreExt::Eval.eval(File.read(path), b, path)
+        true
       end
 
       # @rbs path: String
-      # @rbs return: void
+      # @rbs return: bool
       def require(path)
         require_path = Load.require_path(path)
         return super unless require_path&.end_with?(".rbm")
-        return if Load.loaded_features.include?(require_path)
+        return false if Load.loaded_features.include?(require_path)
 
         Load.loaded_features << require_path
         load(require_path)
+        true
       end
 
       class << self
