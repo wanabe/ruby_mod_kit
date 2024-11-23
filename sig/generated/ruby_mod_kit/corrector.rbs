@@ -1,0 +1,7 @@
+# Generated from lib/ruby_mod_kit/corrector.rb with RBS::Inline
+
+module RubyModKit
+  # The namespace of error corrector.
+  module Corrector
+  end
+end
