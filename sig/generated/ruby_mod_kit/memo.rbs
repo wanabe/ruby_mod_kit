@@ -3,8 +3,5 @@
 module RubyModKit
   # The namespace of transpiler memo.
   module Memo
-    # @rbs type: String
-    # @rbs return: String
-    def self.unify_type: (String type) -> String
   end
 end

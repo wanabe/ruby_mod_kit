@@ -5,13 +5,6 @@
 module RubyModKit
   # The namespace of transpiler memo.
   module Memo
-    class << self
-      # @rbs type: String
-      # @rbs return: String
-      def unify_type(type)
-        type[/\A\(([^()]*)\)\z/, 1] || type
-      end
-    end
   end
 end
 

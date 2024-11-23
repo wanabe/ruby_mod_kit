@@ -37,4 +37,8 @@ module RubyModKit
   # @rbs *args: String
   # @rbs return: void
   def self.execute_rb: (String rb_script, *String args) -> void
+
+  # @rbs type: String
+  # @rbs return: String
+  def self.unify_type: (String type) -> String
 end

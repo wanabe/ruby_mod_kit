@@ -42,7 +42,7 @@ module RubyModKit
       # @rbs type: String
       # @rbs return: void
       def type=(type)
-        @type = Memo.unify_type(type)
+        @type = RubyModKit.unify_type(type)
       end
     end
   end

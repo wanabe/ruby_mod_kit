@@ -31,7 +31,7 @@ module RubyModKit
       end
 
       def type=(String => type): void
-        @type = Memo.unify_type(type)
+        @type = RubyModKit.unify_type(type)
       end
     end
   end

@@ -65,6 +65,12 @@ module RubyModKit
       ARGV.replace(args)
       eval(rb_script, TOPLEVEL_BINDING) # rubocop:disable Security/Eval
     end
+
+    # @rbs type: String
+    # @rbs return: String
+    def unify_type(type)
+      type[/\A\(([^()]*)\)\z/, 1] || type
+    end
   end
 end
 

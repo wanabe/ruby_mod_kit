@@ -166,7 +166,7 @@ module RubyModKit
         ivar_memo.type = type
         ivar_memo.attr_kind = attr_kind if attr_kind
 
-        generation[line_offset, length] = "#{indent}# @rbs @#{ivar_name}: #{Memo.unify_type(type)}"
+        generation[line_offset, length] = "#{indent}# @rbs @#{ivar_name}: #{RubyModKit.unify_type(type)}"
       end
     end
   end
