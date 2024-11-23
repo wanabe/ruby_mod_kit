@@ -20,11 +20,20 @@ task :rbs_inline do
   RBS::Inline::CLI.new.run(%w[--output lib])
 end
 
-desc "Transpile .rbm files under lib/"
+desc "Transpile .rbm files under lib/ and clean other .rb files"
 task :lib do
+  rb_paths = Set.new(Dir.glob("lib/**/*.rb"))
   Dir.glob("lib/**/*.rbm") do |rbm_path|
-    RubyModKit.transpile_file(rbm_path, output: RubyModKit.rb_path(rbm_path))
+    rb_path = RubyModKit.rb_path(rbm_path)
+    rb_paths.delete(rb_path)
+    RubyModKit.transpile_file(rbm_path, output: rb_path)
   end
+  File.unlink(*rb_paths)
+end
+
+desc "Clean generated .rbs files"
+task :clean_rbs do
+  File.unlink(*Dir.glob("sig/generated/**/*.rbs"))
 end
 
 desc "Check untyped in rbs"
@@ -67,4 +76,4 @@ task push: gem_file do
   system("gem push #{gem_file}") || raise
 end
 
-task default: %i[lib spec rbs_inline rbs_typed rubocop:autocorrect_all steep:check]
+task default: %i[lib spec clean_rbs rbs_inline rbs_typed rubocop:autocorrect_all steep:check]
