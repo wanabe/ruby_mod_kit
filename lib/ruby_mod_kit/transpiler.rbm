@@ -6,12 +6,7 @@ module RubyModKit
   # The class of transpiler.
   class Transpiler
     def transpile(String => src, (String | nil) => filename: nil): String
-      generation = Generation.new(src.dup, filename: filename)
-      until generation.completed?
-        generation.resolve
-        generation = generation.succ
-      end
-      generation.script
+      Generation.resolve(src, filename: filename).script
     end
   end
 end

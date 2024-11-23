@@ -53,6 +53,7 @@ module RubyModKit
 
     # @rbs return: Generation
     def succ
+      perform_missions
       @missions.each do |mission|
         mission.succ(@offset_diff)
       end
@@ -69,11 +70,6 @@ module RubyModKit
     # @rbs return: String
     def name
       "#{@filename || "(eval)"}[gen #{@generation_num}]"
-    end
-
-    # @rbs return: void
-    def resolve
-      perform_missions
     end
 
     # @rbs return: bool
@@ -165,6 +161,17 @@ module RubyModKit
     # @rbs return: void
     def add_mission(mission)
       @missions << mission
+    end
+
+    class << self
+      # @rbs src: String
+      # @rbs filename: String | nil
+      # @rbs return: Generation
+      def resolve(src, filename: nil)
+        generation = Generation.new(src.dup, filename: filename)
+        generation = generation.succ until generation.completed?
+        generation
+      end
     end
   end
 end

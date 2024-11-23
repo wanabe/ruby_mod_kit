@@ -43,9 +43,6 @@ module RubyModKit
     # @rbs return: String
     def name: () -> String
 
-    # @rbs return: void
-    def resolve: () -> void
-
     # @rbs return: bool
     def completed?: () -> bool
 
@@ -97,5 +94,10 @@ module RubyModKit
     # @rbs mission: Mission
     # @rbs return: void
     def add_mission: (Mission mission) -> void
+
+    # @rbs src: String
+    # @rbs filename: String | nil
+    # @rbs return: Generation
+    def self.resolve: (String src, ?filename: String | nil) -> Generation
   end
 end

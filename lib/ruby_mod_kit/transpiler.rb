@@ -9,12 +9,7 @@ module RubyModKit
     # @rbs filename: String | nil
     # @rbs return: String
     def transpile(src, filename: nil)
-      generation = Generation.new(src.dup, filename: filename)
-      until generation.completed?
-        generation.resolve
-        generation = generation.succ
-      end
-      generation.script
+      Generation.resolve(src, filename: filename).script
     end
   end
 end

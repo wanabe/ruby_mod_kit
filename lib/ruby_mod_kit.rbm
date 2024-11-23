@@ -32,7 +32,7 @@ module RubyModKit
     end
 
     def transpile(String => src, (String | nil) => filename: nil): String
-      Transpiler.new.transpile(src, filename: filename)
+      Generation.resolve(src, filename: filename).script
     end
 
     def execute_rb_file(String => file, *String => args): void

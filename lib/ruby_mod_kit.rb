@@ -42,7 +42,7 @@ module RubyModKit
     # @rbs filename: String | nil
     # @rbs return: String
     def transpile(src, filename: nil)
-      Transpiler.new.transpile(src, filename: filename)
+      Generation.resolve(src, filename: filename).script
     end
 
     # @rbs file: String
