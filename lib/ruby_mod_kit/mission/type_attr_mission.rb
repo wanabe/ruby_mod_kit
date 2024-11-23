@@ -14,10 +14,10 @@ module RubyModKit
       # @rbs generation: Generation
       # @rbs root_node: Node
       # @rbs _parse_result: Prism::ParseResult
-      # @rbs memo: Memo
+      # @rbs memo_pad: MemoPad
       # @rbs return: bool
-      def perform(generation, root_node, _parse_result, memo)
-        memo.def_parents_memo.each_value do |def_parent_memo|
+      def perform(generation, root_node, _parse_result, memo_pad)
+        memo_pad.def_parents_memo.each_value do |def_parent_memo|
           ivars_memo = def_parent_memo.ivars_memo.dup
           def_parent_node = root_node.def_parent_node_at(def_parent_memo.offset) || raise(RubyModKit::Error)
           attr_adding_line = 0

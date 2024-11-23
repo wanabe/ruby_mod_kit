@@ -1,0 +1,46 @@
+# frozen_string_literal: true
+
+# rbs_inline: enabled
+
+module RubyModKit
+  # The class for bundling memos.
+  class MemoPad
+    getter @def_parents_memo: Hash[Integer, Memo::DefParentMemo]
+    getter @methods_memo: Hash[Integer, Memo::MethodMemo]
+    getter @parameters_memo: Hash[Integer, Memo::ParameterMemo]
+
+    def initialize: void
+      @def_parents_memo = {}
+      @methods_memo = {}
+      @parameters_memo = {}
+    end
+
+    def succ(OffsetDiff => offset_diff): void
+      [@methods_memo, @parameters_memo, @def_parents_memo].each do |offset_node_memo|
+        new_offset_node_memo = {}
+        offset_node_memo.each_value do |node_memo|
+          node_memo.succ(offset_diff)
+          new_offset_node_memo[node_memo.offset] = node_memo
+        end
+        offset_node_memo.replace(new_offset_node_memo)
+      end
+      self
+    end
+
+    def def_parent_memo(Node::DefParentNode => def_parent_node): (Memo::DefParentMemo)
+      @def_parents_memo[def_parent_node.offset] ||= Memo::DefParentMemo.new(def_parent_node)
+    end
+
+    def method_memo(Node::DefNode => def_node): (Memo::MethodMemo)
+      @methods_memo[def_node.offset] ||= Memo::MethodMemo.new(def_node)
+    end
+
+    def parameter_memo(Node => node): (Memo::ParameterMemo)
+      memo = @parameters_memo[node.offset] ||= Memo::ParameterMemo.new(node.offset)
+      def_node = node.def_node_at(node.offset)
+      raise RubyModKit::Error unless def_node.is_a?(Node::DefNode)
+
+      method_memo(def_node).add_parameter(memo)
+    end
+  end
+end

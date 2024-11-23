@@ -1,7 +1,7 @@
 # Generated from lib/ruby_mod_kit/memo/offset_memo.rb with RBS::Inline
 
 module RubyModKit
-  class Memo
+  module Memo
     # The base class for located memo
     class OffsetMemo
       @offset: Integer

@@ -3,7 +3,7 @@
 # rbs_inline: enabled
 
 module RubyModKit
-  class Memo
+  module Memo
     # The memo for parameter type
     class MethodMemo < OffsetMemo
       # @rbs @name: Symbol

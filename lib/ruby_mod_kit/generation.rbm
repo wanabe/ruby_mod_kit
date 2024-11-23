@@ -8,13 +8,13 @@ module RubyModKit
     getter @parse_result: Prism::ParseResult
     getter @script: String
     @missions: Array[Mission::BaseMission]
-    @memo: Memo
+    @memo_pad: MemoPad
     @root_node: Node::ProgramNode
     @offset_diff: OffsetDiff
     @generation_num: Integer
     @filename: (String | nil)
 
-    def initialize(@script, @missions: [], @memo: Memo.new, @generation_num: 0, @filename: nil): void
+    def initialize(@script, @missions: [], @memo_pad: MemoPad.new, @generation_num: 0, @filename: nil): void
       @offset_diff = OffsetDiff.new
       @parse_result = Prism.parse(@script)
       @root_node = Node::ProgramNode.new(@parse_result.value)
@@ -40,11 +40,11 @@ module RubyModKit
       @missions.each do |mission|
         mission.succ(@offset_diff)
       end
-      @memo.succ(@offset_diff)
+      @memo_pad.succ(@offset_diff)
       Generation.new(
         @script,
         missions: @missions,
-        memo: @memo,
+        memo_pad: @memo_pad,
         generation_num: @generation_num + 1,
         filename: @filename,
       )
@@ -92,7 +92,7 @@ module RubyModKit
 
     def perform_missions: void
       @missions.delete_if do |mission|
-        mission.perform(self, @root_node, @parse_result, @memo) || break
+        mission.perform(self, @root_node, @parse_result, @memo_pad) || break
       end
     end
 

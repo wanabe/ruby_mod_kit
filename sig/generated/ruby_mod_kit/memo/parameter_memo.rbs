@@ -1,7 +1,7 @@
 # Generated from lib/ruby_mod_kit/memo/parameter_memo.rb with RBS::Inline
 
 module RubyModKit
-  class Memo
+  module Memo
     # The memo for parameter type
     class ParameterMemo < OffsetMemo
       @type: String

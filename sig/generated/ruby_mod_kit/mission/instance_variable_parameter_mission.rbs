@@ -11,9 +11,9 @@ module RubyModKit
       # @rbs generation: Generation
       # @rbs root_node: Node
       # @rbs _parse_result: Prism::ParseResult
-      # @rbs _memo: Memo
+      # @rbs _memo_pad: MemoPad
       # @rbs return: bool
-      def perform: (Generation generation, Node root_node, untyped _parse_result, untyped _memo) -> bool
+      def perform: (Generation generation, Node root_node, untyped _parse_result, untyped _memo_pad) -> bool
     end
   end
 end

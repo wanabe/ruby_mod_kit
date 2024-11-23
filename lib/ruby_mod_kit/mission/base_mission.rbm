@@ -11,7 +11,7 @@ module RubyModKit
       def initialize(@offset): void
       end
 
-      def perform(Generation => _generation, Node => _root_node, (Prism::ParseResult) => _parse_result, Memo => _memo): void
+      def perform(Generation => _generation, Node => _root_node, (Prism::ParseResult) => _parse_result, MemoPad => _memo_pad): void
         raise RubyModKit::Error, "Unexpected type #{self.class}"
       end
 

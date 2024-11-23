@@ -14,10 +14,10 @@ module RubyModKit
       # @rbs generation: Generation
       # @rbs root_node: Node
       # @rbs parse_result: Prism::ParseResult
-      # @rbs memo: Memo
+      # @rbs memo_pad: MemoPad
       # @rbs return: bool
-      def perform(generation, root_node, parse_result, memo)
-        memo.parameters_memo.each do |offset, parameter_memo|
+      def perform(generation, root_node, parse_result, memo_pad)
+        memo_pad.parameters_memo.each do |offset, parameter_memo|
           next if parameter_memo.untyped?
 
           def_node = root_node.def_node_at(offset)

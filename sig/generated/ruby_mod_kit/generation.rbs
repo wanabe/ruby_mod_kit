@@ -9,7 +9,7 @@ module RubyModKit
 
     @missions: Array[Mission::BaseMission]
 
-    @memo: Memo
+    @memo_pad: MemoPad
 
     @root_node: Node::ProgramNode
 
@@ -25,11 +25,11 @@ module RubyModKit
 
     # @rbs script: String
     # @rbs missions: Array[Mission::BaseMission]
-    # @rbs memo: Memo
+    # @rbs memo_pad: MemoPad
     # @rbs generation_num: Integer
     # @rbs filename: String | nil
     # @rbs return: void
-    def initialize: (String script, ?missions: Array[Mission::BaseMission], ?memo: Memo, ?generation_num: Integer, ?filename: String | nil) -> void
+    def initialize: (String script, ?missions: Array[Mission::BaseMission], ?memo_pad: MemoPad, ?generation_num: Integer, ?filename: String | nil) -> void
 
     # @rbs return: void
     def init_missions: () -> void

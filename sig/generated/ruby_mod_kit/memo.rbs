@@ -1,39 +1,8 @@
 # Generated from lib/ruby_mod_kit/memo.rb with RBS::Inline
 
 module RubyModKit
-  # The class of transpiler generation.
-  class Memo
-    @def_parents_memo: Hash[Integer, Memo::DefParentMemo]
-
-    @methods_memo: Hash[Integer, Memo::MethodMemo]
-
-    @parameters_memo: Hash[Integer, Memo::ParameterMemo]
-
-    attr_reader def_parents_memo: Hash[Integer, Memo::DefParentMemo]
-
-    attr_reader methods_memo: Hash[Integer, Memo::MethodMemo]
-
-    attr_reader parameters_memo: Hash[Integer, Memo::ParameterMemo]
-
-    # @rbs return: void
-    def initialize: () -> void
-
-    # @rbs offset_diff: OffsetDiff
-    # @rbs return: void
-    def succ: (OffsetDiff offset_diff) -> void
-
-    # @rbs def_parent_node: Node::DefParentNode
-    # @rbs return: Memo::DefParentMemo
-    def def_parent_memo: (Node::DefParentNode def_parent_node) -> Memo::DefParentMemo
-
-    # @rbs def_node: Node::DefNode
-    # @rbs return: Memo::MethodMemo
-    def method_memo: (Node::DefNode def_node) -> Memo::MethodMemo
-
-    # @rbs node: Node
-    # @rbs return: Memo::ParameterMemo
-    def parameter_memo: (Node node) -> Memo::ParameterMemo
-
+  # The namespace of transpiler memo.
+  module Memo
     # @rbs type: String
     # @rbs return: String
     def self.unify_type: (String type) -> String

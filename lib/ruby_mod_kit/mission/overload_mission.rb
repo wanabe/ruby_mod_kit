@@ -18,10 +18,10 @@ module RubyModKit
       # @rbs generation: Generation
       # @rbs root_node: Node
       # @rbs parse_result: Prism::ParseResult
-      # @rbs memo: Memo
+      # @rbs memo_pad: MemoPad
       # @rbs return: bool
-      def perform(generation, root_node, parse_result, memo)
-        method_memo_groups = memo.methods_memo.each_value.group_by do |method_memo|
+      def perform(generation, root_node, parse_result, memo_pad)
+        method_memo_groups = memo_pad.methods_memo.each_value.group_by do |method_memo|
           [root_node.def_parent_node_at(method_memo.offset), method_memo.name]
         end
         method_memo_groups.each_value do |method_memos|

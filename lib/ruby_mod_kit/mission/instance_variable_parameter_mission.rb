@@ -13,9 +13,9 @@ module RubyModKit
       # @rbs generation: Generation
       # @rbs root_node: Node
       # @rbs _parse_result: Prism::ParseResult
-      # @rbs _memo: Memo
+      # @rbs _memo_pad: MemoPad
       # @rbs return: bool
-      def perform(generation, root_node, _parse_result, _memo)
+      def perform(generation, root_node, _parse_result, _memo_pad)
         parameter_node = root_node.parameter_node_at(@offset)
         raise RubyModKit::Error unless parameter_node
 

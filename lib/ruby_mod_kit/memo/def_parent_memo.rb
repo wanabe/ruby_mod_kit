@@ -3,7 +3,7 @@
 # rbs_inline: enabled
 
 module RubyModKit
-  class Memo
+  module Memo
     # The memo for def parent (class, module)
     class DefParentMemo < OffsetMemo
       # @rbs @ivars_memo: Hash[Symbol, Memo::IvarMemo]

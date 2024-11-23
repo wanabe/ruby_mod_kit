@@ -10,8 +10,8 @@ module RubyModKit
         super(0)
       end
 
-      def perform(Generation => generation, Node => root_node, (Prism::ParseResult) => parse_result, Memo => memo): bool
-        memo.parameters_memo.each do |offset, parameter_memo|
+      def perform(Generation => generation, Node => root_node, (Prism::ParseResult) => parse_result, MemoPad => memo_pad): bool
+        memo_pad.parameters_memo.each do |offset, parameter_memo|
           next if parameter_memo.untyped?
 
           def_node = root_node.def_node_at(offset)

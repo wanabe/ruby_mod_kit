@@ -8,7 +8,7 @@ module RubyModKit
     class InstanceVariableParameterMission < Mission::BaseMission
       getter @assignment: String
 
-      def perform(Generation => generation, Node => root_node, (Prism::ParseResult) => _parse_result, Memo => _memo): bool
+      def perform(Generation => generation, Node => root_node, (Prism::ParseResult) => _parse_result, MemoPad => _memo_pad): bool
         parameter_node = root_node.parameter_node_at(@offset)
         raise RubyModKit::Error unless parameter_node
 
