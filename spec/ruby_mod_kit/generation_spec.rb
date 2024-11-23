@@ -2,21 +2,19 @@
 
 require "ruby_mod_kit"
 
-describe RubyModKit::Transpiler do
-  let(:transpiler) { described_class.new }
-
-  describe "#transpile" do
+describe RubyModKit::Generation do
+  describe ".resolve" do
     it "keeps valid ruby script" do
-      expect(transpiler.transpile("p 1")).to eq("p 1")
+      expect(described_class.resolve("p 1").script).to eq("p 1")
     end
 
     it "raises error with invalid ruby script" do
-      expect { transpiler.transpile("@") }.to raise_error(RubyModKit::SyntaxError)
+      expect { described_class.resolve("@") }.to raise_error(RubyModKit::SyntaxError)
     end
 
     describe "for instance variable parameter" do
       it "converts an instance variable parameter into an assignment" do
-        expect(transpiler.transpile(<<~RBM)).to eq(<<~RB)
+        expect(described_class.resolve(<<~RBM).script).to eq(<<~RB)
           def foo(@bar)
           end
         RBM
@@ -27,7 +25,7 @@ describe RubyModKit::Transpiler do
       end
 
       it "inserts an assignment at beggining of method" do
-        expect(transpiler.transpile(<<~RBM)).to eq(<<~RB)
+        expect(described_class.resolve(<<~RBM).script).to eq(<<~RB)
           def foo(@bar)
             buz
           end
@@ -40,7 +38,7 @@ describe RubyModKit::Transpiler do
       end
 
       it "converts some instance variable parameters into assignments in the same order" do
-        expect(transpiler.transpile(<<~RBM)).to eq(<<~RB)
+        expect(described_class.resolve(<<~RBM).script).to eq(<<~RB)
           def foo(@bar, @buz)
           end
         RBM
@@ -52,7 +50,7 @@ describe RubyModKit::Transpiler do
       end
 
       it "converts mixed instance variable parameters into assignments" do
-        expect(transpiler.transpile(<<~RBM)).to eq(<<~RB)
+        expect(described_class.resolve(<<~RBM).script).to eq(<<~RB)
           def foo(@bar, @buz = nil, @hoge:, @fuga: nil)
           end
         RBM
@@ -68,7 +66,7 @@ describe RubyModKit::Transpiler do
 
     describe "typed parameter" do
       it "converts typed parameter to rbs-inline annotation" do
-        expect(transpiler.transpile(<<~RBM)).to eq(<<~RB)
+        expect(described_class.resolve(<<~RBM).script).to eq(<<~RB)
           def foo(Bar => bar)
           end
         RBM
@@ -79,7 +77,7 @@ describe RubyModKit::Transpiler do
       end
 
       it "allows constant joined with `::`" do
-        expect(transpiler.transpile(<<~RBM)).to eq(<<~RB)
+        expect(described_class.resolve(<<~RBM).script).to eq(<<~RB)
           def foo(Bar::Buz => bar)
           end
         RBM
@@ -90,7 +88,7 @@ describe RubyModKit::Transpiler do
       end
 
       it "treats same name method definitions as overloading" do
-        expect(transpiler.transpile(<<~RBM)).to eq(<<~RB)
+        expect(described_class.resolve(<<~RBM).script).to eq(<<~RB)
           def foo(Bar => bar): (Foo | Bar)
             p :bar, bar
           end
@@ -125,7 +123,7 @@ describe RubyModKit::Transpiler do
       end
 
       it "receives rest parameter" do
-        expect(transpiler.transpile(<<~RBM)).to eq(<<~RB)
+        expect(described_class.resolve(<<~RBM).script).to eq(<<~RB)
           def foo(*Bar::Buz => bar)
           end
         RBM
@@ -136,7 +134,7 @@ describe RubyModKit::Transpiler do
       end
 
       it "converts correctly with ivar and namespaced type" do
-        expect(transpiler.transpile(<<~RBM)).to eq(<<~RB)
+        expect(described_class.resolve(<<~RBM).script).to eq(<<~RB)
           class Foo
             @bar: Bar
 
@@ -175,7 +173,7 @@ describe RubyModKit::Transpiler do
       end
 
       it "can separate with modules" do
-        expect(transpiler.transpile(<<~RBM)).to eq(<<~RB)
+        expect(described_class.resolve(<<~RBM).script).to eq(<<~RB)
           class Foo
             module Bar
               def buz: Buz
@@ -227,7 +225,7 @@ describe RubyModKit::Transpiler do
 
     describe "typed return value" do
       it "converts typed return value to rbs-inline annotation" do
-        expect(transpiler.transpile(<<~RBM)).to eq(<<~RB)
+        expect(described_class.resolve(<<~RBM).script).to eq(<<~RB)
           def foo: Bar
           end
         RBM
@@ -238,7 +236,7 @@ describe RubyModKit::Transpiler do
       end
 
       it "insert return value annotation after parameter annotation" do
-        expect(transpiler.transpile(<<~RBM)).to eq(<<~RB)
+        expect(described_class.resolve(<<~RBM).script).to eq(<<~RB)
           def foo(Bar => bar): Buz
           end
         RBM
@@ -252,7 +250,7 @@ describe RubyModKit::Transpiler do
 
     describe "for instance variable type" do
       it "converts instance variable type definition to rbs-inline annotation" do
-        expect(transpiler.transpile(<<~RBM)).to eq(<<~RB)
+        expect(described_class.resolve(<<~RBM).script).to eq(<<~RB)
           class Foo
             @bar: Bar
           end
@@ -264,7 +262,7 @@ describe RubyModKit::Transpiler do
       end
 
       it "adds attr type definition as rbs-inline annotation" do
-        expect(transpiler.transpile(<<~RBM)).to eq(<<~RB)
+        expect(described_class.resolve(<<~RBM).script).to eq(<<~RB)
           class Foo
             @bar: Bar
 
@@ -280,7 +278,7 @@ describe RubyModKit::Transpiler do
       end
 
       it "supports attribute pattern without class body" do
-        expect(transpiler.transpile(<<~RBM)).to eq(<<~RB)
+        expect(described_class.resolve(<<~RBM).script).to eq(<<~RB)
           class Foo
             attr_reader @bar: Bar
             property @buz: Buz
@@ -300,7 +298,7 @@ describe RubyModKit::Transpiler do
       end
 
       it "supports attribute pattern with class body" do
-        expect(transpiler.transpile(<<~RBM)).to eq(<<~RB)
+        expect(described_class.resolve(<<~RBM).script).to eq(<<~RB)
           class Foo
             attr_reader @bar: Bar
             property @buz: Buz
@@ -323,7 +321,7 @@ describe RubyModKit::Transpiler do
       end
 
       it "completes ivar parameter type" do
-        expect(transpiler.transpile(<<~RBM)).to eq(<<~RB)
+        expect(described_class.resolve(<<~RBM).script).to eq(<<~RB)
           class Foo
             @bar: Bar
 
