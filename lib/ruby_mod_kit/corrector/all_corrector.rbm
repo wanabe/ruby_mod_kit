@@ -7,42 +7,12 @@ module RubyModKit
     # the class to correct all. TODO: split class by feature
     class AllCorrector
       def correctable_error_types: (Array[Symbol])
-        %i[argument_formal_ivar unexpected_token_ignore]
+        %i[unexpected_token_ignore]
       end
 
       def correct(Prism::ParseError => parse_error, Generation => generation, Node::ProgramNode => root_node, MemoPad => memo_pad): void
-        case parse_error.type
-        when :argument_formal_ivar
-          fix_argument_formal_ivar(parse_error, generation, root_node, memo_pad)
-        when :unexpected_token_ignore
-          return if parse_error.location.slice != ":"
+        return if parse_error.location.slice != ":"
 
-          fix_unexpected_colon(parse_error, generation, root_node, memo_pad)
-        end
-      end
-
-      def fix_argument_formal_ivar(Prism::ParseError => parse_error, Generation => generation, Node::ProgramNode => root_node, MemoPad => memo_pad): void
-        src_offset = parse_error.location.start_offset
-
-        name = parse_error.location.slice[1..]
-        raise RubyModKit::Error unless name
-
-        parameter_position_node = root_node.node_at(src_offset)
-        raise RubyModKit::Error unless parameter_position_node
-
-        generation[src_offset, parse_error.location.length] = name
-        parameter_memo = memo_pad.parameter_memo(parameter_position_node)
-        parameter_memo.ivar_parameter = true
-        generation.add_mission(Mission::InstanceVariableParameterMission.new(src_offset))
-
-        return unless parameter_memo.untyped?
-
-        def_parent_node = root_node.def_parent_node_at(parse_error.location.start_offset) || return
-        ivar_memo_type = memo_pad.def_parent_memo(def_parent_node).ivar_memo(name.to_sym).type || return
-        parameter_memo.type = ivar_memo_type
-      end
-
-      def fix_unexpected_colon(Prism::ParseError => parse_error, Generation => generation, Node::ProgramNode => root_node, MemoPad => memo_pad): void
         parent_node = root_node.statements_node_at(parse_error.location.start_offset)&.parent
         case parent_node
         when Node::DefNode

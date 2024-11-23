@@ -9,4 +9,5 @@ module RubyModKit
 end
 
 require_relative "corrector/all_corrector"
+require_relative "corrector/instance_variable_parameter_corrector"
 require_relative "corrector/parameter_arrow_corrector"

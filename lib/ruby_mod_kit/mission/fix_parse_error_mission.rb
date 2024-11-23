@@ -15,6 +15,7 @@ module RubyModKit
         @correctors_error_map = {}
         correctors = [
           RubyModKit::Corrector::AllCorrector.new,
+          RubyModKit::Corrector::InstanceVariableParameterCorrector.new,
           RubyModKit::Corrector::ParameterArrowCorrector.new,
         ]
         correctors.each do |corrector|
