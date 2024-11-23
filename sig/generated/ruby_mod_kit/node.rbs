@@ -1,63 +1,7 @@
 # Generated from lib/ruby_mod_kit/node.rb with RBS::Inline
 
 module RubyModKit
-  # The class of transpile node.
-  class Node
-    @location: Prism::Location
-
-    @children: Array[Node]
-
-    @ancestors: Array[Node]
-
-    attr_reader location: Prism::Location
-
-    # @rbs return: void
-    def initialize: () -> void
-
-    # @rbs return: Array[Node]
-    def children: () -> Array[Node]
-
-    # @rbs prism_node: Prism::Node
-    # @rbs return: Node
-    def wrap: (Prism::Node prism_node) -> Node
-
-    # @rbs return: Array[Node]
-    def ancestors: () -> Array[Node]
-
-    # @rbs return: Symbol
-    def name: () -> Symbol
-
-    # @rbs offset: Integer
-    # @rbs return: Node | nil
-    def node_at: (Integer offset) -> (Node | nil)
-
-    # @rbs offset: Integer
-    # @rbs return: Node::StatementsNode | nil
-    def statements_node_at: (Integer offset) -> (Node::StatementsNode | nil)
-
-    # @rbs offset: Integer
-    # @rbs return: Node::DefNode | nil
-    def def_node_at: (Integer offset) -> (Node::DefNode | nil)
-
-    # @rbs offset: Integer
-    # @rbs return: Node::ParameterNode | nil
-    def parameter_node_at: (Integer offset) -> (Node::ParameterNode | nil)
-
-    # @rbs offset: Integer
-    # @rbs return: Node::DefParentNode | nil
-    def def_parent_node_at: (Integer offset) -> (Node::DefParentNode | nil)
-
-    # @rbs offset: Integer
-    # @rbs return: bool
-    def include?: (Integer offset) -> bool
-
-    # @rbs return: Prism::Node & Prism::_Node
-    def prism_node: () -> (Prism::Node & Prism::_Node)
-
-    # @rbs return: Integer
-    def offset: () -> Integer
-
-    # @rbs return: String
-    def inspect: () -> String
+  # The namespace of transpile node.
+  module Node
   end
 end

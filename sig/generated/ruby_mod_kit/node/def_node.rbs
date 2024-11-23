@@ -1,21 +1,21 @@
 # Generated from lib/ruby_mod_kit/node/def_node.rb with RBS::Inline
 
 module RubyModKit
-  class Node
+  module Node
     # Transpiler program node
-    class DefNode < Node
+    class DefNode < Node::BaseNode
       @prism_node: Prism::DefNode
 
-      @parent: Node
+      @parent: Node::BaseNode
 
       attr_reader prism_node: Prism::DefNode
 
-      attr_reader parent: Node
+      attr_reader parent: Node::BaseNode
 
       # @rbs prism_node: Prism::DefNode
-      # @rbs parent: Node
+      # @rbs parent: Node::BaseNode
       # @rbs return: void
-      def initialize: (Prism::DefNode prism_node, parent: Node) -> void
+      def initialize: (Prism::DefNode prism_node, parent: Node::BaseNode) -> void
 
       # @rbs return: Symbol
       def name: () -> Symbol

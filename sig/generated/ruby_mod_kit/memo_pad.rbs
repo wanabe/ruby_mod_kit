@@ -30,8 +30,8 @@ module RubyModKit
     # @rbs return: Memo::MethodMemo
     def method_memo: (Node::DefNode def_node) -> Memo::MethodMemo
 
-    # @rbs node: Node
+    # @rbs node: Node::BaseNode
     # @rbs return: Memo::ParameterMemo
-    def parameter_memo: (Node node) -> Memo::ParameterMemo
+    def parameter_memo: (Node::BaseNode node) -> Memo::ParameterMemo
   end
 end

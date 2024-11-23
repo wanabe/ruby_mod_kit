@@ -1,23 +1,23 @@
 # Generated from lib/ruby_mod_kit/node/parameter_node.rb with RBS::Inline
 
 module RubyModKit
-  class Node
+  module Node
     # Transpiler program node
-    class ParameterNode < Node
+    class ParameterNode < Node::BaseNode
       type prism_node = Prism::RequiredParameterNode | Prism::OptionalKeywordParameterNode | Prism::OptionalParameterNode | Prism::RequiredKeywordParameterNode | Prism::RestParameterNode
 
       @prism_node: prism_node
 
-      @parent: Node
+      @parent: Node::BaseNode
 
       attr_reader prism_node: prism_node
 
-      attr_reader parent: Node
+      attr_reader parent: Node::BaseNode
 
       # @rbs prism_node: prism_node
-      # @rbs parent: Node
+      # @rbs parent: Node::BaseNode
       # @rbs return: void
-      def initialize: (prism_node prism_node, parent: Node) -> void
+      def initialize: (prism_node prism_node, parent: Node::BaseNode) -> void
 
       # @rbs return: Symbol | nil
       def name: () -> (Symbol | nil)

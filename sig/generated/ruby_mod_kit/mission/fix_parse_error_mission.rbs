@@ -10,11 +10,11 @@ module RubyModKit
       def initialize: () -> void
 
       # @rbs generation: Generation
-      # @rbs root_node: Node
+      # @rbs root_node: Node::ProgramNode
       # @rbs parse_result: Prism::ParseResult
       # @rbs memo_pad: MemoPad
       # @rbs return: bool
-      def perform: (Generation generation, Node root_node, Prism::ParseResult parse_result, MemoPad memo_pad) -> bool
+      def perform: (Generation generation, Node::ProgramNode root_node, Prism::ParseResult parse_result, MemoPad memo_pad) -> bool
 
       # @rbs generation: Generation
       # @rbs parse_result: Prism::ParseResult
@@ -23,17 +23,17 @@ module RubyModKit
 
       # @rbs parse_error: Prism::ParseError
       # @rbs generation: Generation
-      # @rbs root_node: Node
+      # @rbs root_node: Node::ProgramNode
       # @rbs memo_pad: MemoPad
       # @rbs return: void
-      def fix_def_params_term_paren: (Prism::ParseError parse_error, Generation generation, Node root_node, MemoPad memo_pad) -> void
+      def fix_def_params_term_paren: (Prism::ParseError parse_error, Generation generation, Node::ProgramNode root_node, MemoPad memo_pad) -> void
 
       # @rbs parse_error: Prism::ParseError
       # @rbs generation: Generation
-      # @rbs root_node: Node
+      # @rbs root_node: Node::ProgramNode
       # @rbs memo_pad: MemoPad
       # @rbs return: void
-      def fix_argument_formal_ivar: (Prism::ParseError parse_error, Generation generation, Node root_node, MemoPad memo_pad) -> void
+      def fix_argument_formal_ivar: (Prism::ParseError parse_error, Generation generation, Node::ProgramNode root_node, MemoPad memo_pad) -> void
 
       # @rbs parse_error: Prism::ParseError
       # @rbs generation: Generation
@@ -42,25 +42,25 @@ module RubyModKit
 
       # @rbs parse_error: Prism::ParseError
       # @rbs generation: Generation
-      # @rbs root_node: Node
+      # @rbs root_node: Node::ProgramNode
       # @rbs memo_pad: MemoPad
       # @rbs return: void
-      def fix_unexpected_assoc: (Prism::ParseError parse_error, Generation generation, Node root_node, MemoPad memo_pad) -> void
+      def fix_unexpected_assoc: (Prism::ParseError parse_error, Generation generation, Node::ProgramNode root_node, MemoPad memo_pad) -> void
 
       # @rbs parse_error: Prism::ParseError
       # @rbs generation: Generation
-      # @rbs root_node: Node
+      # @rbs root_node: Node::ProgramNode
       # @rbs memo_pad: MemoPad
       # @rbs return: void
-      def fix_unexpected_colon: (Prism::ParseError parse_error, Generation generation, Node root_node, MemoPad memo_pad) -> void
+      def fix_unexpected_colon: (Prism::ParseError parse_error, Generation generation, Node::ProgramNode root_node, MemoPad memo_pad) -> void
 
       # @rbs parse_error: Prism::ParseError
       # @rbs generation: Generation
-      # @rbs root_node: Node
+      # @rbs root_node: Node::ProgramNode
       # @rbs def_node: Node::DefNode
       # @rbs memo_pad: MemoPad
       # @rbs return: void
-      def fix_unexpected_colon_in_def: (Prism::ParseError parse_error, Generation generation, Node root_node, Node::DefNode def_node, MemoPad memo_pad) -> void
+      def fix_unexpected_colon_in_def: (Prism::ParseError parse_error, Generation generation, Node::ProgramNode root_node, Node::DefNode def_node, MemoPad memo_pad) -> void
 
       # @rbs parse_error: Prism::ParseError
       # @rbs generation: Generation

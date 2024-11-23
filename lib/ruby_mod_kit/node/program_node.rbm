@@ -3,9 +3,9 @@
 # rbs_inline: enabled
 
 module RubyModKit
-  class Node
+  module Node
     # Transpiler program node
-    class ProgramNode < Node
+    class ProgramNode < Node::BaseNode
       getter @prism_node: Prism::ProgramNode
 
       def initialize(@prism_node): void

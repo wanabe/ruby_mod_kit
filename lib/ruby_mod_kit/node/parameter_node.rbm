@@ -3,16 +3,16 @@
 # rbs_inline: enabled
 
 module RubyModKit
-  class Node
+  module Node
     # Transpiler program node
-    class ParameterNode < Node
+    class ParameterNode < Node::BaseNode
       # @rbs!
       #   type prism_node = Prism::RequiredParameterNode | Prism::OptionalKeywordParameterNode
       #                   | Prism::OptionalParameterNode | Prism::RequiredKeywordParameterNode
       #                   | Prism::RestParameterNode
 
       getter @prism_node: prism_node
-      getter @parent: Node
+      getter @parent: (Node::BaseNode)
 
       def initialize(@prism_node, @parent:): void
         case prism_node

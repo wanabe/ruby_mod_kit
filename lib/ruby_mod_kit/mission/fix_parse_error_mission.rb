@@ -15,7 +15,7 @@ module RubyModKit
       end
 
       # @rbs generation: Generation
-      # @rbs root_node: Node
+      # @rbs root_node: Node::ProgramNode
       # @rbs parse_result: Prism::ParseResult
       # @rbs memo_pad: MemoPad
       # @rbs return: bool
@@ -70,7 +70,7 @@ module RubyModKit
 
       # @rbs parse_error: Prism::ParseError
       # @rbs generation: Generation
-      # @rbs root_node: Node
+      # @rbs root_node: Node::ProgramNode
       # @rbs memo_pad: MemoPad
       # @rbs return: void
       def fix_def_params_term_paren(parse_error, generation, root_node, memo_pad)
@@ -92,7 +92,7 @@ module RubyModKit
 
       # @rbs parse_error: Prism::ParseError
       # @rbs generation: Generation
-      # @rbs root_node: Node
+      # @rbs root_node: Node::ProgramNode
       # @rbs memo_pad: MemoPad
       # @rbs return: void
       def fix_argument_formal_ivar(parse_error, generation, root_node, memo_pad)
@@ -129,7 +129,7 @@ module RubyModKit
 
       # @rbs parse_error: Prism::ParseError
       # @rbs generation: Generation
-      # @rbs root_node: Node
+      # @rbs root_node: Node::ProgramNode
       # @rbs memo_pad: MemoPad
       # @rbs return: void
       def fix_unexpected_assoc(parse_error, generation, root_node, memo_pad)
@@ -151,7 +151,7 @@ module RubyModKit
 
       # @rbs parse_error: Prism::ParseError
       # @rbs generation: Generation
-      # @rbs root_node: Node
+      # @rbs root_node: Node::ProgramNode
       # @rbs memo_pad: MemoPad
       # @rbs return: void
       def fix_unexpected_colon(parse_error, generation, root_node, memo_pad)
@@ -166,7 +166,7 @@ module RubyModKit
 
       # @rbs parse_error: Prism::ParseError
       # @rbs generation: Generation
-      # @rbs root_node: Node
+      # @rbs root_node: Node::ProgramNode
       # @rbs def_node: Node::DefNode
       # @rbs memo_pad: MemoPad
       # @rbs return: void

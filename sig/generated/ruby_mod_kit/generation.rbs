@@ -57,19 +57,19 @@ module RubyModKit
     def []: (Range[Integer] src_range) -> String
 
     # @rbs (Integer) -> String
-    #    | (Node) -> String
+    #    | (Node::BaseNode) -> String
     #    | (Prism::ParseError) -> String
     def line: (Integer) -> String
-            | (Node) -> String
+            | (Node::BaseNode) -> String
             | (Prism::ParseError) -> String
 
     # @rbs line_num: Integer
     # @rbs return: String
     def line__overload0: (Integer line_num) -> String
 
-    # @rbs node: Node
+    # @rbs node: Node::BaseNode
     # @rbs return: String
-    def line__overload1: (Node node) -> String
+    def line__overload1: (Node::BaseNode node) -> String
 
     # @rbs parse_error: Prism::ParseError
     # @rbs return: String

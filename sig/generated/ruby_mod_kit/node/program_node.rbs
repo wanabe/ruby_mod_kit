@@ -1,9 +1,9 @@
 # Generated from lib/ruby_mod_kit/node/program_node.rb with RBS::Inline
 
 module RubyModKit
-  class Node
+  module Node
     # Transpiler program node
-    class ProgramNode < Node
+    class ProgramNode < Node::BaseNode
       @prism_node: Prism::ProgramNode
 
       attr_reader prism_node: Prism::ProgramNode

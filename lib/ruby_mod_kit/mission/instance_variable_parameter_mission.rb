@@ -11,7 +11,7 @@ module RubyModKit
       attr_reader :assignment #: String
 
       # @rbs generation: Generation
-      # @rbs root_node: Node
+      # @rbs root_node: Node::ProgramNode
       # @rbs _parse_result: Prism::ParseResult
       # @rbs _memo_pad: MemoPad
       # @rbs return: bool

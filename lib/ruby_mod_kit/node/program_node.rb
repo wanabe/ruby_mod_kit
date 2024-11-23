@@ -3,9 +3,9 @@
 # rbs_inline: enabled
 
 module RubyModKit
-  class Node
+  module Node
     # Transpiler program node
-    class ProgramNode < Node
+    class ProgramNode < Node::BaseNode
       # @rbs @prism_node: Prism::ProgramNode
 
       attr_reader :prism_node #: Prism::ProgramNode

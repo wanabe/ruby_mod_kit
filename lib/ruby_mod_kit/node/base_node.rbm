@@ -1,0 +1,134 @@
+# frozen_string_literal: true
+
+# rbs_inline: enabled
+
+module RubyModKit
+  module Node
+    # The class of transpile node.
+    class BaseNode
+      getter @location: Prism::Location
+      @children: Array[Node::BaseNode]
+      @ancestors: Array[Node::BaseNode]
+
+      def initialize: void
+        @location = prism_node.location
+      end
+
+      def children: (Array[Node::BaseNode])
+        return @children if @children
+
+        @children = prism_node.child_nodes.compact.map do |prism_child_node|
+          wrap(prism_child_node)
+        end
+      end
+
+      def wrap(Prism::Node => prism_node): (Node::BaseNode)
+        case prism_node
+        when Prism::SymbolNode
+          Node::SymbolNode.new(prism_node, parent: self)
+        when Prism::ClassNode, Prism::ModuleNode
+          Node::DefParentNode.new(prism_node, parent: self)
+        when Prism::DefNode
+          Node::DefNode.new(prism_node, parent: self)
+        when Prism::RequiredParameterNode, Prism::OptionalKeywordParameterNode,
+            Prism::OptionalParameterNode, Prism::RequiredKeywordParameterNode,
+            Prism::RestParameterNode
+          Node::ParameterNode.new(prism_node, parent: self)
+        when Prism::StatementsNode
+          Node::StatementsNode.new(prism_node, parent: self)
+        when Prism::CallNode
+          Node::CallNode.new(prism_node, parent: self)
+        else
+          Node::UntypedNode.new(prism_node, parent: self)
+        end
+      end
+
+      def ancestors: (Array[Node::BaseNode])
+        return @ancestors if @ancestors
+
+        parent = @parent
+        @ancestors = if parent
+          [parent] + parent.ancestors
+        else
+          []
+        end
+      end
+
+      def name: Symbol
+        raise(RubyModKit::Error, "Expected ParameterNode but #{self.class}:#{prism_node.inspect}")
+      end
+
+      def node_at(Integer => offset): (Node::BaseNode | nil)
+        return nil unless include?(offset)
+
+        child = children.find { _1.include?(offset) }
+        child&.node_at(offset) || self
+      end
+
+      def statements_node_at(Integer => offset): (Node::StatementsNode | nil)
+        node = node_at(offset) || return
+        [node, *node.ancestors].each { return _1 if _1.is_a?(Node::StatementsNode) }
+        nil
+      end
+
+      def def_node_at(Integer => offset): (Node::DefNode | nil)
+        node = node_at(offset) || return
+        [node, *node.ancestors].each { return _1 if _1.is_a?(Node::DefNode) }
+        nil
+      end
+
+      def parameter_node_at(Integer => offset): (Node::ParameterNode | nil)
+        node = node_at(offset) || return
+        [node, *node.ancestors].each { return _1 if _1.is_a?(Node::ParameterNode) }
+        nil
+      end
+
+      def def_parent_node_at(Integer => offset): (Node::DefParentNode | nil)
+        node = node_at(offset) || return
+        [node, *node.ancestors].each { return _1 if _1.is_a?(Node::DefParentNode) }
+        nil
+      end
+
+      def include?(Integer => offset): bool
+        self.offset <= offset && offset <= prism_node.location.end_offset
+      end
+
+      def prism_node: (Prism::Node & Prism::_Node)
+        raise RubyModKit::Error
+      end
+
+      def offset: Integer
+        location.start_offset
+      end
+
+      def inspect: String
+        str = +"#<#{self.class} "
+        first = true
+        instance_variables.each do |ivar_name|
+          case ivar_name
+          when :@children, :@ancestors, :@parent
+            next
+          end
+
+          if first
+            first = false
+          else
+            str << ", "
+          end
+          str << "#{ivar_name}="
+          value = instance_variable_get(ivar_name)
+          str << (
+            case value
+            when Prism::Node
+              "#<#{value.class} location=#{value.location.inspect}>"
+            else
+              value.inspect
+            end
+          )
+        end
+        str << ">"
+        str
+      end
+    end
+  end
+end

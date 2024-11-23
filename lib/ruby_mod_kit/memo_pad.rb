@@ -46,7 +46,7 @@ module RubyModKit
       @methods_memo[def_node.offset] ||= Memo::MethodMemo.new(def_node)
     end
 
-    # @rbs node: Node
+    # @rbs node: Node::BaseNode
     # @rbs return: Memo::ParameterMemo
     def parameter_memo(node)
       memo = @parameters_memo[node.offset] ||= Memo::ParameterMemo.new(node.offset)

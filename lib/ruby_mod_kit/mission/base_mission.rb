@@ -17,7 +17,7 @@ module RubyModKit
       end
 
       # @rbs _generation: Generation
-      # @rbs _root_node: Node
+      # @rbs _root_node: Node::ProgramNode
       # @rbs _parse_result: Prism::ParseResult
       # @rbs _memo_pad: MemoPad
       # @rbs return: void

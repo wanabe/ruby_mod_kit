@@ -3,17 +3,17 @@
 # rbs_inline: enabled
 
 module RubyModKit
-  class Node
+  module Node
     # Transpiler program node
-    class StatementsNode < Node
+    class StatementsNode < Node::BaseNode
       # @rbs @prism_node: Prism::StatementsNode
-      # @rbs @parent: Node
+      # @rbs @parent: Node::BaseNode
 
       attr_reader :prism_node #: Prism::StatementsNode
-      attr_reader :parent #: Node
+      attr_reader :parent #: Node::BaseNode
 
       # @rbs prism_node: Prism::StatementsNode
-      # @rbs parent: Node
+      # @rbs parent: Node::BaseNode
       # @rbs return: void
       def initialize(prism_node, parent:)
         @prism_node = prism_node

@@ -3,11 +3,11 @@
 # rbs_inline: enabled
 
 module RubyModKit
-  class Node
+  module Node
     # Transpiler program node
-    class SymbolNode < Node
+    class SymbolNode < Node::BaseNode
       getter @prism_node: Prism::SymbolNode
-      getter @parent: Node
+      getter @parent: (Node::BaseNode)
 
       def initialize(@prism_node, @parent:): void
         raise RubyModKit::Error unless prism_node.is_a?(Prism::SymbolNode)

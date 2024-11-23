@@ -8,11 +8,11 @@ module RubyModKit
       def initialize: () -> void
 
       # @rbs generation: Generation
-      # @rbs root_node: Node
+      # @rbs root_node: Node::ProgramNode
       # @rbs parse_result: Prism::ParseResult
       # @rbs memo_pad: MemoPad
       # @rbs return: bool
-      def perform: (Generation generation, Node root_node, Prism::ParseResult parse_result, MemoPad memo_pad) -> bool
+      def perform: (Generation generation, Node::ProgramNode root_node, Prism::ParseResult parse_result, MemoPad memo_pad) -> bool
     end
   end
 end

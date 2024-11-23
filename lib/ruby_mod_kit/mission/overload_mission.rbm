@@ -14,7 +14,7 @@ module RubyModKit
         super(0)
       end
 
-      def perform(Generation => generation, Node => root_node, (Prism::ParseResult) => parse_result, MemoPad => memo_pad): bool
+      def perform(Generation => generation, Node::ProgramNode => root_node, (Prism::ParseResult) => parse_result, MemoPad => memo_pad): bool
         method_memo_groups = memo_pad.methods_memo.each_value.group_by do |method_memo|
           [root_node.def_parent_node_at(method_memo.offset), method_memo.name]
         end

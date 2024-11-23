@@ -3,12 +3,12 @@
 # rbs_inline: enabled
 
 module RubyModKit
-  class Node
+  module Node
     # Transpiler program node
-    class DefParentNode < Node
+    class DefParentNode < Node::BaseNode
       getter @prism_node: (Prism::ClassNode | Prism::ModuleNode)
       getter @body_node: (nil | Node::StatementsNode)
-      getter @parent: Node
+      getter @parent: (Node::BaseNode)
 
       def initialize(@prism_node, @parent:): void
         raise RubyModKit::Error if !prism_node.is_a?(Prism::ClassNode) && !prism_node.is_a?(Prism::ModuleNode)
@@ -16,7 +16,7 @@ module RubyModKit
         super()
       end
 
-      def wrap(Prism::Node => child_prism_node): Node
+      def wrap(Prism::Node => child_prism_node): (Node::BaseNode)
         node = super
         @body_node = node if child_prism_node == prism_node.body && node.is_a?(Node::StatementsNode)
         node

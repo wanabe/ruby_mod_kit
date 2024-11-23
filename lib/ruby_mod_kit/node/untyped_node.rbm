@@ -3,11 +3,11 @@
 # rbs_inline: enabled
 
 module RubyModKit
-  class Node
+  module Node
     # Transpiler program node
-    class UntypedNode < Node
+    class UntypedNode < Node::BaseNode
       getter @prism_node: Prism::Node
-      getter @parent: Node
+      getter @parent: (Node::BaseNode)
 
       def initialize(@prism_node, @parent:): void
         super()

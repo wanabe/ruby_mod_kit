@@ -95,13 +95,13 @@ module RubyModKit
     end
 
     # @rbs (Integer) -> String
-    #    | (Node) -> String
+    #    | (Node::BaseNode) -> String
     #    | (Prism::ParseError) -> String
     def line(*args)
       case args
       in [Integer]
         line__overload0(*args)
-      in [Node]
+      in [Node::BaseNode]
         line__overload1(*args)
       in [Prism::ParseError]
         line__overload2(*args)
@@ -115,7 +115,7 @@ module RubyModKit
       (@script.match(/.*\n?/, offset) && Regexp.last_match(0)) || raise(RubyModKit::Error)
     end
 
-    # @rbs node: Node
+    # @rbs node: Node::BaseNode
     # @rbs return: String
     def line__overload1(node)
       line(node.prism_node.location.start_line - 1)
