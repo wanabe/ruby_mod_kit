@@ -18,10 +18,6 @@ module RubyModKit
       # @rbs return: Array[Node::BaseNode]
       def children: () -> Array[Node::BaseNode]
 
-      # @rbs prism_node: Prism::Node
-      # @rbs return: Node::BaseNode
-      def wrap: (Prism::Node prism_node) -> Node::BaseNode
-
       # @rbs return: Array[Node::BaseNode]
       def ancestors: () -> Array[Node::BaseNode]
 

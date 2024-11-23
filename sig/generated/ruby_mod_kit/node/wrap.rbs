@@ -1,0 +1,11 @@
+# Generated from lib/ruby_mod_kit/node/wrap.rb with RBS::Inline
+
+module RubyModKit
+  # The namespace of transpile node.
+  module Node
+    # @rbs prism_node: Prism::Node
+    # @rbs parent: Node::BaseNode
+    # @rbs return: Node::BaseNode
+    def self.wrap: (Prism::Node prism_node, parent: Node::BaseNode) -> Node::BaseNode
+  end
+end

@@ -18,28 +18,7 @@ module RubyModKit
         return @children if @children
 
         @children = prism_node.child_nodes.compact.map do |prism_child_node|
-          wrap(prism_child_node)
-        end
-      end
-
-      def wrap(Prism::Node => prism_node): (Node::BaseNode)
-        case prism_node
-        when Prism::SymbolNode
-          Node::SymbolNode.new(prism_node, parent: self)
-        when Prism::ClassNode, Prism::ModuleNode
-          Node::DefParentNode.new(prism_node, parent: self)
-        when Prism::DefNode
-          Node::DefNode.new(prism_node, parent: self)
-        when Prism::RequiredParameterNode, Prism::OptionalKeywordParameterNode,
-            Prism::OptionalParameterNode, Prism::RequiredKeywordParameterNode,
-            Prism::RestParameterNode
-          Node::ParameterNode.new(prism_node, parent: self)
-        when Prism::StatementsNode
-          Node::StatementsNode.new(prism_node, parent: self)
-        when Prism::CallNode
-          Node::CallNode.new(prism_node, parent: self)
-        else
-          Node::UntypedNode.new(prism_node, parent: self)
+          Node.wrap(prism_child_node, parent: self)
         end
       end
 
