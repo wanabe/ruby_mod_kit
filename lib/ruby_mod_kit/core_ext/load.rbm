@@ -3,7 +3,7 @@
 # rbs_inline: enabled
 
 require "ruby_mod_kit"
-require "ruby_mod_kit/core_ext/eval"
+require_relative "eval"
 
 # Define RubyMotKit.load/require
 module RubyModKit
