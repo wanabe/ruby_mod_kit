@@ -11,7 +11,6 @@ module RubyModKit
       # @rbs @parent: Node::BaseNode
 
       attr_reader :prism_node #: Prism::ClassNode | Prism::ModuleNode
-      attr_reader :body_node #: nil | Node::StatementsNode
       attr_reader :parent #: Node::BaseNode
 
       # @rbs prism_node: Prism::ClassNode | Prism::ModuleNode
@@ -25,12 +24,13 @@ module RubyModKit
         super()
       end
 
-      # @rbs child_prism_node: Prism::Node
-      # @rbs return: Node::BaseNode
-      def wrap(child_prism_node)
-        node = super
-        @body_node = node if child_prism_node == prism_node.body && node.is_a?(Node::StatementsNode)
-        node
+      # @rbs return: nil | Node::StatementsNode
+      def body_node
+        return @body_node if defined?(@body_node)
+
+        body_node = children.find { |node| node.prism_node == @prism_node.body }
+        body_node = nil unless body_node.is_a?(Node::StatementsNode)
+        @body_node = body_node
       end
     end
   end

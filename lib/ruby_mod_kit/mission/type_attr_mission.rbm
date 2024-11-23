@@ -48,8 +48,9 @@ module RubyModKit
           add_separator_line = line != "\n" && line !~ /\A\s*end$/
           offset = generation.src_offset(attr_adding_line) || next
 
-          if def_parent_node.body_node
-            first_line = generation.line(def_parent_node.body_node)
+          body_node = def_parent_node.body_node
+          if body_node
+            first_line = generation.line(body_node)
             indent = first_line[/\A\s*/] || raise(RubyModKit::Error)
           else
             def_parent_line = generation.line(def_parent_node)
