@@ -3,9 +3,9 @@
 # rbs_inline: enabled
 
 module RubyModKit
-  class Mission
+  module Mission
     # The mission for parameter types
-    class TypeReturnMission < Mission
+    class TypeReturnMission < Mission::BaseMission
       # @rbs return: void
       def initialize
         super(0)

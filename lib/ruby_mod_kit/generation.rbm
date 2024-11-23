@@ -7,7 +7,7 @@ module RubyModKit
   class Generation
     getter @parse_result: Prism::ParseResult
     getter @script: String
-    @missions: Array[Mission]
+    @missions: Array[Mission::BaseMission]
     @memo: Memo
     @root_node: Node::ProgramNode
     @offset_diff: OffsetDiff
@@ -96,7 +96,7 @@ module RubyModKit
       end
     end
 
-    def add_mission(Mission => mission): void
+    def add_mission(Mission::BaseMission => mission): void
       @missions << mission
     end
 

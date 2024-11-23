@@ -3,9 +3,9 @@
 # rbs_inline: enabled
 
 module RubyModKit
-  class Mission
+  module Mission
     # The mission for instance variable arguments
-    class InstanceVariableParameterMission < Mission
+    class InstanceVariableParameterMission < Mission::BaseMission
       # @rbs @assignment: String
 
       attr_reader :assignment #: String

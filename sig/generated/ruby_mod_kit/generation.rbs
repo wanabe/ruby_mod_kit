@@ -7,7 +7,7 @@ module RubyModKit
 
     @script: String
 
-    @missions: Array[Mission]
+    @missions: Array[Mission::BaseMission]
 
     @memo: Memo
 
@@ -24,12 +24,12 @@ module RubyModKit
     attr_reader script: String
 
     # @rbs script: String
-    # @rbs missions: Array[Mission]
+    # @rbs missions: Array[Mission::BaseMission]
     # @rbs memo: Memo
     # @rbs generation_num: Integer
     # @rbs filename: String | nil
     # @rbs return: void
-    def initialize: (String script, ?missions: Array[Mission], ?memo: Memo, ?generation_num: Integer, ?filename: String | nil) -> void
+    def initialize: (String script, ?missions: Array[Mission::BaseMission], ?memo: Memo, ?generation_num: Integer, ?filename: String | nil) -> void
 
     # @rbs return: void
     def init_missions: () -> void
@@ -91,9 +91,9 @@ module RubyModKit
     # @rbs return: void
     def perform_missions: () -> void
 
-    # @rbs mission: Mission
+    # @rbs mission: Mission::BaseMission
     # @rbs return: void
-    def add_mission: (Mission mission) -> void
+    def add_mission: (Mission::BaseMission mission) -> void
 
     # @rbs src: String
     # @rbs filename: String | nil

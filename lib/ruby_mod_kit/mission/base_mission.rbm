@@ -1,0 +1,23 @@
+# frozen_string_literal: true
+
+# rbs_inline: enabled
+
+module RubyModKit
+  module Mission
+    # The base class of transpiler mission.
+    class BaseMission
+      property @offset: Integer
+
+      def initialize(@offset): void
+      end
+
+      def perform(Generation => _generation, Node => _root_node, (Prism::ParseResult) => _parse_result, Memo => _memo): void
+        raise RubyModKit::Error, "Unexpected type #{self.class}"
+      end
+
+      def succ(OffsetDiff => offset_diff): void
+        @offset = offset_diff[@offset]
+      end
+    end
+  end
+end

@@ -2,7 +2,7 @@
 
 require "ruby_mod_kit/cli"
 
-describe RubyModKit::Mission do
+describe RubyModKit::Mission::BaseMission do
   let(:mission) { described_class.new(0) }
 
   describe "#perform" do

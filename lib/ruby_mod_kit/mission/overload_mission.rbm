@@ -3,9 +3,9 @@
 # rbs_inline: enabled
 
 module RubyModKit
-  class Mission
+  module Mission
     # The mission for overload
-    class OverloadMission < Mission
+    class OverloadMission < Mission::BaseMission
       OVERLOAD_METHOD_MAP = {
         "*": "_mul",
       }.freeze #: Hash[Symbol, String]

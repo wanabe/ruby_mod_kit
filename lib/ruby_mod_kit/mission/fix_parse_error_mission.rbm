@@ -3,9 +3,9 @@
 # rbs_inline: enabled
 
 module RubyModKit
-  class Mission
+  module Mission
     # The mission for parameter types
-    class FixParseErrorMission < Mission
+    class FixParseErrorMission < Mission::BaseMission
       @previous_error_messages: Array[String]
 
       def initialize: void

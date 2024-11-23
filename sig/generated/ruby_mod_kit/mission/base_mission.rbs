@@ -1,0 +1,27 @@
+# Generated from lib/ruby_mod_kit/mission/base_mission.rb with RBS::Inline
+
+module RubyModKit
+  module Mission
+    # The base class of transpiler mission.
+    class BaseMission
+      @offset: Integer
+
+      attr_accessor offset: Integer
+
+      # @rbs offset: Integer
+      # @rbs return: void
+      def initialize: (Integer offset) -> void
+
+      # @rbs _generation: Generation
+      # @rbs _root_node: Node
+      # @rbs _parse_result: Prism::ParseResult
+      # @rbs _memo: Memo
+      # @rbs return: void
+      def perform: (untyped _generation, untyped _root_node, untyped _parse_result, untyped _memo) -> void
+
+      # @rbs offset_diff: OffsetDiff
+      # @rbs return: void
+      def succ: (OffsetDiff offset_diff) -> void
+    end
+  end
+end
