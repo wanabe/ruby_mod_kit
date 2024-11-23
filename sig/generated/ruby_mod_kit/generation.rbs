@@ -59,6 +59,10 @@ module RubyModKit
     # @rbs return: String
     def []: (Range[Integer] src_range) -> String
 
+    # @rbs offset: Integer
+    # @rbs return: String
+    def line_by_offset: (Integer offset) -> String
+
     # @rbs (Integer) -> String
     #    | (Node::BaseNode) -> String
     #    | (Prism::ParseError) -> String

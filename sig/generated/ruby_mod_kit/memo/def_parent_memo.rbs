@@ -15,6 +15,10 @@ module RubyModKit
       # @rbs name: Symbol
       # @rbs return: Memo::IvarMemo
       def ivar_memo: (Symbol name) -> Memo::IvarMemo
+
+      # @rbs offset_diff: OffsetDiff
+      # @rbs return: void
+      def succ: (OffsetDiff offset_diff) -> void
     end
   end
 end

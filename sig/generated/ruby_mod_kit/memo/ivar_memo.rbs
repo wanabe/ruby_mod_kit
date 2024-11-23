@@ -8,11 +8,19 @@ module RubyModKit
 
       @attr_kind: nil | Symbol
 
+      @offset: nil | Integer
+
+      @indent: String
+
       @name: Symbol
 
       attr_reader type: nil | String
 
       attr_reader attr_kind: nil | Symbol
+
+      attr_accessor offset: nil | Integer
+
+      attr_accessor indent: String
 
       # @rbs name: Symbol
       # @rbs return: void
@@ -25,6 +33,10 @@ module RubyModKit
       # @rbs kind: Symbol | String
       # @rbs return: void
       def attr_kind=: (Symbol | String kind) -> void
+
+      # @rbs offset_diff: OffsetDiff
+      # @rbs return: void
+      def succ: (OffsetDiff offset_diff) -> void
     end
   end
 end

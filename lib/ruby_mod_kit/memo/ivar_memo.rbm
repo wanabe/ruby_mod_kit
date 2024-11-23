@@ -8,9 +8,12 @@ module RubyModKit
     class IvarMemo
       getter @type: (nil | String)
       getter @attr_kind: (nil | Symbol)
+      accessor @offset: (nil | Integer)
+      accessor @indent: String
       @name: Symbol
 
       def initialize(@name): void
+        @indent = ""
       end
 
       def type=(String => type): void
@@ -26,6 +29,13 @@ module RubyModKit
         when :attr_accessor, :accessor, :property
           @attr_kind = :attr_accessor
         end
+      end
+
+      def succ(OffsetDiff => offset_diff): void
+        offset = @offset
+        return unless offset
+
+        @offset = offset_diff[offset]
       end
     end
   end

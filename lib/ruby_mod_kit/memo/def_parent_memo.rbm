@@ -16,6 +16,13 @@ module RubyModKit
       def ivar_memo(Symbol => name): (Memo::IvarMemo)
         @ivars_memo[name] ||= Memo::IvarMemo.new(name)
       end
+
+      def succ(OffsetDiff => offset_diff): void
+        @ivars_memo.each_value do |ivar_memo|
+          ivar_memo.succ(offset_diff)
+        end
+        super
+      end
     end
   end
 end

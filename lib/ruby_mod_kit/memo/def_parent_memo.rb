@@ -22,6 +22,15 @@ module RubyModKit
       def ivar_memo(name)
         @ivars_memo[name] ||= Memo::IvarMemo.new(name)
       end
+
+      # @rbs offset_diff: OffsetDiff
+      # @rbs return: void
+      def succ(offset_diff)
+        @ivars_memo.each_value do |ivar_memo|
+          ivar_memo.succ(offset_diff)
+        end
+        super
+      end
     end
   end
 end

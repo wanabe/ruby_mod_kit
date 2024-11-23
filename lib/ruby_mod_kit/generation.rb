@@ -42,6 +42,7 @@ module RubyModKit
     def init_missions
       return unless first_generation?
 
+      add_mission(Mission::TypeInstanceVariableMission.new)
       add_mission(Mission::TypeAttrMission.new)
       add_mission(Mission::OverloadMission.new)
       add_mission(Mission::TypeParameterMission.new)
@@ -102,6 +103,13 @@ module RubyModKit
       @script[dst_range] || raise(RubyModKit::Error, "Invalid range")
     end
 
+    # @rbs offset: Integer
+    # @rbs return: String
+    def line_by_offset(offset)
+      offset = @offset_diff[offset]
+      (@script.match(/.*\n?/, offset) && Regexp.last_match(0)) || raise(RubyModKit::Error)
+    end
+
     # @rbs (Integer) -> String
     #    | (Node::BaseNode) -> String
     #    | (Prism::ParseError) -> String
@@ -119,8 +127,7 @@ module RubyModKit
     # @rbs line_num: Integer
     # @rbs return: String
     def line__overload0(line_num)
-      offset = @offset_diff[@parse_result.source.offsets[line_num]]
-      (@script.match(/.*\n?/, offset) && Regexp.last_match(0)) || raise(RubyModKit::Error)
+      line_by_offset(@parse_result.source.offsets[line_num])
     end
 
     # @rbs node: Node::BaseNode

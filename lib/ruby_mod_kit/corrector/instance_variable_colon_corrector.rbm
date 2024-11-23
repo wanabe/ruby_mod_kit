@@ -19,7 +19,7 @@ module RubyModKit
         line = generation.line(parse_error)
         line_offset = generation.src_offset(parse_error) || return
         attr_patterns = %i[attr_reader reader getter attr_writer writer setter attr_accessor accessor property]
-        return if line !~ /(\A\s*)(?:(#{attr_patterns.join("|")}) )?@(\w*)\s*:\s*(.*)/
+        return if line !~ /(\A\s*)(?:(#{attr_patterns.join("|")}) )?@(\w*)\s*:\s*(.*)\n/
 
         length = ::Regexp.last_match(0)&.length
         indent = ::Regexp.last_match(1)
@@ -30,9 +30,11 @@ module RubyModKit
 
         ivar_memo = memo_pad.def_parent_memo(def_parent_node).ivar_memo(ivar_name.to_sym)
         ivar_memo.type = type
+        ivar_memo.offset = line_offset
+        ivar_memo.indent = indent
         ivar_memo.attr_kind = attr_kind if attr_kind
 
-        generation[line_offset, length] = "#{indent}# @rbs @#{ivar_name}: #{RubyModKit.unify_type(type)}"
+        generation[line_offset, length] = ""
       end
     end
   end
