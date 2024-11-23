@@ -12,7 +12,10 @@ module RubyModKit
         super(0)
         @previous_error_messages = []
         @correctors_error_map = {}
-        correctors = [RubyModKit::Corrector::AllCorrector.new]
+        correctors = [
+          RubyModKit::Corrector::AllCorrector.new,
+          RubyModKit::Corrector::ParameterArrowCorrector.new,
+        ]
         correctors.each do |corrector|
           corrector.correctable_error_types.each do |error_type|
             (@correctors_error_map[error_type] ||= []) << corrector

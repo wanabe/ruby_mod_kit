@@ -19,26 +19,7 @@ module RubyModKit
       # @rbs root_node: Node::ProgramNode
       # @rbs memo_pad: MemoPad
       # @rbs return: void
-      def fix_def_params_term_paren: (Prism::ParseError parse_error, Generation generation, Node::ProgramNode root_node, MemoPad memo_pad) -> void
-
-      # @rbs parse_error: Prism::ParseError
-      # @rbs generation: Generation
-      # @rbs root_node: Node::ProgramNode
-      # @rbs memo_pad: MemoPad
-      # @rbs return: void
       def fix_argument_formal_ivar: (Prism::ParseError parse_error, Generation generation, Node::ProgramNode root_node, MemoPad memo_pad) -> void
-
-      # @rbs parse_error: Prism::ParseError
-      # @rbs generation: Generation
-      # @rbs return: void
-      def fix_argument_formal_constant: (Prism::ParseError parse_error, Generation generation) -> void
-
-      # @rbs parse_error: Prism::ParseError
-      # @rbs generation: Generation
-      # @rbs root_node: Node::ProgramNode
-      # @rbs memo_pad: MemoPad
-      # @rbs return: void
-      def fix_unexpected_assoc: (Prism::ParseError parse_error, Generation generation, Node::ProgramNode root_node, MemoPad memo_pad) -> void
 
       # @rbs parse_error: Prism::ParseError
       # @rbs generation: Generation

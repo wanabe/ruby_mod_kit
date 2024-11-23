@@ -8,7 +8,7 @@ module RubyModKit
     class AllCorrector
       # @rbs return: Array[Symbol]
       def correctable_error_types
-        %i[argument_formal_ivar argument_formal_constant unexpected_token_ignore def_params_term_paren]
+        %i[argument_formal_ivar unexpected_token_ignore]
       end
 
       # @rbs parse_error: Prism::ParseError
@@ -20,40 +20,11 @@ module RubyModKit
         case parse_error.type
         when :argument_formal_ivar
           fix_argument_formal_ivar(parse_error, generation, root_node, memo_pad)
-        when :argument_formal_constant
-          fix_argument_formal_constant(parse_error, generation)
         when :unexpected_token_ignore
-          case parse_error.location.slice
-          when "=>"
-            fix_unexpected_assoc(parse_error, generation, root_node, memo_pad)
-          when ":"
-            fix_unexpected_colon(parse_error, generation, root_node, memo_pad)
-          end
-        when :def_params_term_paren
-          fix_def_params_term_paren(parse_error, generation, root_node, memo_pad)
+          return if parse_error.location.slice != ":"
+
+          fix_unexpected_colon(parse_error, generation, root_node, memo_pad)
         end
-      end
-
-      # @rbs parse_error: Prism::ParseError
-      # @rbs generation: Generation
-      # @rbs root_node: Node::ProgramNode
-      # @rbs memo_pad: MemoPad
-      # @rbs return: void
-      def fix_def_params_term_paren(parse_error, generation, root_node, memo_pad)
-        column = parse_error.location.start_column - 1
-        return if column < 0
-
-        line = generation.line(parse_error)[column..] || return
-        line =~ /\A\*(.*?)\s*=>\s*/
-        length = ::Regexp.last_match(0)&.length || return
-        type = ::Regexp.last_match(1) || return
-        offset = parse_error.location.start_offset - 1
-        parameter_position_node = root_node.node_at(offset + length) || return
-
-        generation[parse_error.location.start_offset, length - 1] = ""
-        parameter_memo = memo_pad.parameter_memo(parameter_position_node)
-        parameter_memo.type = type
-        parameter_memo.qualifier = "*"
       end
 
       # @rbs parse_error: Prism::ParseError
@@ -80,39 +51,6 @@ module RubyModKit
         def_parent_node = root_node.def_parent_node_at(parse_error.location.start_offset) || return
         ivar_memo_type = memo_pad.def_parent_memo(def_parent_node).ivar_memo(name.to_sym).type || return
         parameter_memo.type = ivar_memo_type
-      end
-
-      # @rbs parse_error: Prism::ParseError
-      # @rbs generation: Generation
-      # @rbs return: void
-      def fix_argument_formal_constant(parse_error, generation)
-        line = generation.line(parse_error)
-        line = line[parse_error.location.start_column..] || return
-        parameter_type = line[/(\A[A-Z]\w*(?:::[A-Z]\w*)+)(?:\s*=>\s*)/, 1] || return
-        src_offset = parse_error.location.start_offset
-        generation[src_offset, parameter_type.length] = "(#{parameter_type})"
-      end
-
-      # @rbs parse_error: Prism::ParseError
-      # @rbs generation: Generation
-      # @rbs root_node: Node::ProgramNode
-      # @rbs memo_pad: MemoPad
-      # @rbs return: void
-      def fix_unexpected_assoc(parse_error, generation, root_node, memo_pad)
-        def_node = root_node.def_node_at(parse_error.location.start_offset) || return
-        def_parent_node = def_node.parent
-        parameters_node, body_node, = def_node.children
-        return if !def_parent_node || !parameters_node || !body_node
-
-        last_parameter_node = parameters_node.children.max_by(&:offset) || return
-        last_parameter_offset = last_parameter_node.offset
-
-        right_node = body_node.children.find { _1.offset >= parse_error.location.end_offset } || return
-        right_offset = right_node.offset
-        parameter_type = generation[last_parameter_offset...right_offset] || raise(RubyModKit::Error)
-        parameter_type = parameter_type.sub(/\s*=>\s*\z/, "")
-        generation[last_parameter_offset, right_offset - last_parameter_offset] = ""
-        memo_pad.parameter_memo(last_parameter_node).type = parameter_type
       end
 
       # @rbs parse_error: Prism::ParseError
