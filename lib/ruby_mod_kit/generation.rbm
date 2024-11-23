@@ -13,8 +13,11 @@ module RubyModKit
     @offset_diff: OffsetDiff
     @generation_num: Integer
     @filename: (String | nil)
+    @corrector_manager: CorrectorManager
 
-    def initialize(@script, @missions: [], @memo_pad: MemoPad.new, @generation_num: 0, @filename: nil): void
+    def initialize(@script, @missions: [], (MemoPad | nil) => memo_pad: nil, @generation_num: 0, @filename: nil, (CorrectorManager | nil) => corrector_manager: nil): void
+      @memo_pad = memo_pad || MemoPad.new
+      @corrector_manager = corrector_manager || CorrectorManager.new
       @offset_diff = OffsetDiff.new
       @parse_result = Prism.parse(@script)
       @root_node = Node::ProgramNode.new(@parse_result.value)
@@ -24,7 +27,6 @@ module RubyModKit
     def init_missions: void
       return unless first_generation?
 
-      add_mission(Mission::FixParseErrorMission.new)
       add_mission(Mission::TypeAttrMission.new)
       add_mission(Mission::OverloadMission.new)
       add_mission(Mission::TypeParameterMission.new)
@@ -36,17 +38,23 @@ module RubyModKit
     end
 
     def succ: Generation
-      perform_missions
+      if @parse_result.errors.empty?
+        perform_missions
+      else
+        perform_corrector
+      end
       @missions.each do |mission|
         mission.succ(@offset_diff)
       end
       @memo_pad.succ(@offset_diff)
+
       Generation.new(
         @script,
         missions: @missions,
         memo_pad: @memo_pad,
         generation_num: @generation_num + 1,
         filename: @filename,
+        corrector_manager: @corrector_manager,
       )
     end
 
@@ -88,6 +96,10 @@ module RubyModKit
 
     def src_offset(Prism::ParseError => parse_error): (Integer | nil)
       src_offset(parse_error.location.start_line - 1)
+    end
+
+    def perform_corrector: void
+      @corrector_manager.perform(self, @root_node, @parse_result, @memo_pad)
     end
 
     def perform_missions: void

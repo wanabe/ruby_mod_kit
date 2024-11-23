@@ -13,22 +13,25 @@ module RubyModKit
     # @rbs @offset_diff: OffsetDiff
     # @rbs @generation_num: Integer
     # @rbs @filename: String | nil
+    # @rbs @corrector_manager: CorrectorManager
 
     attr_reader :parse_result #: Prism::ParseResult
     attr_reader :script #: String
 
     # @rbs script: String
     # @rbs missions: Array[Mission::BaseMission]
-    # @rbs memo_pad: MemoPad
+    # @rbs memo_pad: MemoPad | nil
     # @rbs generation_num: Integer
     # @rbs filename: String | nil
+    # @rbs corrector_manager: CorrectorManager | nil
     # @rbs return: void
-    def initialize(script, missions: [], memo_pad: MemoPad.new, generation_num: 0, filename: nil)
+    def initialize(script, missions: [], memo_pad: nil, generation_num: 0, filename: nil, corrector_manager: nil)
       @script = script
       @missions = missions
-      @memo_pad = memo_pad
       @generation_num = generation_num
       @filename = filename
+      @memo_pad = memo_pad || MemoPad.new
+      @corrector_manager = corrector_manager || CorrectorManager.new
       @offset_diff = OffsetDiff.new
       @parse_result = Prism.parse(@script)
       @root_node = Node::ProgramNode.new(@parse_result.value)
@@ -39,7 +42,6 @@ module RubyModKit
     def init_missions
       return unless first_generation?
 
-      add_mission(Mission::FixParseErrorMission.new)
       add_mission(Mission::TypeAttrMission.new)
       add_mission(Mission::OverloadMission.new)
       add_mission(Mission::TypeParameterMission.new)
@@ -53,17 +55,23 @@ module RubyModKit
 
     # @rbs return: Generation
     def succ
-      perform_missions
+      if @parse_result.errors.empty?
+        perform_missions
+      else
+        perform_corrector
+      end
       @missions.each do |mission|
         mission.succ(@offset_diff)
       end
       @memo_pad.succ(@offset_diff)
+
       Generation.new(
         @script,
         missions: @missions,
         memo_pad: @memo_pad,
         generation_num: @generation_num + 1,
         filename: @filename,
+        corrector_manager: @corrector_manager,
       )
     end
 
@@ -148,6 +156,11 @@ module RubyModKit
     # @rbs return: Integer | nil
     def src_offset__overload1(parse_error)
       src_offset(parse_error.location.start_line - 1)
+    end
+
+    # @rbs return: void
+    def perform_corrector
+      @corrector_manager.perform(self, @root_node, @parse_result, @memo_pad)
     end
 
     # @rbs return: void

@@ -19,17 +19,20 @@ module RubyModKit
 
     @filename: String | nil
 
+    @corrector_manager: CorrectorManager
+
     attr_reader parse_result: Prism::ParseResult
 
     attr_reader script: String
 
     # @rbs script: String
     # @rbs missions: Array[Mission::BaseMission]
-    # @rbs memo_pad: MemoPad
+    # @rbs memo_pad: MemoPad | nil
     # @rbs generation_num: Integer
     # @rbs filename: String | nil
+    # @rbs corrector_manager: CorrectorManager | nil
     # @rbs return: void
-    def initialize: (String script, ?missions: Array[Mission::BaseMission], ?memo_pad: MemoPad, ?generation_num: Integer, ?filename: String | nil) -> void
+    def initialize: (String script, ?missions: Array[Mission::BaseMission], ?memo_pad: MemoPad | nil, ?generation_num: Integer, ?filename: String | nil, ?corrector_manager: CorrectorManager | nil) -> void
 
     # @rbs return: void
     def init_missions: () -> void
@@ -87,6 +90,9 @@ module RubyModKit
     # @rbs parse_error: Prism::ParseError
     # @rbs return: Integer | nil
     def src_offset__overload1: (Prism::ParseError parse_error) -> (Integer | nil)
+
+    # @rbs return: void
+    def perform_corrector: () -> void
 
     # @rbs return: void
     def perform_missions: () -> void

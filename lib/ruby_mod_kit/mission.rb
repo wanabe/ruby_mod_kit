@@ -9,7 +9,6 @@ module RubyModKit
 end
 
 require_relative "mission/base_mission"
-require_relative "mission/fix_parse_error_mission"
 require_relative "mission/instance_variable_parameter_mission"
 require_relative "mission/overload_mission"
 require_relative "mission/type_attr_mission"

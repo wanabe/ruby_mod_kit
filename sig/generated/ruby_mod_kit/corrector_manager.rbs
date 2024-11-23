@@ -1,0 +1,23 @@
+# Generated from lib/ruby_mod_kit/corrector_manager.rb with RBS::Inline
+
+module RubyModKit
+  # the class to manege parse error correctors
+  class CorrectorManager
+    @previous_error_messages: Array[String]
+
+    # @rbs return: void
+    def initialize: () -> void
+
+    # @rbs generation: Generation
+    # @rbs root_node: Node::ProgramNode
+    # @rbs parse_result: Prism::ParseResult
+    # @rbs memo_pad: MemoPad
+    # @rbs return: bool
+    def perform: (Generation generation, Node::ProgramNode root_node, Prism::ParseResult parse_result, MemoPad memo_pad) -> bool
+
+    # @rbs generation: Generation
+    # @rbs parse_result: Prism::ParseResult
+    # @rbs return: void
+    def check_prev_errors: (Generation generation, Prism::ParseResult parse_result) -> void
+  end
+end
