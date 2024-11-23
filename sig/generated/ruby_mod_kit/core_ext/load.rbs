@@ -1,5 +1,6 @@
 # Generated from lib/ruby_mod_kit/core_ext/load.rb with RBS::Inline
 
+# Define RubyMotKit.load/require
 module RubyModKit
   module CoreExt
     # the extension for load/require
@@ -27,4 +28,6 @@ module RubyModKit
       def self.require_path: (String path, ?expanded: bool) -> (String | nil)
     end
   end
+
+  include CoreExt::Load
 end

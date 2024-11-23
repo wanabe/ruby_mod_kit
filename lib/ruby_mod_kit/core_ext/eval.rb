@@ -4,6 +4,7 @@
 
 require "ruby_mod_kit"
 
+# Define RubyMotKit.eval
 module RubyModKit
   module CoreExt
     # the extension for eval
@@ -26,5 +27,10 @@ module RubyModKit
         end
       end
     end
+  end
+
+  class << self
+    include(CoreExt::Eval)
+    public :eval
   end
 end

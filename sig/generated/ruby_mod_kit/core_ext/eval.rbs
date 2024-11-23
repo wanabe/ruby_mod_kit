@@ -1,5 +1,6 @@
 # Generated from lib/ruby_mod_kit/core_ext/eval.rb with RBS::Inline
 
+# Define RubyMotKit.eval
 module RubyModKit
   module CoreExt
     # the extension for eval
@@ -11,4 +12,6 @@ module RubyModKit
       def self?.eval: (String expr, *Object rest, ?transpile: bool) -> Object
     end
   end
+
+  include CoreExt::Eval
 end

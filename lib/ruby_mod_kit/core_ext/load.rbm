@@ -5,6 +5,7 @@
 require "ruby_mod_kit"
 require "ruby_mod_kit/core_ext/eval"
 
+# Define RubyMotKit.load/require
 module RubyModKit
   module CoreExt
     # the extension for load/require
@@ -54,5 +55,10 @@ module RubyModKit
         end
       end
     end
+  end
+
+  class << self
+    include(CoreExt::Load)
+    public :load, :require, :require_relative
   end
 end
