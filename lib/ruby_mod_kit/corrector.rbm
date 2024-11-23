@@ -8,6 +8,7 @@ module RubyModKit
   end
 end
 
-require_relative "corrector/all_corrector"
+require_relative "corrector/instance_variable_colon_corrector"
 require_relative "corrector/instance_variable_parameter_corrector"
 require_relative "corrector/parameter_arrow_corrector"
+require_relative "corrector/return_value_colon_corrector"

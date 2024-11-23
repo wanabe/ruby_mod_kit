@@ -1,0 +1,36 @@
+# frozen_string_literal: true
+
+# rbs_inline: enabled
+
+module RubyModKit
+  module Corrector
+    # the class to correct `def foo: Some ...` -> `def foo ...`
+    class ReturnValueColonCorrector
+      def correctable_error_types: (Array[Symbol])
+        %i[unexpected_token_ignore]
+      end
+
+      def correct(Prism::ParseError => parse_error, Generation => generation, Node::ProgramNode => root_node, MemoPad => memo_pad): void
+        return if parse_error.location.slice != ":"
+
+        def_node = root_node.statements_node_at(parse_error.location.start_offset)&.parent
+        return unless def_node.is_a?(Node::DefNode)
+
+        lparen_loc = def_node.lparen_loc
+        rparen_loc = def_node.rparen_loc
+        if !lparen_loc && !rparen_loc
+          src_offset = def_node.name_loc.end_offset
+        elsif lparen_loc && rparen_loc && lparen_loc.slice == "(" && rparen_loc.slice == ")"
+          src_offset = rparen_loc.end_offset
+        else
+          return
+        end
+        return if generation[src_offset...parse_error.location.start_offset] !~ /\A\s*\z/
+
+        return_type_location = root_node.node_at(parse_error.location.end_offset + 1)&.location || return_type_location
+        generation[src_offset, return_type_location.end_offset - src_offset] = ""
+        memo_pad.method_memo(def_node).type = return_type_location.slice
+      end
+    end
+  end
+end
