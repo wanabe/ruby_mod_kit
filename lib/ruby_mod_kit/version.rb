@@ -3,5 +3,5 @@
 # rbs_inline: enabled
 
 module RubyModKit
-  VERSION = "0.0.3" #: String
+  VERSION = "0.0.4" #: String
 end
