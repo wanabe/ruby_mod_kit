@@ -1,0 +1,32 @@
+# Generated from lib/ruby_mod_kit/memo/overload_memo.rb with RBS::Inline
+
+module RubyModKit
+  module Memo
+    # The memo for parameter type
+    class OverloadMemo < OffsetMemo
+      @name: Symbol
+
+      @overload_types: [ [ Array[String], String ] ]
+
+      @offset_corrected: bool
+
+      attr_reader name: Symbol
+
+      attr_reader overload_types: [ [ Array[String], String ] ]
+
+      # @rbs offset: Integer
+      # @rbs name: Symbol
+      # @rbs return: void
+      def initialize: (Integer offset, Symbol name) -> void
+
+      # @rbs root_node: Node::ProgramNode
+      # @rbs return: Integer
+      def correct_offset: (Node::ProgramNode root_node) -> Integer
+
+      # @rbs parameter_types: Array[String]
+      # @rbs return_value_type: String
+      # @rbs return: void
+      def add_overload_type: (Array[String] parameter_types, String return_value_type) -> void
+    end
+  end
+end

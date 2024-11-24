@@ -30,6 +30,7 @@ module RubyModKit
       add_mission(Mission::TypeInstanceVariableMission.new)
       add_mission(Mission::TypeAttrMission.new)
       add_mission(Mission::OverloadMission.new)
+      add_mission(Mission::TypeOverloadMission.new)
       add_mission(Mission::TypeParameterMission.new)
       add_mission(Mission::TypeReturnMission.new)
     end

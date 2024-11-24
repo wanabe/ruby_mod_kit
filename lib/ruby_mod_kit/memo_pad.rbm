@@ -8,15 +8,17 @@ module RubyModKit
     getter @def_parents_memo: Hash[Integer, Memo::DefParentMemo]
     getter @methods_memo: Hash[Integer, Memo::MethodMemo]
     getter @parameters_memo: Hash[Integer, Memo::ParameterMemo]
+    getter @overloads_memo: Hash[Integer, Memo::OverloadMemo]
 
     def initialize: void
       @def_parents_memo = {}
       @methods_memo = {}
       @parameters_memo = {}
+      @overloads_memo = {}
     end
 
     def succ(OffsetDiff => offset_diff): void
-      [@methods_memo, @parameters_memo, @def_parents_memo].each do |offset_node_memo|
+      [@methods_memo, @parameters_memo, @def_parents_memo, @overloads_memo].each do |offset_node_memo|
         new_offset_node_memo = {}
         offset_node_memo.each_value do |node_memo|
           node_memo.succ(offset_diff)
@@ -33,6 +35,10 @@ module RubyModKit
 
     def method_memo(Node::DefNode => def_node): (Memo::MethodMemo)
       @methods_memo[def_node.offset] ||= Memo::MethodMemo.new(def_node)
+    end
+
+    def overload_memo(Integer => offset, Symbol => name): (Memo::OverloadMemo)
+      @overloads_memo[offset] ||= Memo::OverloadMemo.new(offset, name)
     end
 
     def parameter_memo(Node::BaseNode => node): (Memo::ParameterMemo)

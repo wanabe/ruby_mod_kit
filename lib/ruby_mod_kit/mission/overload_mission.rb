@@ -10,9 +10,12 @@ module RubyModKit
         "*": "_mul",
       }.freeze #: Hash[Symbol, String]
 
+      # @rbs @modified: bool
+
       # @rbs return: void
       def initialize
         super(0)
+        @modified = false
       end
 
       # @rbs generation: Generation
@@ -21,12 +24,15 @@ module RubyModKit
       # @rbs memo_pad: MemoPad
       # @rbs return: bool
       def perform(generation, root_node, parse_result, memo_pad)
+        return true if @modified
+
         method_memo_groups = memo_pad.methods_memo.each_value.group_by do |method_memo|
           [root_node.def_parent_node_at(method_memo.offset), method_memo.name]
         end
         method_memo_groups.each_value do |method_memos|
           next if method_memos.length <= 1
 
+          @modified = true
           first_method_memo = method_memos.first
           name = first_method_memo.name
           first_def_node = root_node.def_node_at(first_method_memo.offset)
@@ -35,20 +41,17 @@ module RubyModKit
 
           start_line = first_def_node.location.start_line - 1
           indent = parse_result.source.lines[start_line][/\A */] || ""
-          start_line -= 1 while parse_result.source.lines[start_line - 1] =~ /^ *# *@rbs /
           src_offset = parse_result.source.offsets[start_line]
           script = +""
 
+          overload_memo = memo_pad.overload_memo(first_method_memo.offset, name)
+
           method_memos.each do |method_memo|
-            script << if script.empty?
-              "# @rbs"
-            else
-              "#    |"
-            end
             type = method_memo.type
             type = "(#{type})" if type.include?(" ")
-            script << " (#{method_memo.parameters.map(&:type).join(", ")}) -> #{type}\n"
+            overload_memo.add_overload_type(method_memo.parameters.map(&:type), type)
           end
+
           script << "def #{name}(*args)\n  case args\n"
           overload_prefix = +"#{OVERLOAD_METHOD_MAP[name] || name}_"
           method_memos.each_with_index do |method_memo, i|
@@ -66,7 +69,9 @@ module RubyModKit
           script.gsub!(/^(?=.)/, indent)
           generation[src_offset, 0] = script
         end
-        true
+
+        # if script has been changed, request reparsing before proceeding to the next mission
+        !@modified
       end
     end
   end

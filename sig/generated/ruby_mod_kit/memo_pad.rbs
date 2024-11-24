@@ -9,11 +9,15 @@ module RubyModKit
 
     @parameters_memo: Hash[Integer, Memo::ParameterMemo]
 
+    @overloads_memo: Hash[Integer, Memo::OverloadMemo]
+
     attr_reader def_parents_memo: Hash[Integer, Memo::DefParentMemo]
 
     attr_reader methods_memo: Hash[Integer, Memo::MethodMemo]
 
     attr_reader parameters_memo: Hash[Integer, Memo::ParameterMemo]
+
+    attr_reader overloads_memo: Hash[Integer, Memo::OverloadMemo]
 
     # @rbs return: void
     def initialize: () -> void
@@ -29,6 +33,11 @@ module RubyModKit
     # @rbs def_node: Node::DefNode
     # @rbs return: Memo::MethodMemo
     def method_memo: (Node::DefNode def_node) -> Memo::MethodMemo
+
+    # @rbs offset: Integer
+    # @rbs name: Symbol
+    # @rbs return: Memo::OverloadMemo
+    def overload_memo: (Integer offset, Symbol name) -> Memo::OverloadMemo
 
     # @rbs node: Node::BaseNode
     # @rbs return: Memo::ParameterMemo

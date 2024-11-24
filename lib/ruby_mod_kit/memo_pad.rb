@@ -8,22 +8,25 @@ module RubyModKit
     # @rbs @def_parents_memo: Hash[Integer, Memo::DefParentMemo]
     # @rbs @methods_memo: Hash[Integer, Memo::MethodMemo]
     # @rbs @parameters_memo: Hash[Integer, Memo::ParameterMemo]
+    # @rbs @overloads_memo: Hash[Integer, Memo::OverloadMemo]
 
     attr_reader :def_parents_memo #: Hash[Integer, Memo::DefParentMemo]
     attr_reader :methods_memo #: Hash[Integer, Memo::MethodMemo]
     attr_reader :parameters_memo #: Hash[Integer, Memo::ParameterMemo]
+    attr_reader :overloads_memo #: Hash[Integer, Memo::OverloadMemo]
 
     # @rbs return: void
     def initialize
       @def_parents_memo = {}
       @methods_memo = {}
       @parameters_memo = {}
+      @overloads_memo = {}
     end
 
     # @rbs offset_diff: OffsetDiff
     # @rbs return: void
     def succ(offset_diff)
-      [@methods_memo, @parameters_memo, @def_parents_memo].each do |offset_node_memo|
+      [@methods_memo, @parameters_memo, @def_parents_memo, @overloads_memo].each do |offset_node_memo|
         new_offset_node_memo = {}
         offset_node_memo.each_value do |node_memo|
           node_memo.succ(offset_diff)
@@ -44,6 +47,13 @@ module RubyModKit
     # @rbs return: Memo::MethodMemo
     def method_memo(def_node)
       @methods_memo[def_node.offset] ||= Memo::MethodMemo.new(def_node)
+    end
+
+    # @rbs offset: Integer
+    # @rbs name: Symbol
+    # @rbs return: Memo::OverloadMemo
+    def overload_memo(offset, name)
+      @overloads_memo[offset] ||= Memo::OverloadMemo.new(offset, name)
     end
 
     # @rbs node: Node::BaseNode
