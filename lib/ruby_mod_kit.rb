@@ -75,8 +75,6 @@ module RubyModKit
 end
 
 require_relative "ruby_mod_kit/version"
-require_relative "ruby_mod_kit/feature/instance_variable_parameter"
-require_relative "ruby_mod_kit/feature/type"
 require_relative "ruby_mod_kit/corrector_manager"
 require_relative "ruby_mod_kit/generation"
 require_relative "ruby_mod_kit/memo"
@@ -84,3 +82,8 @@ require_relative "ruby_mod_kit/memo_pad"
 require_relative "ruby_mod_kit/mission"
 require_relative "ruby_mod_kit/node"
 require_relative "ruby_mod_kit/offset_diff"
+
+require_relative "ruby_mod_kit/feature/instance_variable_parameter"
+require_relative "ruby_mod_kit/feature/overload"
+require_relative "ruby_mod_kit/feature/type"
+require_relative "ruby_mod_kit/feature/rbs_inline"

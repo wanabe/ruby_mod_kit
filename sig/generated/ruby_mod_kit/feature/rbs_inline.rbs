@@ -1,0 +1,9 @@
+# Generated from lib/ruby_mod_kit/feature/rbs_inline.rb with RBS::Inline
+
+module RubyModKit
+  module Feature
+    # namespace for type with rbs-line feature
+    module RbsInline
+    end
+  end
+end

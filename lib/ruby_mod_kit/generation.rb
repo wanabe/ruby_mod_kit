@@ -42,13 +42,13 @@ module RubyModKit
     def init_missions
       return unless first_generation?
 
-      add_mission(Mission::TypeInstanceVariableMission.new)
-      add_mission(Mission::TypeAttrMission.new)
-      add_mission(Mission::OverloadMission.new)
-      add_mission(Mission::TypeOverloadMission.new)
-      add_mission(Mission::TypeParameterMission.new)
-      add_mission(Mission::TypeReturnMission.new)
-      add_mission(Mission::InstanceVariableParameterMission.new)
+      add_mission(Feature::InstanceVariableParameter::InstanceVariableParameterMission.new)
+      add_mission(Feature::Overload::OverloadMission.new)
+      add_mission(Feature::RbsInline::TypeInstanceVariableMission.new)
+      add_mission(Feature::RbsInline::TypeAttrMission.new)
+      add_mission(Feature::RbsInline::TypeOverloadMission.new)
+      add_mission(Feature::RbsInline::TypeParameterMission.new)
+      add_mission(Feature::RbsInline::TypeReturnMission.new)
     end
 
     # @rbs return: bool

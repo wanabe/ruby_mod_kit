@@ -11,3 +11,4 @@ module RubyModKit
 end
 
 require_relative "instance_variable_parameter/instance_variable_parameter_corrector"
+require_relative "instance_variable_parameter/instance_variable_parameter_mission"

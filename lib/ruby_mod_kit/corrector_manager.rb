@@ -12,8 +12,8 @@ module RubyModKit
       @previous_error_messages = []
       @correctors_error_map = {}
       correctors = [
-        RubyModKit::Feature::Type::InstanceVariableColonCorrector.new,
         RubyModKit::Feature::InstanceVariableParameter::InstanceVariableParameterCorrector.new,
+        RubyModKit::Feature::Type::InstanceVariableColonCorrector.new,
         RubyModKit::Feature::Type::ParameterArrowCorrector.new,
         RubyModKit::Feature::Type::ReturnValueColonCorrector.new,
       ]
