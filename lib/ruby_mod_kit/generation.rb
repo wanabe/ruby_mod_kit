@@ -36,8 +36,8 @@ module RubyModKit
       @features = features || [
         Feature::InstanceVariableParameter.new,
         Feature::Overload.new,
-        Feature::RbsInline.new,
         Feature::Type.new,
+        Feature::Type::RbsInline.new,
       ].sort
 
       @memo_pad = memo_pad || MemoPad.new
