@@ -3,8 +3,8 @@
 # rbs_inline: enabled
 
 module RubyModKit
-  module Feature
-    module RbsInline
+  class Feature
+    class RbsInline
       # The mission for instance variable types
       class TypeInstanceVariableMission < Mission
         # @rbs generation: Generation

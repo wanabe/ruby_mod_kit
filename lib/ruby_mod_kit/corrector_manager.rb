@@ -8,19 +8,16 @@ module RubyModKit
     # @rbs @previous_error_messages: Array[String]
     # @rbs @correctors_error_map: Hash[Symbol, Array[Corrector]]
 
+    # @rbs features: Array[Feature]
     # @rbs return: void
-    def initialize
+    def initialize(features)
       @previous_error_messages = []
       @correctors_error_map = {}
-      correctors = [
-        RubyModKit::Feature::InstanceVariableParameter::InstanceVariableParameterCorrector.new,
-        RubyModKit::Feature::Type::InstanceVariableColonCorrector.new,
-        RubyModKit::Feature::Type::ParameterArrowCorrector.new,
-        RubyModKit::Feature::Type::ReturnValueColonCorrector.new,
-      ]
-      correctors.each do |corrector|
-        corrector.correctable_error_types.each do |error_type|
-          (@correctors_error_map[error_type] ||= []) << corrector
+      features.each do |feature|
+        feature.create_correctors.each do |corrector|
+          corrector.correctable_error_types.each do |error_type|
+            (@correctors_error_map[error_type] ||= []) << corrector
+          end
         end
       end
     end

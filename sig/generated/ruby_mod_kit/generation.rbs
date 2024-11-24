@@ -21,6 +21,8 @@ module RubyModKit
 
     @corrector_manager: CorrectorManager
 
+    @features: Array[Feature]
+
     attr_reader parse_result: Prism::ParseResult
 
     attr_reader script: String
@@ -31,8 +33,9 @@ module RubyModKit
     # @rbs generation_num: Integer
     # @rbs filename: String | nil
     # @rbs corrector_manager: CorrectorManager | nil
+    # @rbs features: Array[Feature] | nil
     # @rbs return: void
-    def initialize: (String script, ?missions: Array[Mission], ?memo_pad: MemoPad | nil, ?generation_num: Integer, ?filename: String | nil, ?corrector_manager: CorrectorManager | nil) -> void
+    def initialize: (String script, ?missions: Array[Mission], ?memo_pad: MemoPad | nil, ?generation_num: Integer, ?filename: String | nil, ?corrector_manager: CorrectorManager | nil, ?features: Array[Feature] | nil) -> void
 
     # @rbs return: void
     def init_missions: () -> void

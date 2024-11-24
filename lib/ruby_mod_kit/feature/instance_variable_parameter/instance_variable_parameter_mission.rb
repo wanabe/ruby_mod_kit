@@ -3,8 +3,8 @@
 # rbs_inline: enabled
 
 module RubyModKit
-  module Feature
-    module InstanceVariableParameter
+  class Feature
+    class InstanceVariableParameter
       # The mission for instance variable arguments
       class InstanceVariableParameterMission < Mission
         # @rbs @assignment: String

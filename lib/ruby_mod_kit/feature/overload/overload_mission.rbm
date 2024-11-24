@@ -3,8 +3,8 @@
 # rbs_inline: enabled
 
 module RubyModKit
-  module Feature
-    module Overload
+  class Feature
+    class Overload
       # The mission for overload
       class OverloadMission < Mission
         OVERLOAD_METHOD_MAP = {

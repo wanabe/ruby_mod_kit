@@ -3,9 +3,17 @@
 # rbs_inline: enabled
 
 module RubyModKit
-  module Feature
+  class Feature
     # namespace for type feature
-    module Type
+    class Type < Feature
+      # @rbs return: Array[Corrector]
+      def create_correctors
+        [
+          InstanceVariableColonCorrector.new,
+          ParameterArrowCorrector.new,
+          ReturnValueColonCorrector.new,
+        ]
+      end
     end
   end
 end

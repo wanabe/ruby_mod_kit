@@ -3,8 +3,8 @@
 # rbs_inline: enabled
 
 module RubyModKit
-  module Feature
-    module InstanceVariableParameter
+  class Feature
+    class InstanceVariableParameter
       # the class to correct `def foo(@bar) ...` -> `def foo(bar) ...`
       class InstanceVariableParameterCorrector < Corrector
         # @rbs return: Array[Symbol]

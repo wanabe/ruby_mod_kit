@@ -1,8 +1,8 @@
 # Generated from lib/ruby_mod_kit/feature/instance_variable_parameter/instance_variable_parameter_corrector.rb with RBS::Inline
 
 module RubyModKit
-  module Feature
-    module InstanceVariableParameter
+  class Feature
+    class InstanceVariableParameter
       # the class to correct `def foo(@bar) ...` -> `def foo(bar) ...`
       class InstanceVariableParameterCorrector < Corrector
         # @rbs return: Array[Symbol]

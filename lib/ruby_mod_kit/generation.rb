@@ -14,6 +14,7 @@ module RubyModKit
     # @rbs @generation_num: Integer
     # @rbs @filename: String | nil
     # @rbs @corrector_manager: CorrectorManager
+    # @rbs @features: Array[Feature]
 
     attr_reader :parse_result #: Prism::ParseResult
     attr_reader :script #: String
@@ -24,14 +25,23 @@ module RubyModKit
     # @rbs generation_num: Integer
     # @rbs filename: String | nil
     # @rbs corrector_manager: CorrectorManager | nil
+    # @rbs features: Array[Feature] | nil
     # @rbs return: void
-    def initialize(script, missions: [], memo_pad: nil, generation_num: 0, filename: nil, corrector_manager: nil)
+    def initialize(script, missions: [], memo_pad: nil, generation_num: 0,
+                   filename: nil, corrector_manager: nil, features: nil)
       @script = script
       @missions = missions
       @generation_num = generation_num
       @filename = filename
+      @features = features || [
+        Feature::InstanceVariableParameter.new,
+        Feature::Overload.new,
+        Feature::RbsInline.new,
+        Feature::Type.new,
+      ].sort
+
       @memo_pad = memo_pad || MemoPad.new
-      @corrector_manager = corrector_manager || CorrectorManager.new
+      @corrector_manager = corrector_manager || CorrectorManager.new(@features)
       @offset_diff = OffsetDiff.new
       @parse_result = Prism.parse(@script)
       @root_node = Node::ProgramNode.new(@parse_result.value)
@@ -42,13 +52,11 @@ module RubyModKit
     def init_missions
       return unless first_generation?
 
-      add_mission(Feature::InstanceVariableParameter::InstanceVariableParameterMission.new)
-      add_mission(Feature::Overload::OverloadMission.new)
-      add_mission(Feature::RbsInline::TypeInstanceVariableMission.new)
-      add_mission(Feature::RbsInline::TypeAttrMission.new)
-      add_mission(Feature::RbsInline::TypeOverloadMission.new)
-      add_mission(Feature::RbsInline::TypeParameterMission.new)
-      add_mission(Feature::RbsInline::TypeReturnMission.new)
+      @features.each do |feature|
+        feature.create_missions.each do |mission|
+          add_mission(mission)
+        end
+      end
     end
 
     # @rbs return: bool
@@ -75,6 +83,7 @@ module RubyModKit
         generation_num: @generation_num + 1,
         filename: @filename,
         corrector_manager: @corrector_manager,
+        features: @features,
       )
     end
 

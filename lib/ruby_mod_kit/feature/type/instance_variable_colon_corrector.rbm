@@ -3,8 +3,8 @@
 # rbs_inline: enabled
 
 module RubyModKit
-  module Feature
-    module Type
+  class Feature
+    class Type
       # the class to correct `@var: Type` -> `# @rbs @var: Type`
       class InstanceVariableColonCorrector < Corrector
         def correctable_error_types: (Array[Symbol])

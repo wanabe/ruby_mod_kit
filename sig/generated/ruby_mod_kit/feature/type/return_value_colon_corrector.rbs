@@ -1,8 +1,8 @@
 # Generated from lib/ruby_mod_kit/feature/type/return_value_colon_corrector.rb with RBS::Inline
 
 module RubyModKit
-  module Feature
-    module Type
+  class Feature
+    class Type
       # the class to correct `def foo: Some ...` -> `def foo ...`
       class ReturnValueColonCorrector < Corrector
         # @rbs return: Array[Symbol]

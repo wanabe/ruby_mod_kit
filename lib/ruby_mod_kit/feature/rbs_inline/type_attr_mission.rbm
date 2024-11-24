@@ -3,8 +3,8 @@
 # rbs_inline: enabled
 
 module RubyModKit
-  module Feature
-    module RbsInline
+  class Feature
+    class RbsInline
       # The mission for parameter types
       class TypeAttrMission < Mission
         def perform(Generation => generation, Node::ProgramNode => root_node, (Prism::ParseResult) => _parse_result, MemoPad => memo_pad): bool

@@ -3,9 +3,15 @@
 # rbs_inline: enabled
 
 module RubyModKit
-  module Feature
+  class Feature
     # namespace for overload feature
-    module Overload
+    class Overload < Feature
+      # @rbs return: Array[Mission]
+      def create_missions
+        [
+          OverloadMission.new,
+        ]
+      end
     end
   end
 end

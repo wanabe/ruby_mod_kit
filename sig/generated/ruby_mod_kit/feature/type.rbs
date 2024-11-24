@@ -1,9 +1,11 @@
 # Generated from lib/ruby_mod_kit/feature/type.rb with RBS::Inline
 
 module RubyModKit
-  module Feature
+  class Feature
     # namespace for type feature
-    module Type
+    class Type < Feature
+      # @rbs return: Array[Corrector]
+      def create_correctors: () -> Array[Corrector]
     end
   end
 end

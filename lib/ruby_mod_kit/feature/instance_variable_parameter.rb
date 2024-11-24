@@ -3,9 +3,22 @@
 # rbs_inline: enabled
 
 module RubyModKit
-  module Feature
+  class Feature
     # namespace for instance_variable parameter feature
-    module InstanceVariableParameter
+    class InstanceVariableParameter < Feature
+      # @rbs return: Array[Corrector]
+      def create_correctors
+        [
+          InstanceVariableParameterCorrector.new,
+        ]
+      end
+
+      # @rbs return: Array[Mission]
+      def create_missions
+        [
+          InstanceVariableParameterMission.new,
+        ]
+      end
     end
   end
 end

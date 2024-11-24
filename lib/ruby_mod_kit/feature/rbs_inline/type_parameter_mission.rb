@@ -3,8 +3,8 @@
 # rbs_inline: enabled
 
 module RubyModKit
-  module Feature
-    module RbsInline
+  class Feature
+    class RbsInline
       # The mission for parameter types
       class TypeParameterMission < Mission
         # @rbs generation: Generation

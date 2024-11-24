@@ -1,8 +1,8 @@
 # Generated from lib/ruby_mod_kit/feature/type/instance_variable_colon_corrector.rb with RBS::Inline
 
 module RubyModKit
-  module Feature
-    module Type
+  class Feature
+    class Type
       # the class to correct `@var: Type` -> `# @rbs @var: Type`
       class InstanceVariableColonCorrector < Corrector
         # @rbs return: Array[Symbol]

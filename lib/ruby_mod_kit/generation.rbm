@@ -14,10 +14,19 @@ module RubyModKit
     @generation_num: Integer
     @filename: (String | nil)
     @corrector_manager: CorrectorManager
+    @features: (Array[Feature])
 
-    def initialize(@script, @missions: [], (MemoPad | nil) => memo_pad: nil, @generation_num: 0, @filename: nil, (CorrectorManager | nil) => corrector_manager: nil): void
+    def initialize(@script, @missions: [], (MemoPad | nil) => memo_pad: nil, @generation_num: 0,
+                   @filename: nil, (CorrectorManager | nil) => corrector_manager: nil, (Array[Feature] | nil) => features: nil): void
+      @features = features || [
+        Feature::InstanceVariableParameter.new,
+        Feature::Overload.new,
+        Feature::RbsInline.new,
+        Feature::Type.new,
+      ].sort
+
       @memo_pad = memo_pad || MemoPad.new
-      @corrector_manager = corrector_manager || CorrectorManager.new
+      @corrector_manager = corrector_manager || CorrectorManager.new(@features)
       @offset_diff = OffsetDiff.new
       @parse_result = Prism.parse(@script)
       @root_node = Node::ProgramNode.new(@parse_result.value)
@@ -27,13 +36,11 @@ module RubyModKit
     def init_missions: void
       return unless first_generation?
 
-      add_mission(Feature::InstanceVariableParameter::InstanceVariableParameterMission.new)
-      add_mission(Feature::Overload::OverloadMission.new)
-      add_mission(Feature::RbsInline::TypeInstanceVariableMission.new)
-      add_mission(Feature::RbsInline::TypeAttrMission.new)
-      add_mission(Feature::RbsInline::TypeOverloadMission.new)
-      add_mission(Feature::RbsInline::TypeParameterMission.new)
-      add_mission(Feature::RbsInline::TypeReturnMission.new)
+      @features.each do |feature|
+        feature.create_missions.each do |mission|
+          add_mission(mission)
+        end
+      end
     end
 
     def first_generation?: bool
@@ -58,6 +65,7 @@ module RubyModKit
         generation_num: @generation_num + 1,
         filename: @filename,
         corrector_manager: @corrector_manager,
+        features: @features,
       )
     end
 

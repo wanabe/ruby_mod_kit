@@ -1,8 +1,8 @@
 # Generated from lib/ruby_mod_kit/feature/overload/overload_mission.rb with RBS::Inline
 
 module RubyModKit
-  module Feature
-    module Overload
+  class Feature
+    class Overload
       # The mission for overload
       class OverloadMission < Mission
         OVERLOAD_METHOD_MAP: Hash[Symbol, String]

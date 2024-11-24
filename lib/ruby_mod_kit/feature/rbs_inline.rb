@@ -3,9 +3,19 @@
 # rbs_inline: enabled
 
 module RubyModKit
-  module Feature
+  class Feature
     # namespace for type with rbs-line feature
-    module RbsInline
+    class RbsInline < Feature
+      # @rbs return: Array[Mission]
+      def create_missions
+        [
+          Feature::RbsInline::TypeInstanceVariableMission.new,
+          Feature::RbsInline::TypeAttrMission.new,
+          Feature::RbsInline::TypeOverloadMission.new,
+          Feature::RbsInline::TypeParameterMission.new,
+          Feature::RbsInline::TypeReturnMission.new,
+        ]
+      end
     end
   end
 end

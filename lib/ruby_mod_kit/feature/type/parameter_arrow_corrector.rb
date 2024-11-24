@@ -3,8 +3,8 @@
 # rbs_inline: enabled
 
 module RubyModKit
-  module Feature
-    module Type
+  class Feature
+    class Type
       # the class to correct `def foo(Bar => bar, *Buz => buz)` -> `def foo(bar, *buz)`
       class ParameterArrowCorrector < Corrector
         # @rbs return: Array[Symbol]
