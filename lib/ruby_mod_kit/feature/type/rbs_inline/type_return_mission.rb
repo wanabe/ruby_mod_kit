@@ -21,6 +21,7 @@ module RubyModKit
 
               src_offset = parse_result.source.offsets[def_node.location.start_line - 1]
               indent = offset - src_offset
+              memo_pad.flags[:rbs_annotated] = true
               generation[src_offset, 0] = "#{" " * indent}# @rbs return: #{method_memo.type}\n"
             end
             true

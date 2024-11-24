@@ -1,0 +1,22 @@
+# Generated from lib/ruby_mod_kit/feature/type/rbs_inline/add_magic_comment_mission.rb with RBS::Inline
+
+module RubyModKit
+  class Feature
+    class Type
+      class RbsInline
+        # The mission to add magic comment
+        class AddMagicCommentMission < Mission
+          # @rbs return: void
+          def initialize: () -> void
+
+          # @rbs generation: Generation
+          # @rbs _root_node: Node::ProgramNode
+          # @rbs parse_result: Prism::ParseResult
+          # @rbs memo_pad: MemoPad
+          # @rbs return: bool
+          def perform: (Generation generation, untyped _root_node, Prism::ParseResult parse_result, MemoPad memo_pad) -> bool
+        end
+      end
+    end
+  end
+end

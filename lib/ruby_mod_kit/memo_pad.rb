@@ -9,11 +9,13 @@ module RubyModKit
     # @rbs @methods_memo: Hash[Integer, Memo::MethodMemo]
     # @rbs @parameters_memo: Hash[Integer, Memo::ParameterMemo]
     # @rbs @overloads_memo: Hash[Integer, Memo::OverloadMemo]
+    # @rbs @flags: Hash[Symbol, bool]
 
     attr_reader :def_parents_memo #: Hash[Integer, Memo::DefParentMemo]
     attr_reader :methods_memo #: Hash[Integer, Memo::MethodMemo]
     attr_reader :parameters_memo #: Hash[Integer, Memo::ParameterMemo]
     attr_reader :overloads_memo #: Hash[Integer, Memo::OverloadMemo]
+    attr_accessor :flags #: Hash[Symbol, bool]
 
     # @rbs return: void
     def initialize
@@ -21,6 +23,7 @@ module RubyModKit
       @methods_memo = {}
       @parameters_memo = {}
       @overloads_memo = {}
+      @flags = Hash.new(false)
     end
 
     # @rbs offset_diff: OffsetDiff

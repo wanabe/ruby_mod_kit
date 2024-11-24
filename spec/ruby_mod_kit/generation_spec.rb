@@ -70,6 +70,27 @@ describe RubyModKit::Generation do
           def foo(Bar => bar)
           end
         RBM
+          # rbs_inline: enabled
+
+          # @rbs bar: Bar
+          def foo(bar)
+          end
+        RB
+      end
+
+      it "keeps existing magic comments" do
+        expect(described_class.resolve(<<~RBM).script).to eq(<<~RB)
+          # frozen_string_literal: true
+
+          # rbs_inline: enabled
+
+          def foo(Bar => bar)
+          end
+        RBM
+          # frozen_string_literal: true
+
+          # rbs_inline: enabled
+
           # @rbs bar: Bar
           def foo(bar)
           end
@@ -81,6 +102,8 @@ describe RubyModKit::Generation do
           def foo(Bar::Buz => bar)
           end
         RBM
+          # rbs_inline: enabled
+
           # @rbs bar: Bar::Buz
           def foo(bar)
           end
@@ -97,6 +120,8 @@ describe RubyModKit::Generation do
             p :buz, buz
           end
         RBM
+          # rbs_inline: enabled
+
           # @rbs (Bar) -> (Foo | Bar)
           #    | (Buz) -> void
           def foo(*args)
@@ -127,6 +152,8 @@ describe RubyModKit::Generation do
           def foo(*Bar::Buz => bar)
           end
         RBM
+          # rbs_inline: enabled
+
           # @rbs *bar: Bar::Buz
           def foo(*bar)
           end
@@ -145,6 +172,8 @@ describe RubyModKit::Generation do
             end
           end
         RBM
+          # rbs_inline: enabled
+
           class Foo
             # @rbs @bar: Bar
 
@@ -189,6 +218,8 @@ describe RubyModKit::Generation do
             end
           end
         RBM
+          # rbs_inline: enabled
+
           class Foo
             module Bar
               # @rbs () -> Buz
@@ -229,6 +260,8 @@ describe RubyModKit::Generation do
           def foo: Bar
           end
         RBM
+          # rbs_inline: enabled
+
           # @rbs return: Bar
           def foo
           end
@@ -240,6 +273,8 @@ describe RubyModKit::Generation do
           def foo(Bar => bar): Buz
           end
         RBM
+          # rbs_inline: enabled
+
           # @rbs bar: Bar
           # @rbs return: Buz
           def foo(bar)
@@ -255,6 +290,8 @@ describe RubyModKit::Generation do
             @bar: Bar
           end
         RBM
+          # rbs_inline: enabled
+
           class Foo
             # @rbs @bar: Bar
           end
@@ -269,6 +306,8 @@ describe RubyModKit::Generation do
             attr_reader :bar
           end
         RBM
+          # rbs_inline: enabled
+
           class Foo
             # @rbs @bar: Bar
 
@@ -285,6 +324,8 @@ describe RubyModKit::Generation do
             writer @hoge: Hoge
           end
         RBM
+          # rbs_inline: enabled
+
           class Foo
             # @rbs @bar: Bar
             # @rbs @buz: Buz
@@ -307,6 +348,8 @@ describe RubyModKit::Generation do
             end
           end
         RBM
+          # rbs_inline: enabled
+
           class Foo
             # @rbs @bar: Bar
             # @rbs @buz: Buz
@@ -329,6 +372,8 @@ describe RubyModKit::Generation do
             end
           end
         RBM
+          # rbs_inline: enabled
+
           class Foo
             # @rbs @bar: Bar
 

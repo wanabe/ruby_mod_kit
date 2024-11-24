@@ -32,6 +32,7 @@ module RubyModKit
                 annotation << " (#{parameter_types.join(", ")}) -> #{return_type}\n"
               end
               annotation.gsub!(/^/, indent)
+              memo_pad.flags[:rbs_annotated] = true
               generation[offset, 0] = annotation
             end
             true

@@ -11,6 +11,8 @@ module RubyModKit
 
     @overloads_memo: Hash[Integer, Memo::OverloadMemo]
 
+    @flags: Hash[Symbol, bool]
+
     attr_reader def_parents_memo: Hash[Integer, Memo::DefParentMemo]
 
     attr_reader methods_memo: Hash[Integer, Memo::MethodMemo]
@@ -18,6 +20,8 @@ module RubyModKit
     attr_reader parameters_memo: Hash[Integer, Memo::ParameterMemo]
 
     attr_reader overloads_memo: Hash[Integer, Memo::OverloadMemo]
+
+    attr_accessor flags: Hash[Symbol, bool]
 
     # @rbs return: void
     def initialize: () -> void

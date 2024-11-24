@@ -24,6 +24,7 @@ module RubyModKit
                 ivar_memo = ivars_memo.delete(name) || next
                 line = generation.line(call_node)
                 length = line[/\A\s*(#{call_node.name}\s+:#{name})(?=\n\z)/, 1]&.length || next
+                memo_pad.flags[:rbs_annotated] = true
                 generation[call_node.location.start_offset + length, 0] = " #: #{ivar_memo.type}"
               end
             end

@@ -9,12 +9,14 @@ module RubyModKit
     getter @methods_memo: Hash[Integer, Memo::MethodMemo]
     getter @parameters_memo: Hash[Integer, Memo::ParameterMemo]
     getter @overloads_memo: Hash[Integer, Memo::OverloadMemo]
+    property @flags: Hash[Symbol, bool]
 
     def initialize: void
       @def_parents_memo = {}
       @methods_memo = {}
       @parameters_memo = {}
       @overloads_memo = {}
+      @flags = Hash.new(false)
     end
 
     def succ(OffsetDiff => offset_diff): void
