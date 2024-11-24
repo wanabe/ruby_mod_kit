@@ -48,6 +48,7 @@ module RubyModKit
       add_mission(Mission::TypeOverloadMission.new)
       add_mission(Mission::TypeParameterMission.new)
       add_mission(Mission::TypeReturnMission.new)
+      add_mission(Mission::InstanceVariableParameterMission.new)
     end
 
     # @rbs return: bool

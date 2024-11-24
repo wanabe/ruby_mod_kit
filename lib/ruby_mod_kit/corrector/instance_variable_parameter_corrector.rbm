@@ -22,7 +22,6 @@ module RubyModKit
         generation[src_offset, parse_error.location.length] = name
         parameter_memo = memo_pad.parameter_memo(parameter_position_node)
         parameter_memo.ivar_parameter = true
-        generation.add_mission(Mission::InstanceVariableParameterMission.new(src_offset))
 
         return unless parameter_memo.untyped?
 
