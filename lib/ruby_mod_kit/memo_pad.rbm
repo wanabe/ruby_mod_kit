@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# rbs_inline: enabled
-
 module RubyModKit
   # The class for bundling memos.
   class MemoPad

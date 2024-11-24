@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# rbs_inline: enabled
-
 require_relative "call_node"
 require_relative "def_node"
 require_relative "def_parent_node"

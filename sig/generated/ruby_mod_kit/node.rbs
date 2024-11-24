@@ -1,7 +1,0 @@
-# Generated from lib/ruby_mod_kit/node.rb with RBS::Inline
-
-module RubyModKit
-  # The namespace of transpile node.
-  module Node
-  end
-end
