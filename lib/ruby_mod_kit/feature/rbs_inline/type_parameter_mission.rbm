@@ -6,7 +6,7 @@ module RubyModKit
   module Feature
     module RbsInline
       # The mission for parameter types
-      class TypeParameterMission < Mission::BaseMission
+      class TypeParameterMission < Mission
         def perform(Generation => generation, Node::ProgramNode => root_node, (Prism::ParseResult) => parse_result, MemoPad => memo_pad): bool
           memo_pad.parameters_memo.each do |offset, parameter_memo|
             next if parameter_memo.untyped?

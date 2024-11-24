@@ -7,7 +7,7 @@ module RubyModKit
 
     @script: String
 
-    @missions: Array[Mission::BaseMission]
+    @missions: Array[Mission]
 
     @memo_pad: MemoPad
 
@@ -26,13 +26,13 @@ module RubyModKit
     attr_reader script: String
 
     # @rbs script: String
-    # @rbs missions: Array[Mission::BaseMission]
+    # @rbs missions: Array[Mission]
     # @rbs memo_pad: MemoPad | nil
     # @rbs generation_num: Integer
     # @rbs filename: String | nil
     # @rbs corrector_manager: CorrectorManager | nil
     # @rbs return: void
-    def initialize: (String script, ?missions: Array[Mission::BaseMission], ?memo_pad: MemoPad | nil, ?generation_num: Integer, ?filename: String | nil, ?corrector_manager: CorrectorManager | nil) -> void
+    def initialize: (String script, ?missions: Array[Mission], ?memo_pad: MemoPad | nil, ?generation_num: Integer, ?filename: String | nil, ?corrector_manager: CorrectorManager | nil) -> void
 
     # @rbs return: void
     def init_missions: () -> void
@@ -101,9 +101,9 @@ module RubyModKit
     # @rbs return: void
     def perform_missions: () -> void
 
-    # @rbs mission: Mission::BaseMission
+    # @rbs mission: Mission
     # @rbs return: void
-    def add_mission: (Mission::BaseMission mission) -> void
+    def add_mission: (Mission mission) -> void
 
     # @rbs src: String
     # @rbs filename: String | nil

@@ -1,7 +1,17 @@
 # Generated from lib/ruby_mod_kit/mission.rb with RBS::Inline
 
 module RubyModKit
-  # The mission to resolve.
-  module Mission
+  # The base class of transpiler mission.
+  class Mission
+    # @rbs _generation: Generation
+    # @rbs _root_node: Node::ProgramNode
+    # @rbs _parse_result: Prism::ParseResult
+    # @rbs _memo_pad: MemoPad
+    # @rbs return: void
+    def perform: (untyped _generation, untyped _root_node, untyped _parse_result, untyped _memo_pad) -> void
+
+    # @rbs offset_diff: OffsetDiff
+    # @rbs return: void
+    def succ: (OffsetDiff offset_diff) -> void
   end
 end

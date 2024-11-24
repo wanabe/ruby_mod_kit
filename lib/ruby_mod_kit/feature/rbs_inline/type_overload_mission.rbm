@@ -6,7 +6,7 @@ module RubyModKit
   module Feature
     module RbsInline
       # The mission for parameter types
-      class TypeOverloadMission < Mission::BaseMission
+      class TypeOverloadMission < Mission
         def perform(Generation => generation, Node::ProgramNode => root_node, (Prism::ParseResult) => parse_result, MemoPad => memo_pad): bool
           memo_pad.overloads_memo.each_value do |overload_memo|
             overload_memo.correct_offset(root_node)

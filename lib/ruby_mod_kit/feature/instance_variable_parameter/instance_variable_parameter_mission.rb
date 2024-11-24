@@ -6,7 +6,7 @@ module RubyModKit
   module Feature
     module InstanceVariableParameter
       # The mission for instance variable arguments
-      class InstanceVariableParameterMission < RubyModKit::Mission::BaseMission
+      class InstanceVariableParameterMission < Mission
         # @rbs @assignment: String
 
         attr_reader :assignment #: String

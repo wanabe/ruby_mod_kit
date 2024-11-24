@@ -7,7 +7,7 @@ module RubyModKit
   class Generation
     # @rbs @parse_result: Prism::ParseResult
     # @rbs @script: String
-    # @rbs @missions: Array[Mission::BaseMission]
+    # @rbs @missions: Array[Mission]
     # @rbs @memo_pad: MemoPad
     # @rbs @root_node: Node::ProgramNode
     # @rbs @offset_diff: OffsetDiff
@@ -19,7 +19,7 @@ module RubyModKit
     attr_reader :script #: String
 
     # @rbs script: String
-    # @rbs missions: Array[Mission::BaseMission]
+    # @rbs missions: Array[Mission]
     # @rbs memo_pad: MemoPad | nil
     # @rbs generation_num: Integer
     # @rbs filename: String | nil
@@ -179,7 +179,7 @@ module RubyModKit
       end
     end
 
-    # @rbs mission: Mission::BaseMission
+    # @rbs mission: Mission
     # @rbs return: void
     def add_mission(mission)
       @missions << mission

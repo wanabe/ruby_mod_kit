@@ -4,7 +4,7 @@ module RubyModKit
   module Feature
     module RbsInline
       # The mission for parameter types
-      class TypeOverloadMission < Mission::BaseMission
+      class TypeOverloadMission < Mission
         # @rbs generation: Generation
         # @rbs root_node: Node::ProgramNode
         # @rbs parse_result: Prism::ParseResult

@@ -6,7 +6,7 @@ module RubyModKit
   module Feature
     module RbsInline
       # The mission for parameter types
-      class TypeReturnMission < Mission::BaseMission
+      class TypeReturnMission < Mission
         # @rbs generation: Generation
         # @rbs root_node: Node::ProgramNode
         # @rbs parse_result: Prism::ParseResult
