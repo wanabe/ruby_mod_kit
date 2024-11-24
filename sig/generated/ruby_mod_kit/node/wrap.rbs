@@ -5,7 +5,8 @@ module RubyModKit
   module Node
     # @rbs prism_node: Prism::Node
     # @rbs parent: Node::BaseNode
+    # @rbs prev: Node::BaseNode | nil
     # @rbs return: Node::BaseNode
-    def self.wrap: (Prism::Node prism_node, parent: Node::BaseNode) -> Node::BaseNode
+    def self.wrap: (Prism::Node prism_node, parent: Node::BaseNode, ?prev: Node::BaseNode | nil) -> Node::BaseNode
   end
 end

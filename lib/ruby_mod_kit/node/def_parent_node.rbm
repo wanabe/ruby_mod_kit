@@ -9,8 +9,9 @@ module RubyModKit
       getter @prism_node: (Prism::ClassNode | Prism::ModuleNode)
       @body_node: (nil | Node::StatementsNode)
       getter @parent: (Node::BaseNode)
+      getter @prev: (Node::BaseNode | nil)
 
-      def initialize(@prism_node, @parent:): void
+      def initialize(@prism_node, @parent:, @prev: nil): void
         raise RubyModKit::Error if !prism_node.is_a?(Prism::ClassNode) && !prism_node.is_a?(Prism::ModuleNode)
 
         super()

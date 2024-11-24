@@ -8,8 +8,9 @@ module RubyModKit
     class UntypedNode < Node::BaseNode
       getter @prism_node: Prism::Node
       getter @parent: (Node::BaseNode)
+      getter @prev: (Node::BaseNode | nil)
 
-      def initialize(@prism_node, @parent:): void
+      def initialize(@prism_node, @parent:, @prev: nil): void
         super()
       end
     end

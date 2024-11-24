@@ -16,25 +16,26 @@ module RubyModKit
     class << self
       # @rbs prism_node: Prism::Node
       # @rbs parent: Node::BaseNode
+      # @rbs prev: Node::BaseNode | nil
       # @rbs return: Node::BaseNode
-      def wrap(prism_node, parent:)
+      def wrap(prism_node, parent:, prev: nil)
         case prism_node
         when Prism::CallNode
-          Node::CallNode.new(prism_node, parent: parent)
+          Node::CallNode.new(prism_node, parent: parent, prev: prev)
         when Prism::DefNode
-          Node::DefNode.new(prism_node, parent: parent)
+          Node::DefNode.new(prism_node, parent: parent, prev: prev)
         when Prism::ClassNode, Prism::ModuleNode
-          Node::DefParentNode.new(prism_node, parent: parent)
+          Node::DefParentNode.new(prism_node, parent: parent, prev: prev)
         when Prism::RequiredParameterNode, Prism::OptionalKeywordParameterNode,
             Prism::OptionalParameterNode, Prism::RequiredKeywordParameterNode,
             Prism::RestParameterNode
-          Node::ParameterNode.new(prism_node, parent: parent)
+          Node::ParameterNode.new(prism_node, parent: parent, prev: prev)
         when Prism::StatementsNode
-          Node::StatementsNode.new(prism_node, parent: parent)
+          Node::StatementsNode.new(prism_node, parent: parent, prev: prev)
         when Prism::SymbolNode
-          Node::SymbolNode.new(prism_node, parent: parent)
+          Node::SymbolNode.new(prism_node, parent: parent, prev: prev)
         else
-          Node::UntypedNode.new(prism_node, parent: parent)
+          Node::UntypedNode.new(prism_node, parent: parent, prev: prev)
         end
       end
     end

@@ -9,8 +9,10 @@ module RubyModKit
       # @rbs @location: Prism::Location
       # @rbs @children: Array[Node::BaseNode]
       # @rbs @ancestors: Array[Node::BaseNode]
+      # @rbs @prev: Node::BaseNode | nil
 
       attr_reader :location #: Prism::Location
+      attr_reader :prev #: Node::BaseNode | nil
 
       # @rbs return: void
       def initialize
@@ -21,8 +23,9 @@ module RubyModKit
       def children
         return @children if @children
 
+        prev = nil
         @children = prism_node.child_nodes.compact.map do |prism_child_node|
-          Node.wrap(prism_child_node, parent: self)
+          prev = Node.wrap(prism_child_node, parent: self, prev: prev)
         end
       end
 

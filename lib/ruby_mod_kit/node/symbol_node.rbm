@@ -8,8 +8,9 @@ module RubyModKit
     class SymbolNode < Node::BaseNode
       getter @prism_node: Prism::SymbolNode
       getter @parent: (Node::BaseNode)
+      getter @prev: (Node::BaseNode | nil)
 
-      def initialize(@prism_node, @parent:): void
+      def initialize(@prism_node, @parent:, @prev: nil): void
         raise RubyModKit::Error unless prism_node.is_a?(Prism::SymbolNode)
 
         super()

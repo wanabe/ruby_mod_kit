@@ -13,16 +13,20 @@ module RubyModKit
 
       # @rbs @prism_node: prism_node
       # @rbs @parent: Node::BaseNode
+      # @rbs @prev: Node::BaseNode | nil
 
       attr_reader :prism_node #: prism_node
       attr_reader :parent #: Node::BaseNode
+      attr_reader :prev #: Node::BaseNode | nil
 
       # @rbs prism_node: prism_node
       # @rbs parent: Node::BaseNode
+      # @rbs prev: Node::BaseNode | nil
       # @rbs return: void
-      def initialize(prism_node, parent:)
+      def initialize(prism_node, parent:, prev: nil)
         @prism_node = prism_node
         @parent = parent
+        @prev = prev
         case prism_node
         when Prism::RequiredParameterNode, Prism::OptionalKeywordParameterNode,
              Prism::OptionalParameterNode, Prism::RequiredKeywordParameterNode,

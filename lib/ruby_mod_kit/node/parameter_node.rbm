@@ -13,8 +13,9 @@ module RubyModKit
 
       getter @prism_node: prism_node
       getter @parent: (Node::BaseNode)
+      getter @prev: (Node::BaseNode | nil)
 
-      def initialize(@prism_node, @parent:): void
+      def initialize(@prism_node, @parent:, @prev: nil): void
         case prism_node
         when Prism::RequiredParameterNode, Prism::OptionalKeywordParameterNode,
              Prism::OptionalParameterNode, Prism::RequiredKeywordParameterNode,
