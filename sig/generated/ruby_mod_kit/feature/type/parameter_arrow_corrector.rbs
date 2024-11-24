@@ -1,0 +1,39 @@
+# Generated from lib/ruby_mod_kit/feature/type/parameter_arrow_corrector.rb with RBS::Inline
+
+module RubyModKit
+  module Feature
+    module Type
+      # the class to correct `def foo(Bar => bar, *Buz => buz)` -> `def foo(bar, *buz)`
+      class ParameterArrowCorrector
+        # @rbs return: Array[Symbol]
+        def correctable_error_types: () -> Array[Symbol]
+
+        # @rbs parse_error: Prism::ParseError
+        # @rbs generation: Generation
+        # @rbs root_node: Node::ProgramNode
+        # @rbs memo_pad: MemoPad
+        # @rbs return: void
+        def correct: (Prism::ParseError parse_error, Generation generation, Node::ProgramNode root_node, MemoPad memo_pad) -> void
+
+        # @rbs parse_error: Prism::ParseError
+        # @rbs generation: Generation
+        # @rbs root_node: Node::ProgramNode
+        # @rbs memo_pad: MemoPad
+        # @rbs return: void
+        def remove_arrow_before_parameter: (Prism::ParseError parse_error, Generation generation, Node::ProgramNode root_node, MemoPad memo_pad) -> void
+
+        # @rbs parse_error: Prism::ParseError
+        # @rbs generation: Generation
+        # @rbs root_node: Node::ProgramNode
+        # @rbs memo_pad: MemoPad
+        # @rbs return: void
+        def remove_arrow_after_quailifier: (Prism::ParseError parse_error, Generation generation, Node::ProgramNode root_node, MemoPad memo_pad) -> void
+
+        # @rbs parse_error: Prism::ParseError
+        # @rbs generation: Generation
+        # @rbs return: void
+        def wrap_parameter_type_for_next_parse: (Prism::ParseError parse_error, Generation generation) -> void
+      end
+    end
+  end
+end

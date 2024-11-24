@@ -11,10 +11,10 @@ module RubyModKit
       @previous_error_messages = []
       @correctors_error_map = {}
       correctors = [
-        RubyModKit::Corrector::InstanceVariableColonCorrector.new,
-        RubyModKit::Corrector::InstanceVariableParameterCorrector.new,
-        RubyModKit::Corrector::ParameterArrowCorrector.new,
-        RubyModKit::Corrector::ReturnValueColonCorrector.new,
+        RubyModKit::Feature::Type::InstanceVariableColonCorrector.new,
+        RubyModKit::Feature::InstanceVariableParameter::InstanceVariableParameterCorrector.new,
+        RubyModKit::Feature::Type::ParameterArrowCorrector.new,
+        RubyModKit::Feature::Type::ReturnValueColonCorrector.new,
       ]
       correctors.each do |corrector|
         corrector.correctable_error_types.each do |error_type|

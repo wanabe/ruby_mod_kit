@@ -75,7 +75,8 @@ module RubyModKit
 end
 
 require_relative "ruby_mod_kit/version"
-require_relative "ruby_mod_kit/corrector"
+require_relative "ruby_mod_kit/feature/instance_variable_parameter"
+require_relative "ruby_mod_kit/feature/type"
 require_relative "ruby_mod_kit/corrector_manager"
 require_relative "ruby_mod_kit/generation"
 require_relative "ruby_mod_kit/memo"
