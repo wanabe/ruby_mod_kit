@@ -10,11 +10,6 @@ module RubyModKit
 
       attr_reader :assignment #: String
 
-      # @rbs return: void
-      def initialize
-        super(0)
-      end
-
       # @rbs generation: Generation
       # @rbs root_node: Node::ProgramNode
       # @rbs _parse_result: Prism::ParseResult

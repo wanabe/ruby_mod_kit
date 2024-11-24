@@ -4,14 +4,6 @@ module RubyModKit
   module Mission
     # The base class of transpiler mission.
     class BaseMission
-      @offset: Integer
-
-      attr_accessor offset: Integer
-
-      # @rbs offset: Integer
-      # @rbs return: void
-      def initialize: (Integer offset) -> void
-
       # @rbs _generation: Generation
       # @rbs _root_node: Node::ProgramNode
       # @rbs _parse_result: Prism::ParseResult

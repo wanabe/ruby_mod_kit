@@ -6,10 +6,6 @@ module RubyModKit
   module Mission
     # The mission for parameter types
     class TypeReturnMission < Mission::BaseMission
-      def initialize: void
-        super(0)
-      end
-
       def perform(Generation => generation, Node::ProgramNode => root_node, (Prism::ParseResult) => parse_result, MemoPad => memo_pad): bool
         memo_pad.methods_memo.each do |offset, method_memo|
           def_node = root_node.def_node_at(offset)

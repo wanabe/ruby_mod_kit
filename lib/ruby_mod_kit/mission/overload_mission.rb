@@ -14,7 +14,7 @@ module RubyModKit
 
       # @rbs return: void
       def initialize
-        super(0)
+        super
         @modified = false
       end
 

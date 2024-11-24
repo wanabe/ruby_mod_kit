@@ -4,9 +4,6 @@ module RubyModKit
   module Mission
     # The mission for parameter types
     class TypeOverloadMission < Mission::BaseMission
-      # @rbs return: void
-      def initialize: () -> void
-
       # @rbs generation: Generation
       # @rbs root_node: Node::ProgramNode
       # @rbs parse_result: Prism::ParseResult

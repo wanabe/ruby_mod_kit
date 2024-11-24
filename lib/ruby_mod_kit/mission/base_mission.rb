@@ -6,16 +6,6 @@ module RubyModKit
   module Mission
     # The base class of transpiler mission.
     class BaseMission
-      # @rbs @offset: Integer
-
-      attr_accessor :offset #: Integer
-
-      # @rbs offset: Integer
-      # @rbs return: void
-      def initialize(offset)
-        @offset = offset
-      end
-
       # @rbs _generation: Generation
       # @rbs _root_node: Node::ProgramNode
       # @rbs _parse_result: Prism::ParseResult
@@ -27,9 +17,7 @@ module RubyModKit
 
       # @rbs offset_diff: OffsetDiff
       # @rbs return: void
-      def succ(offset_diff)
-        @offset = offset_diff[@offset]
-      end
+      def succ(offset_diff); end
     end
   end
 end

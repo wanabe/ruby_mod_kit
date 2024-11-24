@@ -6,11 +6,6 @@ module RubyModKit
   module Mission
     # The mission for parameter types
     class TypeAttrMission < Mission::BaseMission
-      # @rbs return: void
-      def initialize
-        super(0)
-      end
-
       # @rbs generation: Generation
       # @rbs root_node: Node::ProgramNode
       # @rbs _parse_result: Prism::ParseResult

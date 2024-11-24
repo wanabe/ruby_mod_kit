@@ -6,18 +6,11 @@ module RubyModKit
   module Mission
     # The base class of transpiler mission.
     class BaseMission
-      property @offset: Integer
-
-      def initialize(@offset): void
-      end
-
       def perform(Generation => _generation, Node::ProgramNode => _root_node, (Prism::ParseResult) => _parse_result, MemoPad => _memo_pad): void
         raise RubyModKit::Error, "Unexpected type #{self.class}"
       end
 
-      def succ(OffsetDiff => offset_diff): void
-        @offset = offset_diff[@offset]
-      end
+      def succ(OffsetDiff => offset_diff): void; end
     end
   end
 end

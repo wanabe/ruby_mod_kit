@@ -6,11 +6,6 @@ module RubyModKit
   module Mission
     # The mission for instance variable types
     class TypeInstanceVariableMission < Mission::BaseMission
-      # @rbs return: void
-      def initialize
-        super(0)
-      end
-
       # @rbs generation: Generation
       # @rbs _root_node: Node::ProgramNode
       # @rbs _parse_result: Prism::ParseResult

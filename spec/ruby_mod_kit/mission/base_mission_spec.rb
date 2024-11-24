@@ -3,7 +3,7 @@
 require "ruby_mod_kit/cli"
 
 describe RubyModKit::Mission::BaseMission do
-  let(:mission) { described_class.new(0) }
+  let(:mission) { described_class.new }
 
   describe "#perform" do
     let(:generation) { RubyModKit::Generation.new("") }

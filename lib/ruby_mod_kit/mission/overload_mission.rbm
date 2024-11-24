@@ -13,7 +13,7 @@ module RubyModKit
       @modified: bool
 
       def initialize: void
-        super(0)
+        super
         @modified = false
       end
 
