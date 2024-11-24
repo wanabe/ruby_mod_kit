@@ -5,6 +5,8 @@ module RubyModKit
   class CorrectorManager
     @previous_error_messages: Array[String]
 
+    @correctors_error_map: Hash[Symbol, Array[Corrector]]
+
     # @rbs return: void
     def initialize: () -> void
 

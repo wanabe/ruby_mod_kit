@@ -6,7 +6,7 @@ module RubyModKit
   module Feature
     module Type
       # the class to correct `def foo(Bar => bar, *Buz => buz)` -> `def foo(bar, *buz)`
-      class ParameterArrowCorrector
+      class ParameterArrowCorrector < Corrector
         # @rbs return: Array[Symbol]
         def correctable_error_types
           %i[unexpected_token_ignore def_params_term_paren argument_formal_constant]

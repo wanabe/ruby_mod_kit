@@ -6,7 +6,7 @@ module RubyModKit
   module Feature
     module Type
       # the class to correct `@var: Type` -> `# @rbs @var: Type`
-      class InstanceVariableColonCorrector
+      class InstanceVariableColonCorrector < Corrector
         def correctable_error_types: (Array[Symbol])
           %i[unexpected_token_ignore]
         end

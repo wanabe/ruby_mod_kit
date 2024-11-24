@@ -6,7 +6,7 @@ module RubyModKit
   module Feature
     module Type
       # the class to correct `def foo: Some ...` -> `def foo ...`
-      class ReturnValueColonCorrector
+      class ReturnValueColonCorrector < Corrector
         # @rbs return: Array[Symbol]
         def correctable_error_types
           %i[unexpected_token_ignore]

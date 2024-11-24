@@ -6,6 +6,7 @@ module RubyModKit
   # the class to manege parse error correctors
   class CorrectorManager
     # @rbs @previous_error_messages: Array[String]
+    # @rbs @correctors_error_map: Hash[Symbol, Array[Corrector]]
 
     # @rbs return: void
     def initialize

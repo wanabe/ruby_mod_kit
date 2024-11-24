@@ -6,7 +6,7 @@ module RubyModKit
   module Feature
     module InstanceVariableParameter
       # the class to correct `def foo(@bar) ...` -> `def foo(bar) ...`
-      class InstanceVariableParameterCorrector
+      class InstanceVariableParameterCorrector < Corrector
         # @rbs return: Array[Symbol]
         def correctable_error_types
           %i[argument_formal_ivar]

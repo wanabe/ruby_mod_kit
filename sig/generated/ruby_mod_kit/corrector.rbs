@@ -1,0 +1,16 @@
+# Generated from lib/ruby_mod_kit/corrector.rb with RBS::Inline
+
+module RubyModKit
+  # the base class of corrector
+  class Corrector
+    # @rbs return: Array[Symbol]
+    def correctable_error_types: () -> Array[Symbol]
+
+    # @rbs _parse_error: Prism::ParseError
+    # @rbs _generation: Generation
+    # @rbs _root_node: Node::ProgramNode
+    # @rbs _memo_pad: MemoPad
+    # @rbs return: void
+    def correct: (untyped _parse_error, untyped _generation, untyped _root_node, untyped _memo_pad) -> void
+  end
+end
