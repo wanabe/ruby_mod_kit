@@ -6,6 +6,9 @@ module RubyModKit
     class Type < Feature
       # @rbs return: Array[Corrector]
       def create_correctors: () -> Array[Corrector]
+
+      # @rbs return: Array[Mission]
+      def create_missions: () -> Array[Mission]
     end
   end
 end

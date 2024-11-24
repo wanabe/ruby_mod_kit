@@ -9,15 +9,17 @@ module RubyModKit
         # The mission for instance variable types
         class TypeInstanceVariableMission < Mission
           # @rbs generation: Generation
-          # @rbs _root_node: Node::ProgramNode
-          # @rbs _parse_result: Prism::ParseResult
+          # @rbs root_node: Node::ProgramNode
+          # @rbs parse_result: Prism::ParseResult
           # @rbs memo_pad: MemoPad
           # @rbs return: bool
-          def perform(generation, _root_node, _parse_result, memo_pad)
+          def perform(generation, root_node, parse_result, memo_pad)
             memo_pad.def_parents_memo.each_value do |def_parent_memo|
               def_parent_memo.ivars_memo.each do |name, ivar_memo|
                 offset = ivar_memo.offset || next
-                generation[offset, 0] = "#{ivar_memo.indent}# @rbs @#{name}: #{ivar_memo.type}\n"
+                def_parent_node = root_node.def_parent_node_at(offset) || next
+                body_line_offset = parse_result.source.offsets[def_parent_node.prism_node.location.start_line]
+                generation[body_line_offset, 0] = "#{ivar_memo.indent}# @rbs @#{name}: #{ivar_memo.type}\n"
               end
             end
             true

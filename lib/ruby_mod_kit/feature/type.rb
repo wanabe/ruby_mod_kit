@@ -14,6 +14,13 @@ module RubyModKit
           ReturnValueColonCorrector.new,
         ]
       end
+
+      # @rbs return: Array[Mission]
+      def create_missions
+        [
+          TypeAttrMission.new,
+        ]
+      end
     end
   end
 end
@@ -21,3 +28,4 @@ end
 require_relative "type/instance_variable_colon_corrector"
 require_relative "type/parameter_arrow_corrector"
 require_relative "type/return_value_colon_corrector"
+require_relative "type/type_attr_mission"

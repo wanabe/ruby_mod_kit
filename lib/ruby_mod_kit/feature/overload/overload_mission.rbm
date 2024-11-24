@@ -7,11 +7,11 @@ module RubyModKit
     class Overload
       # The mission for overload
       class OverloadMission < Mission
+        @modified: bool
+
         OVERLOAD_METHOD_MAP = {
           "*": "_mul",
         }.freeze #: Hash[Symbol, String]
-
-        @modified: bool
 
         def initialize: void
           super
