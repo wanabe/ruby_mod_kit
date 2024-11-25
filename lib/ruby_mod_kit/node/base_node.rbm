@@ -82,10 +82,6 @@ module RubyModKit
         self.offset <= offset && offset <= prism_node.location.end_offset
       end
 
-      def prism_node: (Prism::Node & Prism::_Node)
-        raise RubyModKit::Error
-      end
-
       def offset: Integer
         location.start_offset
       end
@@ -118,6 +114,15 @@ module RubyModKit
         str << ">"
         str
       end
+
+      private
+
+      # :nocov:
+      # This is just for interface definition, must not be called
+      def prism_node: (Prism::Node & Prism::_Node)
+        raise RubyModKit::Error
+      end
+      # :nocov:
     end
   end
 end

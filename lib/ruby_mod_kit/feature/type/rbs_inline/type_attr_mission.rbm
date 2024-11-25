@@ -14,7 +14,8 @@ module RubyModKit
                 break if ivars_memo.empty?
 
                 if call_node.is_a?(Node::CallNode) && %i[public private protected].include?(call_node.name)
-                  call_node = call_node.children[0].children[0]
+                  call_node = call_node.children[0]
+                  call_node = call_node.children[0] if call_node
                 end
                 next unless call_node.is_a?(Node::CallNode)
                 next unless %i[attr_reader attr_writer attr_accessor].include?(call_node.name)

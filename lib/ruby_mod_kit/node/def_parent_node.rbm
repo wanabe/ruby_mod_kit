@@ -4,7 +4,7 @@ module RubyModKit
   module Node
     # Transpiler program node
     class DefParentNode < Node::BaseNode
-      getter @prism_node: (Prism::ClassNode | Prism::ModuleNode)
+      private getter @prism_node: (Prism::ClassNode | Prism::ModuleNode)
       @body_node: (nil | Node::StatementsNode)
       getter @parent: (Node::BaseNode)
       getter @prev: (Node::BaseNode | nil)

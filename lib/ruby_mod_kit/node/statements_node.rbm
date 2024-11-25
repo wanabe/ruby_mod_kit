@@ -4,7 +4,7 @@ module RubyModKit
   module Node
     # Transpiler program node
     class StatementsNode < Node::BaseNode
-      getter @prism_node: Prism::StatementsNode
+      private getter @prism_node: Prism::StatementsNode
       getter @parent: (Node::BaseNode)
       getter @prev: (Node::BaseNode | nil)
 

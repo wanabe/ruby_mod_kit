@@ -10,7 +10,7 @@ module RubyModKit
       # @rbs @parent: Node::BaseNode
       # @rbs @prev: Node::BaseNode | nil
 
-      attr_reader :prism_node #: Prism::DefNode
+      private attr_reader :prism_node #: Prism::DefNode
       attr_reader :parent #: Node::BaseNode
       attr_reader :prev #: Node::BaseNode | nil
 

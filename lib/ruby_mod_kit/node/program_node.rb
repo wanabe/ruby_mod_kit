@@ -8,7 +8,7 @@ module RubyModKit
     class ProgramNode < Node::BaseNode
       # @rbs @prism_node: Prism::ProgramNode
 
-      attr_reader :prism_node #: Prism::ProgramNode
+      private attr_reader :prism_node #: Prism::ProgramNode
 
       # @rbs prism_node: Prism::ProgramNode
       # @rbs return: void

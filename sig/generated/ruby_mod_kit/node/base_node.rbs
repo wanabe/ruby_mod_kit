@@ -58,14 +58,18 @@ module RubyModKit
       # @rbs return: bool
       def include?: (Integer offset) -> bool
 
-      # @rbs return: Prism::Node & Prism::_Node
-      def prism_node: () -> (Prism::Node & Prism::_Node)
-
       # @rbs return: Integer
       def offset: () -> Integer
 
       # @rbs return: String
       def inspect: () -> String
+
+      private
+
+      # :nocov:
+      # This is just for interface definition, must not be called
+      # @rbs return: Prism::Node & Prism::_Node
+      def prism_node: () -> (Prism::Node & Prism::_Node)
     end
   end
 end

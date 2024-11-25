@@ -11,7 +11,7 @@ module RubyModKit
       # @rbs @parent: Node::BaseNode
       # @rbs @prev: Node::BaseNode | nil
 
-      attr_reader :prism_node #: Prism::CallNode
+      private attr_reader :prism_node #: Prism::CallNode
       attr_reader :name #: Symbol
       attr_reader :parent #: Node::BaseNode
       attr_reader :prev #: Node::BaseNode | nil

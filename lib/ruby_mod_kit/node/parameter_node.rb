@@ -15,7 +15,7 @@ module RubyModKit
       #                   | Prism::OptionalParameterNode | Prism::RequiredKeywordParameterNode
       #                   | Prism::RestParameterNode
 
-      attr_reader :prism_node #: prism_node
+      private attr_reader :prism_node #: prism_node
       attr_reader :parent #: Node::BaseNode
       attr_reader :prev #: Node::BaseNode | nil
 

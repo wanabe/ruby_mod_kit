@@ -4,7 +4,7 @@ module RubyModKit
   module Node
     # Transpiler program node
     class ProgramNode < Node::BaseNode
-      getter @prism_node: Prism::ProgramNode
+      private getter @prism_node: Prism::ProgramNode
 
       def initialize(@prism_node): void
         raise RubyModKit::Error unless prism_node.is_a?(Prism::ProgramNode)

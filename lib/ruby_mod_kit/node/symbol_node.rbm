@@ -4,7 +4,7 @@ module RubyModKit
   module Node
     # Transpiler program node
     class SymbolNode < Node::BaseNode
-      getter @prism_node: Prism::SymbolNode
+      private getter @prism_node: Prism::SymbolNode
       getter @parent: (Node::BaseNode)
       getter @prev: (Node::BaseNode | nil)
       @value: nil | Symbol
