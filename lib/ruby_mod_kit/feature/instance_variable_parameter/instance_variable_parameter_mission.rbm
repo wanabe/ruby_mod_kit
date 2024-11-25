@@ -5,8 +5,6 @@ module RubyModKit
     class InstanceVariableParameter
       # The mission for instance variable arguments
       class InstanceVariableParameterMission < Mission
-        getter @assignment: String
-
         def perform(Generation => generation, Node::ProgramNode => root_node, (Prism::ParseResult) => _parse_result, MemoPad => memo_pad): bool
           memo_pad.parameters_memo.each_value do |parameter_memo|
             next unless parameter_memo.ivar_parameter

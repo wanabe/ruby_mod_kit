@@ -7,10 +7,6 @@ module RubyModKit
     class InstanceVariableParameter
       # The mission for instance variable arguments
       class InstanceVariableParameterMission < Mission
-        # @rbs @assignment: String
-
-        attr_reader :assignment #: String
-
         # @rbs generation: Generation
         # @rbs root_node: Node::ProgramNode
         # @rbs _parse_result: Prism::ParseResult
