@@ -26,7 +26,13 @@ Gem::Specification.new do |spec|
     `git ls-files -z`.split("\x0").reject do |f|
       next true if File.expand_path(f) == __FILE__
       next false if f =~ %r{\Aexamples/.*rbm?\z}
-      next true if f.start_with?(*%w[bin/ test/ spec/ features/ coverage/ bin/ .git])
+      next true if f.start_with?(
+        *%w[
+          bin/ test/ spec/ features/ coverage/ bin/ .git
+          lib/internal/ sig/generated/internal/
+          sig/rubocop
+        ],
+      )
       next true if %w[Gemfile Gemfile.lock .rspec .rubocop.yml Rakefile Steepfile].include?(f)
       next true if f.end_with?(".rbm")
 
