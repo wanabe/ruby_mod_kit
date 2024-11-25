@@ -143,7 +143,7 @@ module RubyModKit
     # @rbs node: Node::BaseNode
     # @rbs return: String
     def line__overload1(node)
-      line(node.prism_node.location.start_line - 1)
+      line(node.location.start_line - 1)
     end
 
     # @rbs parse_error: Prism::ParseError

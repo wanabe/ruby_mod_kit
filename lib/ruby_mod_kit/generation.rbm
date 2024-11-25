@@ -94,7 +94,7 @@ module RubyModKit
     end
 
     def line(Node::BaseNode => node): String
-      line(node.prism_node.location.start_line - 1)
+      line(node.location.start_line - 1)
     end
 
     def line(Prism::ParseError => parse_error): String
