@@ -11,11 +11,12 @@ module RubyModKit
       # @rbs @ancestors: Array[Node::BaseNode]
       # @rbs @prev: Node::BaseNode | nil
 
-      attr_reader :location #: Prism::Location
       attr_reader :prev #: Node::BaseNode | nil
 
-      # @rbs return: void
-      def initialize
+      # @rbs return: Prism::Location
+      def location
+        return @location if defined?(@location)
+
         @location = prism_node.location
       end
 
@@ -33,12 +34,17 @@ module RubyModKit
       def ancestors
         return @ancestors if @ancestors
 
-        parent = @parent
+        parent = self.parent
         @ancestors = if parent
           [parent] + parent.ancestors
         else
           []
         end
+      end
+
+      # @rbs return: nil | BaseNode
+      def parent
+        raise(RubyModKit::Error)
       end
 
       # @rbs return: Symbol

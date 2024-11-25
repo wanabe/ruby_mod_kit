@@ -4,12 +4,14 @@ module RubyModKit
   module Node
     # The class of transpile node.
     class BaseNode
-      getter @location: Prism::Location
+      @location: Prism::Location
       @children: Array[Node::BaseNode]
       @ancestors: Array[Node::BaseNode]
       getter @prev: (Node::BaseNode | nil)
 
-      def initialize: void
+      def location: (Prism::Location)
+        return @location if defined?(@location)
+
         @location = prism_node.location
       end
 
@@ -25,12 +27,16 @@ module RubyModKit
       def ancestors: (Array[Node::BaseNode])
         return @ancestors if @ancestors
 
-        parent = @parent
+        parent = self.parent
         @ancestors = if parent
           [parent] + parent.ancestors
         else
           []
         end
+      end
+
+      def parent: (nil | BaseNode)
+        raise(RubyModKit::Error)
       end
 
       def name: Symbol
