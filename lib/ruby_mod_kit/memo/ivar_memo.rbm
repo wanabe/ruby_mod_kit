@@ -9,6 +9,7 @@ module RubyModKit
       accessor @offset: (nil | Integer)
       accessor @indent: String
       @name: Symbol
+      accessor @visibility: (nil | Symbol)
 
       def initialize(@name): void
         @indent = ""

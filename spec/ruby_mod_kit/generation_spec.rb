@@ -363,6 +363,28 @@ describe RubyModKit::Generation do
         RB
       end
 
+      it "receive visibilities" do
+        expect(described_class.resolve(<<~RBM).script).to eq(<<~RB)
+          class Foo
+            public attr_reader @bar: Bar
+            private property @buz: Buz
+            protected writer @hoge: Hoge
+          end
+        RBM
+          # rbs_inline: enabled
+
+          class Foo
+            # @rbs @bar: Bar
+            # @rbs @buz: Buz
+            # @rbs @hoge: Hoge
+
+            public attr_reader :bar #: Bar
+            private attr_accessor :buz #: Buz
+            protected attr_writer :hoge #: Hoge
+          end
+        RB
+      end
+
       it "completes ivar parameter type" do
         expect(described_class.resolve(<<~RBM).script).to eq(<<~RB)
           class Foo

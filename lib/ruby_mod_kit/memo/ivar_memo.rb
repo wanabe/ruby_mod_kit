@@ -11,11 +11,13 @@ module RubyModKit
       # @rbs @offset: nil | Integer
       # @rbs @indent: String
       # @rbs @name: Symbol
+      # @rbs @visibility: nil | Symbol
 
       attr_reader :type #: nil | String
       attr_reader :attr_kind #: nil | Symbol
       attr_accessor :offset #: nil | Integer
       attr_accessor :indent #: String
+      attr_accessor :visibility #: nil | Symbol
 
       # @rbs name: Symbol
       # @rbs return: void

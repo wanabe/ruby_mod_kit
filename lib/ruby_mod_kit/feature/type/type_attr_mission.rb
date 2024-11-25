@@ -56,7 +56,9 @@ module RubyModKit
 
             generation[offset, 0] = "\n" if add_first_separator_line
             ivars_memo.each do |name, ivar_memo|
-              generation[offset, 0] = "#{indent}#{ivar_memo.attr_kind} :#{name}\n"
+              attr = ivar_memo.attr_kind
+              attr = "#{ivar_memo.visibility} #{attr}" if ivar_memo.visibility
+              generation[offset, 0] = "#{indent}#{attr} :#{name}\n"
             end
             @modified = true
             generation[offset, 0] = "\n" if add_separator_line

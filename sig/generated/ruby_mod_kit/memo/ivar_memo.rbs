@@ -14,6 +14,8 @@ module RubyModKit
 
       @name: Symbol
 
+      @visibility: nil | Symbol
+
       attr_reader type: nil | String
 
       attr_reader attr_kind: nil | Symbol
@@ -21,6 +23,8 @@ module RubyModKit
       attr_accessor offset: nil | Integer
 
       attr_accessor indent: String
+
+      attr_accessor visibility: nil | Symbol
 
       # @rbs name: Symbol
       # @rbs return: void

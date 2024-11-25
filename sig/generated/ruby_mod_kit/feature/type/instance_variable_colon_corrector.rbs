@@ -5,6 +5,12 @@ module RubyModKit
     class Type
       # the class to correct `@var: Type` -> `# @rbs @var: Type`
       class InstanceVariableColonCorrector < Corrector
+        VISIBILITIES: Array[Symbol]
+
+        ATTR_PATTERNS: Array[Symbol]
+
+        REGEXP: Regexp
+
         # @rbs return: Array[Symbol]
         def correctable_error_types: () -> Array[Symbol]
 
