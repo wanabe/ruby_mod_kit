@@ -16,6 +16,6 @@ module RubyModKit
     # @rbs path: String
     # @rbs if_none: nil | Symbol
     # @rbs return: Config | nil
-    def self.load: (String path, if_none: nil | Symbol) -> (Config | nil)
+    def self.load: (String path, ?if_none: nil | Symbol) -> (Config | nil)
   end
 end

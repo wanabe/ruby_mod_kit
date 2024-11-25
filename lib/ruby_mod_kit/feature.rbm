@@ -3,10 +3,6 @@
 module RubyModKit
   # the base class of feature
   class Feature
-    def <=>(Feature => other): (-1 | 0 | 1 | nil)
-      self.class.name <=> other.class.name
-    end
-
     def create_correctors: (Array[Corrector])
       []
     end
