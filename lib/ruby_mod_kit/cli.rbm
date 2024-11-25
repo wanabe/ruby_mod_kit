@@ -22,6 +22,7 @@ module RubyModKit
       else
         options[:output]
       end
+      config = self.config
       args.each do |path|
         RubyModKit.transpile_file(path, output: output || RubyModKit.rb_path(path), config: config)
       end
@@ -34,7 +35,7 @@ module RubyModKit
         config_path = options[:config]
         if_none = :raise
       else
-        config_path = File.absolute_path(".")
+        config_path = "."
         if_none = nil
       end
       Config.load(config_path, if_none: if_none)
