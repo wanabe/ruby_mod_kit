@@ -9,6 +9,7 @@ module RubyModKit
       # @rbs @prism_node: Prism::SymbolNode
       # @rbs @parent: Node::BaseNode
       # @rbs @prev: Node::BaseNode | nil
+      # @rbs @value: nil | Symbol
 
       attr_reader :prism_node #: Prism::SymbolNode
       attr_reader :parent #: Node::BaseNode

@@ -10,6 +10,8 @@ module RubyModKit
 
       @offset_corrected: bool
 
+      @offset: Integer
+
       attr_reader name: Symbol
 
       attr_reader overload_types: [ [ Array[String], String ] ]

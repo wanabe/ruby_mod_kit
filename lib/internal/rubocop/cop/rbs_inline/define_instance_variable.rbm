@@ -1,0 +1,47 @@
+# frozen_string_literal: true
+
+module RuboCop
+  module Cop
+    module RbsInline
+      # detect undefined instance variable
+      class DefineInstanceVariable < RuboCop::Cop::Base
+        @instance_variable_names_map: Hash[String, Set[Symbol]]
+
+        MSG = "Add RBS inline annotation to instance variable"
+
+        def on_ivasgn(RuboCop::AST::AsgnNode => node): void
+          add_offense(node) if instance_variable_missing?(node.name)
+        end
+
+        def on_ivar(RuboCop::AST::Node => node): void
+          name = node.children[0]
+          return unless name.is_a?(Symbol)
+
+          add_offense(node) if instance_variable_missing?(name)
+        end
+
+        def instance_variable_names: (Set[Symbol])
+          @instance_variable_names_map ||= {}
+          file_content = @instance_variable_names_map[processed_source.file_path]
+          return file_content if file_content
+
+          file_content = Set.new
+          File.read(processed_source.file_path).scan(/^\s*# @rbs (@\w+)/) do |name,|
+            next unless name.is_a?(String)
+
+            file_content << name.to_sym
+          end
+          @instance_variable_names_map[processed_source.file_path] = file_content
+        end
+
+        def instance_variable_missing?(Symbol => name): bool
+          return false if instance_variable_names.include?(name)
+
+          # report once
+          instance_variable_names << name
+          true
+        end
+      end
+    end
+  end
+end

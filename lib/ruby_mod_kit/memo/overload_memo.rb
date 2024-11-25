@@ -9,6 +9,7 @@ module RubyModKit
       # @rbs @name: Symbol
       # @rbs @overload_types: [[Array[String], String]]
       # @rbs @offset_corrected: bool
+      # @rbs @offset: Integer
 
       attr_reader :name #: Symbol
       attr_reader :overload_types #: [[Array[String], String]]

@@ -1,0 +1,8 @@
+# rubocop gem
+module RuboCop
+  module AST
+    class Node
+      def children: () -> Array[Object]
+    end
+  end
+end

@@ -8,6 +8,8 @@ module RubyModKit
       class RbsInline
         # The mission to add magic comment
         class AddMagicCommentMission < Mission
+          # @rbs @reloaded: bool
+
           # @rbs return: void
           def initialize
             super

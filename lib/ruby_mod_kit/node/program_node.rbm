@@ -11,6 +11,10 @@ module RubyModKit
 
         super()
       end
+
+      def parent: nil
+        nil
+      end
     end
   end
 end

@@ -1,0 +1,8 @@
+# rubocop gem
+module RuboCop
+  module AST
+    class ProcessedSource
+      def file_path: () -> String
+    end
+  end
+end

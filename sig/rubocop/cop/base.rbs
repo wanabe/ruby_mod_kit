@@ -1,0 +1,9 @@
+# rubocop gem
+module RuboCop
+  module Cop
+    class Base
+      def add_offense: (::RuboCop::AST::Node) -> void
+      def processed_source: () -> ::RuboCop::AST::ProcessedSource
+    end
+  end
+end

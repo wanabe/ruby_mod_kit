@@ -1,0 +1,29 @@
+# Generated from lib/internal/rubocop/cop/rbs_inline/define_instance_variable.rb with RBS::Inline
+
+module RuboCop
+  module Cop
+    module RbsInline
+      # detect undefined instance variable
+      class DefineInstanceVariable < RuboCop::Cop::Base
+        @instance_variable_names_map: Hash[String, Set[Symbol]]
+
+        MSG: ::String
+
+        # @rbs node: RuboCop::AST::AsgnNode
+        # @rbs return: void
+        def on_ivasgn: (RuboCop::AST::AsgnNode node) -> void
+
+        # @rbs node: RuboCop::AST::Node
+        # @rbs return: void
+        def on_ivar: (RuboCop::AST::Node node) -> void
+
+        # @rbs return: Set[Symbol]
+        def instance_variable_names: () -> Set[Symbol]
+
+        # @rbs name: Symbol
+        # @rbs return: bool
+        def instance_variable_missing?: (Symbol name) -> bool
+      end
+    end
+  end
+end

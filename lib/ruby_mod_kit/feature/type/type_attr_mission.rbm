@@ -5,6 +5,8 @@ module RubyModKit
     class Type
       # The mission for parameter attributes
       class TypeAttrMission < Mission
+        @modified: bool
+
         def initialize: void
           super
           @modified = false

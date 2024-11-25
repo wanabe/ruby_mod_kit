@@ -6,6 +6,7 @@ require:
   - rubocop-rake
   - rubocop-on-rbs
   - rubocop-rspec
+  - internal/rubocop/cop/rbs_inline/define_instance_variable
 
 Style/StringLiterals:
   Enabled: true

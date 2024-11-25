@@ -7,6 +7,7 @@ module RubyModKit
       getter @name: Symbol
       getter @overload_types: [[Array[String], String]]
       @offset_corrected: bool
+      @offset: Integer
 
       def initialize(Integer => offset, Symbol => @name): void
         @overload_types = []

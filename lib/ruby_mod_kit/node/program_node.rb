@@ -18,6 +18,11 @@ module RubyModKit
 
         super()
       end
+
+      # @rbs return: nil
+      def parent
+        nil
+      end
     end
   end
 end

@@ -12,18 +12,19 @@ module RubyModKit
 
       @prev: Node::BaseNode | nil
 
-      attr_reader location: Prism::Location
-
       attr_reader prev: Node::BaseNode | nil
 
-      # @rbs return: void
-      def initialize: () -> void
+      # @rbs return: Prism::Location
+      def location: () -> Prism::Location
 
       # @rbs return: Array[Node::BaseNode]
       def children: () -> Array[Node::BaseNode]
 
       # @rbs return: Array[Node::BaseNode]
       def ancestors: () -> Array[Node::BaseNode]
+
+      # @rbs return: nil | BaseNode
+      def parent: () -> (nil | BaseNode)
 
       # @rbs return: Symbol
       def name: () -> Symbol
