@@ -32,6 +32,8 @@ Layout/LineLength:
   AllowedPatterns: ['\A *#', ' #: ']
 Layout/LeadingCommentSpace:
   AllowRBSInlineAnnotation: true
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented
 
 Metrics/AbcSize:
   Enabled: false

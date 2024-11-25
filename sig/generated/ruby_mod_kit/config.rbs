@@ -1,0 +1,21 @@
+# Generated from lib/ruby_mod_kit/config.rb with RBS::Inline
+
+module RubyModKit
+  # config class
+  class Config
+    @features: Array[Config]
+
+    attr_reader features: Array[Config]
+
+    DEFAULT_FEATURES: Array[String]
+
+    # @rbs features: Array[String]
+    # @rbs return: void
+    def initialize: (?features: Array[String]) -> void
+
+    # @rbs path: String
+    # @rbs if_none: nil | Symbol
+    # @rbs return: Config | nil
+    def self.load: (String path, if_none: nil | Symbol) -> (Config | nil)
+  end
+end

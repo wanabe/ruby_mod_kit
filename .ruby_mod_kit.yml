@@ -1,0 +1,5 @@
+features:
+  - instance_variable_parameter
+  - overload
+  - type
+  - type/rbs_inline

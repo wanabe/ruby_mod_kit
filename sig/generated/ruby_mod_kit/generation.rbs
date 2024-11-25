@@ -23,6 +23,8 @@ module RubyModKit
 
     @features: Array[Feature]
 
+    @config: Config
+
     attr_reader parse_result: Prism::ParseResult
 
     attr_reader script: String
@@ -31,11 +33,12 @@ module RubyModKit
     # @rbs missions: Array[Mission]
     # @rbs memo_pad: MemoPad | nil
     # @rbs generation_num: Integer
+    # @rbs config: Config | nil
     # @rbs filename: String | nil
     # @rbs corrector_manager: CorrectorManager | nil
     # @rbs features: Array[Feature] | nil
     # @rbs return: void
-    def initialize: (String script, ?missions: Array[Mission], ?memo_pad: MemoPad | nil, ?generation_num: Integer, ?filename: String | nil, ?corrector_manager: CorrectorManager | nil, ?features: Array[Feature] | nil) -> void
+    def initialize: (String script, ?missions: Array[Mission], ?memo_pad: MemoPad | nil, ?generation_num: Integer, ?config: Config | nil, ?filename: String | nil, ?corrector_manager: CorrectorManager | nil, ?features: Array[Feature] | nil) -> void
 
     # @rbs return: void
     def init_missions: () -> void
@@ -110,7 +113,8 @@ module RubyModKit
 
     # @rbs src: String
     # @rbs filename: String | nil
+    # @rbs config: Config | nil
     # @rbs return: Generation
-    def self.resolve: (String src, ?filename: String | nil) -> Generation
+    def self.resolve: (String src, ?filename: String | nil, ?config: Config | nil) -> Generation
   end
 end

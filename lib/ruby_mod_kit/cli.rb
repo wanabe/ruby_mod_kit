@@ -12,7 +12,7 @@ module RubyModKit
     # @rbs *args: String
     # @rbs return: void
     def exec(*args)
-      RubyModKit.execute_file(*args)
+      RubyModKit.execute_file(*args, config: config)
     end
 
     desc "transpile", "transpile rbm files"
@@ -29,8 +29,22 @@ module RubyModKit
         options[:output]
       end
       args.each do |path|
-        RubyModKit.transpile_file(path, output: output || RubyModKit.rb_path(path))
+        RubyModKit.transpile_file(path, output: output || RubyModKit.rb_path(path), config: config)
       end
+    end
+
+    private
+
+    # @rbs return: Config | nil
+    def config
+      if options[:config]
+        config_path = options[:config]
+        if_none = :raise
+      else
+        config_path = File.absolute_path(".")
+        if_none = nil
+      end
+      Config.load(config_path, if_none: if_none)
     end
   end
 end

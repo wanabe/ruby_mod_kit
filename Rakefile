@@ -26,7 +26,7 @@ task :lib do
   Dir.glob("lib/**/*.rbm") do |rbm_path|
     rb_path = RubyModKit.rb_path(rbm_path)
     rb_paths.delete(rb_path)
-    RubyModKit.transpile_file(rbm_path, output: rb_path)
+    RubyModKit.transpile_file(rbm_path, output: rb_path, config: RubyModKit::Config.load(".", if_none: nil))
   end
   File.unlink(*rb_paths)
 end

@@ -21,7 +21,7 @@ describe RubyModKit do
     it "passes script to Generation#resolve" do
       described_class.transpile(script)
 
-      expect(RubyModKit::Generation).to have_received(:resolve).with(script, filename: nil).once
+      expect(RubyModKit::Generation).to have_received(:resolve).with(script, filename: nil, config: nil).once
     end
   end
 
@@ -40,7 +40,7 @@ describe RubyModKit do
       described_class.transpile_file(rbm_path)
 
       expect(File).to have_received(:read).with(rbm_path).once
-      expect(described_class).to have_received(:transpile).with(rbm_script, filename: rbm_path).once
+      expect(described_class).to have_received(:transpile).with(rbm_script, filename: rbm_path, config: nil).once
       expect(File).not_to have_received(:write)
     end
 
@@ -49,7 +49,7 @@ describe RubyModKit do
       described_class.transpile_file(rbm_path, output: $stdout)
 
       expect(File).to have_received(:read).with(rbm_path).once
-      expect(described_class).to have_received(:transpile).with(rbm_script, filename: rbm_path).once
+      expect(described_class).to have_received(:transpile).with(rbm_script, filename: rbm_path, config: nil).once
       expect($stdout).to have_received(:write).with(rb_script)
       expect(File).not_to have_received(:write)
     end
@@ -59,7 +59,7 @@ describe RubyModKit do
       described_class.transpile_file(rbm_path, output: rb_path)
 
       expect(File).to have_received(:read).with(rbm_path).once
-      expect(described_class).to have_received(:transpile).with(rbm_script, filename: rbm_path).once
+      expect(described_class).to have_received(:transpile).with(rbm_script, filename: rbm_path, config: nil).once
       expect(File).to have_received(:write).with(rb_path, rb_script)
     end
   end
@@ -90,14 +90,16 @@ describe RubyModKit do
     it "evaluates ruby script" do
       described_class.execute_file(rbm_path)
 
-      expect(RubyModKit::Generation).to have_received(:resolve).with(rbm_script, filename: instance_of(String)).once
+      expect(RubyModKit::Generation).to have_received(:resolve)
+        .with(rbm_script, filename: instance_of(String), config: nil).once
       expect(described_class).to have_received(:eval).with(rb_script, TOPLEVEL_BINDING)
     end
 
     it "creates .rb from .rbm" do
       described_class.execute_file(rbm_path, output: rb_path)
 
-      expect(RubyModKit::Generation).to have_received(:resolve).with(rbm_script, filename: instance_of(String)).once
+      expect(RubyModKit::Generation).to have_received(:resolve)
+        .with(rbm_script, filename: instance_of(String), config: nil).once
       expect(described_class).to have_received(:system).with(RbConfig.ruby, rb_path)
     end
   end

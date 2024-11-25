@@ -1,0 +1,3 @@
+class YAML
+  def self.safe_load: (String, symbolize_names: bool) -> Object
+end

@@ -8,7 +8,7 @@ module RubyModKit
   class CLI < Thor
     desc "exec", "execute rbm file"
     def exec(*String => args): void
-      RubyModKit.execute_file(*args)
+      RubyModKit.execute_file(*args, config: config)
     end
 
     desc "transpile", "transpile rbm files"
@@ -23,8 +23,21 @@ module RubyModKit
         options[:output]
       end
       args.each do |path|
-        RubyModKit.transpile_file(path, output: output || RubyModKit.rb_path(path))
+        RubyModKit.transpile_file(path, output: output || RubyModKit.rb_path(path), config: config)
       end
+    end
+
+    private
+
+    def config: (Config | nil)
+      if options[:config]
+        config_path = options[:config]
+        if_none = :raise
+      else
+        config_path = File.absolute_path(".")
+        if_none = nil
+      end
+      Config.load(config_path, if_none: if_none)
     end
   end
 end

@@ -15,6 +15,7 @@ module RubyModKit
     # @rbs @filename: String | nil
     # @rbs @corrector_manager: CorrectorManager
     # @rbs @features: Array[Feature]
+    # @rbs @config: Config
 
     attr_reader :parse_result #: Prism::ParseResult
     attr_reader :script #: String
@@ -23,22 +24,19 @@ module RubyModKit
     # @rbs missions: Array[Mission]
     # @rbs memo_pad: MemoPad | nil
     # @rbs generation_num: Integer
+    # @rbs config: Config | nil
     # @rbs filename: String | nil
     # @rbs corrector_manager: CorrectorManager | nil
     # @rbs features: Array[Feature] | nil
     # @rbs return: void
-    def initialize(script, missions: [], memo_pad: nil, generation_num: 0,
+    def initialize(script, missions: [], memo_pad: nil, generation_num: 0, config: nil,
                    filename: nil, corrector_manager: nil, features: nil)
       @script = script
       @missions = missions
       @generation_num = generation_num
       @filename = filename
-      @features = features || [
-        Feature::InstanceVariableParameter.new,
-        Feature::Overload.new,
-        Feature::Type.new,
-        Feature::Type::RbsInline.new,
-      ].sort
+      @config = config || Config.new
+      @features = features || @config.features
 
       @memo_pad = memo_pad || MemoPad.new
       @corrector_manager = corrector_manager || CorrectorManager.new(@features)
@@ -84,6 +82,7 @@ module RubyModKit
         filename: @filename,
         corrector_manager: @corrector_manager,
         features: @features,
+        config: @config,
       )
     end
 
@@ -197,9 +196,10 @@ module RubyModKit
     class << self
       # @rbs src: String
       # @rbs filename: String | nil
+      # @rbs config: Config | nil
       # @rbs return: Generation
-      def resolve(src, filename: nil)
-        generation = Generation.new(src.dup, filename: filename)
+      def resolve(src, filename: nil, config: nil)
+        generation = Generation.new(src.dup, filename: filename, config: config)
         generation = generation.succ until generation.completed?
         generation
       end

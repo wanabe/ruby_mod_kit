@@ -14,9 +14,10 @@ module RubyModKit
     # @rbs file: String
     # @rbs *args: String
     # @rbs output: String | nil
+    # @rbs config: nil | Config
     # @rbs return: void
-    def execute_file(file, *args, output: nil)
-      rb_script = transpile_file(file, output: output)
+    def execute_file(file, *args, output: nil, config: nil)
+      rb_script = transpile_file(file, output: output, config: config)
       if output
         execute_rb_file(output, *args)
       else
@@ -26,9 +27,10 @@ module RubyModKit
 
     # @rbs file: String
     # @rbs output: String | IO | nil
+    # @rbs config: nil | Config
     # @rbs return: String
-    def transpile_file(file, output: nil)
-      rb_script = transpile(File.read(file), filename: file)
+    def transpile_file(file, output: nil, config: nil)
+      rb_script = transpile(File.read(file), filename: file, config: config)
       case output
       when IO
         output.write(rb_script)
@@ -40,9 +42,10 @@ module RubyModKit
 
     # @rbs src: String
     # @rbs filename: String | nil
+    # @rbs config: nil | Config
     # @rbs return: String
-    def transpile(src, filename: nil)
-      Generation.resolve(src, filename: filename).script
+    def transpile(src, filename: nil, config: nil)
+      Generation.resolve(src, filename: filename, config: config).script
     end
 
     # @rbs file: String
@@ -75,6 +78,8 @@ module RubyModKit
 end
 
 require_relative "ruby_mod_kit/version"
+
+require_relative "ruby_mod_kit/config"
 require_relative "ruby_mod_kit/corrector"
 require_relative "ruby_mod_kit/corrector_manager"
 require_relative "ruby_mod_kit/feature"

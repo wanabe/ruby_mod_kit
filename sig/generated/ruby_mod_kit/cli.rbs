@@ -10,5 +10,10 @@ module RubyModKit
     # @rbs *args: String
     # @rbs return: void
     def transpile: (*String args) -> void
+
+    private
+
+    # @rbs return: Config | nil
+    def config: () -> (Config | nil)
   end
 end

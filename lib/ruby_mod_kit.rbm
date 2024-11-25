@@ -9,8 +9,8 @@ module RubyModKit
   class SyntaxError < ::SyntaxError; end
 
   class << self
-    def execute_file(String => file, *String => args, (String | nil) => output: nil): void
-      rb_script = transpile_file(file, output: output)
+    def execute_file(String => file, *String => args, (String | nil) => output: nil, (nil | Config) => config: nil): void
+      rb_script = transpile_file(file, output: output, config: config)
       if output
         execute_rb_file(output, *args)
       else
@@ -18,8 +18,8 @@ module RubyModKit
       end
     end
 
-    def transpile_file(String => file, (String | IO | nil) => output: nil): String
-      rb_script = transpile(File.read(file), filename: file)
+    def transpile_file(String => file, (String | IO | nil) => output: nil, (nil | Config) => config: nil): String
+      rb_script = transpile(File.read(file), filename: file, config: config)
       case output
       when IO
         output.write(rb_script)
@@ -29,8 +29,8 @@ module RubyModKit
       rb_script
     end
 
-    def transpile(String => src, (String | nil) => filename: nil): String
-      Generation.resolve(src, filename: filename).script
+    def transpile(String => src, (String | nil) => filename: nil, (nil | Config) => config: nil): String
+      Generation.resolve(src, filename: filename, config: config).script
     end
 
     def execute_rb_file(String => file, *String => args): void
@@ -53,6 +53,8 @@ module RubyModKit
 end
 
 require_relative "ruby_mod_kit/version"
+
+require_relative "ruby_mod_kit/config"
 require_relative "ruby_mod_kit/corrector"
 require_relative "ruby_mod_kit/corrector_manager"
 require_relative "ruby_mod_kit/feature"

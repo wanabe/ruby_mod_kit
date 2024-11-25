@@ -13,15 +13,12 @@ module RubyModKit
     @filename: (String | nil)
     @corrector_manager: CorrectorManager
     @features: (Array[Feature])
+    @config: Config
 
-    def initialize(@script, @missions: [], (MemoPad | nil) => memo_pad: nil, @generation_num: 0,
+    def initialize(@script, @missions: [], (MemoPad | nil) => memo_pad: nil, @generation_num: 0, (Config | nil) => config: nil,
                    @filename: nil, (CorrectorManager | nil) => corrector_manager: nil, (Array[Feature] | nil) => features: nil): void
-      @features = features || [
-        Feature::InstanceVariableParameter.new,
-        Feature::Overload.new,
-        Feature::Type.new,
-        Feature::Type::RbsInline.new,
-      ].sort
+      @config = config || Config.new
+      @features = features || @config.features
 
       @memo_pad = memo_pad || MemoPad.new
       @corrector_manager = corrector_manager || CorrectorManager.new(@features)
@@ -64,6 +61,7 @@ module RubyModKit
         filename: @filename,
         corrector_manager: @corrector_manager,
         features: @features,
+        config: @config,
       )
     end
 
@@ -126,8 +124,8 @@ module RubyModKit
     end
 
     class << self
-      def resolve(String => src, (String | nil) => filename: nil): Generation
-        generation = Generation.new(src.dup, filename: filename)
+      def resolve(String => src, (String | nil) => filename: nil, (Config | nil) => config: nil): Generation
+        generation = Generation.new(src.dup, filename: filename, config: config)
         generation = generation.succ until generation.completed?
         generation
       end
