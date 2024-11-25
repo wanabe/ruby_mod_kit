@@ -24,6 +24,11 @@ module RubyModKit
       # @rbs return: void
       def initialize: (Prism::ClassNode | Prism::ModuleNode prism_node, parent: Node::BaseNode, ?prev: Node::BaseNode | nil) -> void
 
+      # @rbs prism_child_node: Prism::Node
+      # @rbs prev: Node::BaseNode | nil
+      # @rbs return: Node::BaseNode
+      def wrap: (Prism::Node prism_child_node, ?prev: Node::BaseNode | nil) -> Node::BaseNode
+
       # @rbs return: nil | Node::StatementsNode
       def body_node: () -> (nil | Node::StatementsNode)
     end

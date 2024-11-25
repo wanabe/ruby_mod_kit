@@ -28,13 +28,20 @@ module RubyModKit
         super()
       end
 
+      # @rbs prism_child_node: Prism::Node
+      # @rbs prev: Node::BaseNode | nil
+      # @rbs return: Node::BaseNode
+      def wrap(prism_child_node, prev: nil)
+        child_node = super
+        @body_node = child_node if prism_child_node == @prism_node.body && child_node.is_a?(Node::StatementsNode)
+        child_node
+      end
+
       # @rbs return: nil | Node::StatementsNode
       def body_node
-        return @body_node if defined?(@body_node)
-
-        body_node = children.find { |node| node.prism_node == @prism_node.body }
-        body_node = nil unless body_node.is_a?(Node::StatementsNode)
-        @body_node = body_node
+        # body_node will be set in #children
+        children
+        @body_node
       end
     end
   end

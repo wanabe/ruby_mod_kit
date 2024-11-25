@@ -26,8 +26,15 @@ module RubyModKit
 
         prev = nil
         @children = prism_node.child_nodes.compact.map do |prism_child_node|
-          prev = Node.wrap(prism_child_node, parent: self, prev: prev)
+          prev = wrap(prism_child_node, prev: prev)
         end
+      end
+
+      # @rbs prism_node: Prism::Node
+      # @rbs prev: Node::BaseNode | nil
+      # @rbs return: Node::BaseNode
+      def wrap(prism_node, prev: nil)
+        Node.wrap(prism_node, parent: self, prev: prev)
       end
 
       # @rbs return: Array[Node::BaseNode]

@@ -15,12 +15,16 @@ module RubyModKit
         super()
       end
 
-      def body_node: (nil | Node::StatementsNode)
-        return @body_node if defined?(@body_node)
+      def wrap(Prism::Node => prism_child_node, (Node::BaseNode | nil) => prev: nil): (Node::BaseNode)
+        child_node = super
+        @body_node = child_node if prism_child_node == @prism_node.body && child_node.is_a?(Node::StatementsNode)
+        child_node
+      end
 
-        body_node = children.find { |node| node.prism_node == @prism_node.body }
-        body_node = nil unless body_node.is_a?(Node::StatementsNode)
-        @body_node = body_node
+      def body_node: (nil | Node::StatementsNode)
+        # body_node will be set in #children
+        children
+        @body_node
       end
     end
   end
