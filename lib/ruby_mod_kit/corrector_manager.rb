@@ -24,13 +24,12 @@ module RubyModKit
 
     # @rbs generation: Generation
     # @rbs root_node: Node::ProgramNode
-    # @rbs parse_result: Prism::ParseResult
     # @rbs memo_pad: MemoPad
     # @rbs return: bool
-    def perform(generation, root_node, parse_result, memo_pad)
+    def perform(generation, root_node, memo_pad)
       return true if generation.errors.empty?
 
-      check_prev_errors(generation, parse_result)
+      check_prev_errors(generation)
       @previous_error_messages = generation.errors.map(&:message)
 
       generation.errors.each do |parse_error|
@@ -44,9 +43,8 @@ module RubyModKit
     end
 
     # @rbs generation: Generation
-    # @rbs _parse_result: Prism::ParseResult
     # @rbs return: void
-    def check_prev_errors(generation, _parse_result)
+    def check_prev_errors(generation)
       return if @previous_error_messages.empty?
       return if generation.errors.empty?
       return if @previous_error_messages != generation.errors.map(&:message)
