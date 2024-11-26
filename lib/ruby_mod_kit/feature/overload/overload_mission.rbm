@@ -16,7 +16,7 @@ module RubyModKit
           @modified = false
         end
 
-        def perform(Generation => generation, Node::ProgramNode => root_node, (Prism::ParseResult) => _parse_result, MemoPad => memo_pad): bool
+        def perform(Generation => generation, Node::ProgramNode => root_node, MemoPad => memo_pad): bool
           return true if @modified
 
           method_memo_groups = memo_pad.methods_memo.each_value.group_by do |method_memo|

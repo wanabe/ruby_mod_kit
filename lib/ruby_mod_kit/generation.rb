@@ -192,7 +192,7 @@ module RubyModKit
     # @rbs return: void
     def perform_missions
       @missions.delete_if do |mission|
-        mission.perform(self, @root_node, @parse_result, @memo_pad) || break
+        mission.perform(self, @root_node, @memo_pad) || break
       end
     end
 

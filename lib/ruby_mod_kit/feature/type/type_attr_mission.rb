@@ -17,10 +17,9 @@ module RubyModKit
 
         # @rbs generation: Generation
         # @rbs root_node: Node::ProgramNode
-        # @rbs _parse_result: Prism::ParseResult
         # @rbs memo_pad: MemoPad
         # @rbs return: bool
-        def perform(generation, root_node, _parse_result, memo_pad)
+        def perform(generation, root_node, memo_pad)
           return true if @modified
 
           memo_pad.def_parents_memo.each_value do |def_parent_memo|

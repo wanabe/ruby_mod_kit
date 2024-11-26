@@ -10,10 +10,9 @@ module RubyModKit
         class TypeInstanceVariableMission < Mission
           # @rbs generation: Generation
           # @rbs root_node: Node::ProgramNode
-          # @rbs _parse_result: Prism::ParseResult
           # @rbs memo_pad: MemoPad
           # @rbs return: bool
-          def perform(generation, root_node, _parse_result, memo_pad)
+          def perform(generation, root_node, memo_pad)
             memo_pad.def_parents_memo.each_value do |def_parent_memo|
               def_parent_memo.ivars_memo.each do |name, ivar_memo|
                 offset = ivar_memo.offset || next

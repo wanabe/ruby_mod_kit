@@ -10,10 +10,9 @@ module RubyModKit
         class TypeOverloadMission < Mission
           # @rbs generation: Generation
           # @rbs root_node: Node::ProgramNode
-          # @rbs _parse_result: Prism::ParseResult
           # @rbs memo_pad: MemoPad
           # @rbs return: bool
-          def perform(generation, root_node, _parse_result, memo_pad)
+          def perform(generation, root_node, memo_pad)
             memo_pad.overloads_memo.each_value do |overload_memo|
               overload_memo.correct_offset(root_node)
               offset = overload_memo.offset

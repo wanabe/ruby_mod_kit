@@ -3,7 +3,7 @@
 module RubyModKit
   # The base class of transpiler mission.
   class Mission
-    def perform(Generation => _generation, Node::ProgramNode => _root_node, (Prism::ParseResult) => _parse_result, MemoPad => _memo_pad): void
+    def perform(Generation => _generation, Node::ProgramNode => _root_node, MemoPad => _memo_pad): void
       raise RubyModKit::Error, "Unexpected type #{self.class}"
     end
 

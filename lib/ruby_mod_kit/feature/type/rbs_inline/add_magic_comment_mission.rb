@@ -18,10 +18,9 @@ module RubyModKit
 
           # @rbs generation: Generation
           # @rbs _root_node: Node::ProgramNode
-          # @rbs _parse_result: Prism::ParseResult
           # @rbs memo_pad: MemoPad
           # @rbs return: bool
-          def perform(generation, _root_node, _parse_result, memo_pad)
+          def perform(generation, _root_node, memo_pad)
             return true unless memo_pad.flags[:rbs_annotated]
 
             unless @reloaded
