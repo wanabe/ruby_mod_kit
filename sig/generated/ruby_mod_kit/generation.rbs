@@ -25,9 +25,13 @@ module RubyModKit
 
     @config: Config
 
+    @errors: Array[Prism::ParseError]
+
     attr_reader parse_result: Prism::ParseResult
 
     attr_reader script: String
+
+    attr_reader errors: Array[Prism::ParseError]
 
     # @rbs script: String
     # @rbs missions: Array[Mission]

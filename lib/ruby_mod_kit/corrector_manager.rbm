@@ -19,12 +19,12 @@ module RubyModKit
     end
 
     def perform(Generation => generation, Node::ProgramNode => root_node, (Prism::ParseResult) => parse_result, MemoPad => memo_pad): bool
-      return true if parse_result.errors.empty?
+      return true if generation.errors.empty?
 
       check_prev_errors(generation, parse_result)
-      @previous_error_messages = parse_result.errors.map(&:message)
+      @previous_error_messages = generation.errors.map(&:message)
 
-      parse_result.errors.each do |parse_error|
+      generation.errors.each do |parse_error|
         correctors = @correctors_error_map[parse_error.type] || next
         correctors.each do |corrector|
           corrector.correct(parse_error, generation, root_node, memo_pad)
@@ -36,11 +36,11 @@ module RubyModKit
 
     def check_prev_errors(Generation => generation, Prism::ParseResult => parse_result): void
       return if @previous_error_messages.empty?
-      return if parse_result.errors.empty?
-      return if @previous_error_messages != parse_result.errors.map(&:message)
+      return if generation.errors.empty?
+      return if @previous_error_messages != generation.errors.map(&:message)
 
       message = +""
-      parse_result.errors.each do |parse_error|
+      generation.errors.each do |parse_error|
         message << "\n" unless message.empty?
         message << "#{generation.name}:#{parse_error.location.start_line}:#{parse_error.message} "
         message << "(#{parse_error.type})"

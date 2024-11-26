@@ -16,9 +16,11 @@ module RubyModKit
     # @rbs @corrector_manager: CorrectorManager
     # @rbs @features: Array[Feature]
     # @rbs @config: Config
+    # @rbs @errors: Array[Prism::ParseError]
 
     attr_reader :parse_result #: Prism::ParseResult
     attr_reader :script #: String
+    attr_reader :errors #: Array[Prism::ParseError]
 
     # @rbs script: String
     # @rbs missions: Array[Mission]
@@ -42,6 +44,7 @@ module RubyModKit
       @corrector_manager = corrector_manager || CorrectorManager.new(@features)
       @offset_diff = OffsetDiff.new
       @parse_result = Prism.parse(@script)
+      @errors = @parse_result.errors
       @root_node = Node::ProgramNode.new(@parse_result.value)
       init_missions
     end
@@ -64,7 +67,7 @@ module RubyModKit
 
     # @rbs return: Generation
     def succ
-      if @parse_result.errors.empty?
+      if @errors.empty?
         perform_missions
       else
         perform_corrector
@@ -93,7 +96,7 @@ module RubyModKit
 
     # @rbs return: bool
     def completed?
-      @parse_result.errors.empty? && @missions.empty?
+      @errors.empty? && @missions.empty?
     end
 
     # @rbs src_offset: Integer

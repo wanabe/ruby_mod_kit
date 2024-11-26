@@ -14,6 +14,7 @@ module RubyModKit
     @corrector_manager: CorrectorManager
     @features: (Array[Feature])
     @config: Config
+    getter @errors: Array[Prism::ParseError]
 
     def initialize(@script, @missions: [], (MemoPad | nil) => memo_pad: nil, @generation_num: 0, (Config | nil) => config: nil,
                    @filename: nil, (CorrectorManager | nil) => corrector_manager: nil, (Array[Feature] | nil) => features: nil): void
@@ -24,6 +25,7 @@ module RubyModKit
       @corrector_manager = corrector_manager || CorrectorManager.new(@features)
       @offset_diff = OffsetDiff.new
       @parse_result = Prism.parse(@script)
+      @errors = @parse_result.errors
       @root_node = Node::ProgramNode.new(@parse_result.value)
       init_missions
     end
@@ -43,7 +45,7 @@ module RubyModKit
     end
 
     def succ: Generation
-      if @parse_result.errors.empty?
+      if @errors.empty?
         perform_missions
       else
         perform_corrector
@@ -70,7 +72,7 @@ module RubyModKit
     end
 
     def completed?: bool
-      @parse_result.errors.empty? && @missions.empty?
+      @errors.empty? && @missions.empty?
     end
 
     def []=(Integer => src_offset, Integer => length, String => str): String

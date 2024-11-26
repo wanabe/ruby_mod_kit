@@ -28,12 +28,12 @@ module RubyModKit
     # @rbs memo_pad: MemoPad
     # @rbs return: bool
     def perform(generation, root_node, parse_result, memo_pad)
-      return true if parse_result.errors.empty?
+      return true if generation.errors.empty?
 
       check_prev_errors(generation, parse_result)
-      @previous_error_messages = parse_result.errors.map(&:message)
+      @previous_error_messages = generation.errors.map(&:message)
 
-      parse_result.errors.each do |parse_error|
+      generation.errors.each do |parse_error|
         correctors = @correctors_error_map[parse_error.type] || next
         correctors.each do |corrector|
           corrector.correct(parse_error, generation, root_node, memo_pad)
@@ -48,11 +48,11 @@ module RubyModKit
     # @rbs return: void
     def check_prev_errors(generation, parse_result)
       return if @previous_error_messages.empty?
-      return if parse_result.errors.empty?
-      return if @previous_error_messages != parse_result.errors.map(&:message)
+      return if generation.errors.empty?
+      return if @previous_error_messages != generation.errors.map(&:message)
 
       message = +""
-      parse_result.errors.each do |parse_error|
+      generation.errors.each do |parse_error|
         message << "\n" unless message.empty?
         message << "#{generation.name}:#{parse_error.location.start_line}:#{parse_error.message} "
         message << "(#{parse_error.type})"
