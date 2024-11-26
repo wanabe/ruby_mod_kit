@@ -3,8 +3,6 @@
 module RubyModKit
   # The class of transpiler generation.
   class Generation
-    @parse_result: Prism::ParseResult
-
     @script: String
 
     @missions: Array[Mission]
@@ -30,8 +28,6 @@ module RubyModKit
     @lines: Array[String]
 
     @offsets: Array[Integer]
-
-    attr_reader parse_result: Prism::ParseResult
 
     attr_reader script: String
 

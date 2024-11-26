@@ -5,7 +5,6 @@
 module RubyModKit
   # The class of transpiler generation.
   class Generation
-    # @rbs @parse_result: Prism::ParseResult
     # @rbs @script: String
     # @rbs @missions: Array[Mission]
     # @rbs @memo_pad: MemoPad
@@ -20,7 +19,6 @@ module RubyModKit
     # @rbs @lines: Array[String]
     # @rbs @offsets: Array[Integer]
 
-    attr_reader :parse_result #: Prism::ParseResult
     attr_reader :script #: String
     attr_reader :errors #: Array[Prism::ParseError]
     attr_reader :lines #: Array[String]
@@ -47,11 +45,11 @@ module RubyModKit
       @memo_pad = memo_pad || MemoPad.new
       @corrector_manager = corrector_manager || CorrectorManager.new(@features)
       @offset_diff = OffsetDiff.new
-      @parse_result = Prism.parse(@script)
-      @errors = @parse_result.errors
-      @lines = @parse_result.source.lines
-      @offsets = @parse_result.source.offsets
-      @root_node = Node::ProgramNode.new(@parse_result.value)
+      parse_result = Prism.parse(@script)
+      @errors = parse_result.errors
+      @lines = parse_result.source.lines
+      @offsets = parse_result.source.offsets
+      @root_node = Node::ProgramNode.new(parse_result.value)
       init_missions
     end
 
