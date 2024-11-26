@@ -18,10 +18,10 @@ module RubyModKit
 
           # @rbs generation: Generation
           # @rbs _root_node: Node::ProgramNode
-          # @rbs parse_result: Prism::ParseResult
+          # @rbs _parse_result: Prism::ParseResult
           # @rbs memo_pad: MemoPad
           # @rbs return: bool
-          def perform(generation, _root_node, parse_result, memo_pad)
+          def perform(generation, _root_node, _parse_result, memo_pad)
             return true unless memo_pad.flags[:rbs_annotated]
 
             unless @reloaded
@@ -31,7 +31,7 @@ module RubyModKit
 
             offset = 0
             separated = false
-            parse_result.source.lines.each do |line|
+            generation.lines.each do |line|
               break if line =~ /^# @rbs/
               break if line !~ /^#( rbs_inline: enabled)?|(^$)/
               return true if ::Regexp.last_match(1)

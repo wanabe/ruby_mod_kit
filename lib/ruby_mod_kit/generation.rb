@@ -17,10 +17,12 @@ module RubyModKit
     # @rbs @features: Array[Feature]
     # @rbs @config: Config
     # @rbs @errors: Array[Prism::ParseError]
+    # @rbs @lines: Array[String]
 
     attr_reader :parse_result #: Prism::ParseResult
     attr_reader :script #: String
     attr_reader :errors #: Array[Prism::ParseError]
+    attr_reader :lines #: Array[String]
 
     # @rbs script: String
     # @rbs missions: Array[Mission]
@@ -45,6 +47,7 @@ module RubyModKit
       @offset_diff = OffsetDiff.new
       @parse_result = Prism.parse(@script)
       @errors = @parse_result.errors
+      @lines = @parse_result.source.lines
       @root_node = Node::ProgramNode.new(@parse_result.value)
       init_missions
     end

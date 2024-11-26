@@ -15,6 +15,7 @@ module RubyModKit
     @features: (Array[Feature])
     @config: Config
     getter @errors: Array[Prism::ParseError]
+    getter @lines: Array[String]
 
     def initialize(@script, @missions: [], (MemoPad | nil) => memo_pad: nil, @generation_num: 0, (Config | nil) => config: nil,
                    @filename: nil, (CorrectorManager | nil) => corrector_manager: nil, (Array[Feature] | nil) => features: nil): void
@@ -26,6 +27,7 @@ module RubyModKit
       @offset_diff = OffsetDiff.new
       @parse_result = Prism.parse(@script)
       @errors = @parse_result.errors
+      @lines = @parse_result.source.lines
       @root_node = Node::ProgramNode.new(@parse_result.value)
       init_missions
     end

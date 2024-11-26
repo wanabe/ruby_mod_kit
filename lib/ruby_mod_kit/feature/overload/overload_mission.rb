@@ -41,7 +41,7 @@ module RubyModKit
             raise RubyModKit::Error unless name.is_a?(Symbol)
 
             start_line = first_def_node.location.start_line - 1
-            indent = parse_result.source.lines[start_line][/\A */] || ""
+            indent = generation.lines[start_line][/\A */] || ""
             src_offset = parse_result.source.offsets[start_line]
             script = +""
 

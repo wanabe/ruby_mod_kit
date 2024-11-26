@@ -44,9 +44,9 @@ module RubyModKit
     end
 
     # @rbs generation: Generation
-    # @rbs parse_result: Prism::ParseResult
+    # @rbs _parse_result: Prism::ParseResult
     # @rbs return: void
-    def check_prev_errors(generation, parse_result)
+    def check_prev_errors(generation, _parse_result)
       return if @previous_error_messages.empty?
       return if generation.errors.empty?
       return if @previous_error_messages != generation.errors.map(&:message)
@@ -56,7 +56,7 @@ module RubyModKit
         message << "\n" unless message.empty?
         message << "#{generation.name}:#{parse_error.location.start_line}:#{parse_error.message} "
         message << "(#{parse_error.type})"
-        line = parse_result.source.lines[parse_error.location.start_line - 1]
+        line = generation.lines[parse_error.location.start_line - 1]
         if line
           message << "\n#{line.chomp}\n"
           message << "#{" " * parse_error.location.start_column}^#{"~" * [parse_error.location.length - 1, 0].max}"
