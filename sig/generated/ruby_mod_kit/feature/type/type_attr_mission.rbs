@@ -11,10 +11,10 @@ module RubyModKit
         def initialize: () -> void
 
         # @rbs generation: Generation
-        # @rbs root_node: Node::ProgramNode
-        # @rbs memo_pad: MemoPad
+        # @rbs _root_node: Node::ProgramNode
+        # @rbs _memo_pad: MemoPad
         # @rbs return: bool
-        def perform: (Generation generation, Node::ProgramNode root_node, MemoPad memo_pad) -> bool
+        def perform: (Generation generation, untyped _root_node, untyped _memo_pad) -> bool
       end
     end
   end

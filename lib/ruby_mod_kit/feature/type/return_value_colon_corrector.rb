@@ -14,13 +14,13 @@ module RubyModKit
 
         # @rbs parse_error: Prism::ParseError
         # @rbs generation: Generation
-        # @rbs root_node: Node::ProgramNode
-        # @rbs memo_pad: MemoPad
+        # @rbs _root_node: Node::ProgramNode
+        # @rbs _memo_pad: MemoPad
         # @rbs return: void
-        def correct(parse_error, generation, root_node, memo_pad)
+        def correct(parse_error, generation, _root_node, _memo_pad)
           return if parse_error.location.slice != ":"
 
-          def_node = root_node.statements_node_at(parse_error.location.start_offset)&.parent
+          def_node = generation.root_node.statements_node_at(parse_error.location.start_offset)&.parent
           return unless def_node.is_a?(Node::DefNode)
 
           lparen_loc = def_node.lparen_loc
@@ -34,10 +34,10 @@ module RubyModKit
           end
           return if generation[src_offset...parse_error.location.start_offset] !~ /\A\s*\z/
 
-          right_node = root_node.node_at(parse_error.location.end_offset + 1)
+          right_node = generation.root_node.node_at(parse_error.location.end_offset + 1)
           return_type_location = right_node&.location || return_type_location
           generation[src_offset, return_type_location.end_offset - src_offset] = ""
-          memo_pad.method_memo(def_node).type = return_type_location.slice
+          generation.memo_pad.method_memo(def_node).type = return_type_location.slice
         end
       end
     end

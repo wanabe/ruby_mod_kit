@@ -20,6 +20,8 @@ module RubyModKit
     # @rbs @offsets: Array[Integer]
 
     attr_reader :script #: String
+    attr_reader :memo_pad #: MemoPad
+    attr_reader :root_node #: Node::ProgramNode
     attr_reader :errors #: Array[Prism::ParseError]
     attr_reader :lines #: Array[String]
     attr_reader :offsets #: Array[Integer]

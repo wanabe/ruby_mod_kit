@@ -32,11 +32,11 @@ module RubyModKit
 
         # @rbs parse_error: Prism::ParseError
         # @rbs generation: Generation
-        # @rbs root_node: Node::ProgramNode
-        # @rbs memo_pad: MemoPad
+        # @rbs _root_node: Node::ProgramNode
+        # @rbs _memo_pad: MemoPad
         # @rbs return: void
-        def remove_arrow_before_parameter(parse_error, generation, root_node, memo_pad)
-          def_node = root_node.def_node_at(parse_error.location.start_offset) || return
+        def remove_arrow_before_parameter(parse_error, generation, _root_node, _memo_pad)
+          def_node = generation.root_node.def_node_at(parse_error.location.start_offset) || return
           def_parent_node = def_node.parent
           parameters_node, body_node, = def_node.children
           return if !def_parent_node || !parameters_node || !body_node
@@ -49,15 +49,15 @@ module RubyModKit
           parameter_type = generation[last_parameter_offset...right_offset] || raise(RubyModKit::Error)
           parameter_type = parameter_type.sub(/\s*=>\s*\z/, "")
           generation[last_parameter_offset, right_offset - last_parameter_offset] = ""
-          memo_pad.parameter_memo(last_parameter_node).type = parameter_type
+          generation.memo_pad.parameter_memo(last_parameter_node).type = parameter_type
         end
 
         # @rbs parse_error: Prism::ParseError
         # @rbs generation: Generation
-        # @rbs root_node: Node::ProgramNode
-        # @rbs memo_pad: MemoPad
+        # @rbs _root_node: Node::ProgramNode
+        # @rbs _memo_pad: MemoPad
         # @rbs return: void
-        def remove_arrow_after_quailifier(parse_error, generation, root_node, memo_pad)
+        def remove_arrow_after_quailifier(parse_error, generation, _root_node, _memo_pad)
           column = parse_error.location.start_column - 1
           return if column < 0
 
@@ -66,10 +66,10 @@ module RubyModKit
           length = ::Regexp.last_match(0)&.length || return
           type = ::Regexp.last_match(1) || return
           offset = parse_error.location.start_offset - 1
-          parameter_position_node = root_node.node_at(offset + length) || return
+          parameter_position_node = generation.root_node.node_at(offset + length) || return
 
           generation[parse_error.location.start_offset, length - 1] = ""
-          parameter_memo = memo_pad.parameter_memo(parameter_position_node)
+          parameter_memo = generation.memo_pad.parameter_memo(parameter_position_node)
           parameter_memo.type = type
           parameter_memo.qualifier = "*"
         end

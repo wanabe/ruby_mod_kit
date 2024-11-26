@@ -18,13 +18,13 @@ module RubyModKit
 
         # @rbs parse_error: Prism::ParseError
         # @rbs generation: Generation
-        # @rbs root_node: Node::ProgramNode
-        # @rbs memo_pad: MemoPad
+        # @rbs _root_node: Node::ProgramNode
+        # @rbs _memo_pad: MemoPad
         # @rbs return: void
-        def correct(parse_error, generation, root_node, memo_pad)
+        def correct(parse_error, generation, _root_node, _memo_pad)
           return if parse_error.location.slice != ":"
 
-          def_parent_node = root_node.statements_node_at(parse_error.location.start_offset)&.parent
+          def_parent_node = generation.root_node.statements_node_at(parse_error.location.start_offset)&.parent
           return unless def_parent_node.is_a?(Node::DefParentNode)
 
           line = generation.line(parse_error)
@@ -39,7 +39,7 @@ module RubyModKit
           type = ::Regexp.last_match(5)
           return if !length || !indent || !ivar_name || !type
 
-          ivar_memo = memo_pad.def_parent_memo(def_parent_node).ivar_memo(ivar_name.to_sym)
+          ivar_memo = generation.memo_pad.def_parent_memo(def_parent_node).ivar_memo(ivar_name.to_sym)
           ivar_memo.type = type
           ivar_memo.offset = line_offset
           ivar_memo.indent = indent

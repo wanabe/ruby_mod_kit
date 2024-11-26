@@ -20,14 +20,14 @@ module RubyModKit
         end
 
         # @rbs generation: Generation
-        # @rbs root_node: Node::ProgramNode
-        # @rbs memo_pad: MemoPad
+        # @rbs _root_node: Node::ProgramNode
+        # @rbs _memo_pad: MemoPad
         # @rbs return: bool
-        def perform(generation, root_node, memo_pad)
+        def perform(generation, _root_node, _memo_pad)
           return true if @modified
 
-          method_memo_groups = memo_pad.methods_memo.each_value.group_by do |method_memo|
-            [root_node.def_parent_node_at(method_memo.offset), method_memo.name]
+          method_memo_groups = generation.memo_pad.methods_memo.each_value.group_by do |method_memo|
+            [generation.root_node.def_parent_node_at(method_memo.offset), method_memo.name]
           end
           method_memo_groups.each_value do |method_memos|
             next if method_memos.length <= 1
@@ -35,7 +35,7 @@ module RubyModKit
             @modified = true
             first_method_memo = method_memos.first
             name = first_method_memo.name
-            first_def_node = root_node.def_node_at(first_method_memo.offset)
+            first_def_node = generation.root_node.def_node_at(first_method_memo.offset)
             raise RubyModKit::Error unless first_def_node.is_a?(Node::DefNode)
             raise RubyModKit::Error unless name.is_a?(Symbol)
 
@@ -44,7 +44,7 @@ module RubyModKit
             src_offset = generation.offsets[start_line]
             script = +""
 
-            overload_memo = memo_pad.overload_memo(first_method_memo.offset, name)
+            overload_memo = generation.memo_pad.overload_memo(first_method_memo.offset, name)
 
             method_memos.each do |method_memo|
               type = method_memo.type
@@ -56,7 +56,7 @@ module RubyModKit
             overload_prefix = +"#{OVERLOAD_METHOD_MAP[name] || name}_"
             method_memos.each_with_index do |method_memo, i|
               overload_name = "#{overload_prefix}_overload#{i}"
-              def_node = root_node.def_node_at(method_memo.offset)
+              def_node = generation.root_node.def_node_at(method_memo.offset)
               raise RubyModKit::Error if !def_node || !def_node.is_a?(Node::DefNode)
 
               name_loc = def_node.name_loc

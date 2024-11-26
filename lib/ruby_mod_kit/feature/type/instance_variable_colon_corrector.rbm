@@ -13,10 +13,10 @@ module RubyModKit
           %i[unexpected_token_ignore]
         end
 
-        def correct(Prism::ParseError => parse_error, Generation => generation, Node::ProgramNode => root_node, MemoPad => memo_pad): void
+        def correct(Prism::ParseError => parse_error, Generation => generation, Node::ProgramNode => _root_node, MemoPad => _memo_pad): void
           return if parse_error.location.slice != ":"
 
-          def_parent_node = root_node.statements_node_at(parse_error.location.start_offset)&.parent
+          def_parent_node = generation.root_node.statements_node_at(parse_error.location.start_offset)&.parent
           return unless def_parent_node.is_a?(Node::DefParentNode)
 
           line = generation.line(parse_error)
@@ -31,7 +31,7 @@ module RubyModKit
           type = ::Regexp.last_match(5)
           return if !length || !indent || !ivar_name || !type
 
-          ivar_memo = memo_pad.def_parent_memo(def_parent_node).ivar_memo(ivar_name.to_sym)
+          ivar_memo = generation.memo_pad.def_parent_memo(def_parent_node).ivar_memo(ivar_name.to_sym)
           ivar_memo.type = type
           ivar_memo.offset = line_offset
           ivar_memo.indent = indent

@@ -5,8 +5,8 @@ module RubyModKit
   class Generation
     getter @script: String
     @missions: Array[Mission]
-    @memo_pad: MemoPad
-    @root_node: Node::ProgramNode
+    getter @memo_pad: MemoPad
+    getter @root_node: Node::ProgramNode
     @offset_diff: OffsetDiff
     @generation_num: Integer
     @filename: (String | nil)

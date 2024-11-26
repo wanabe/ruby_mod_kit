@@ -9,14 +9,14 @@ module RubyModKit
         # The mission for parameter types
         class TypeOverloadMission < Mission
           # @rbs generation: Generation
-          # @rbs root_node: Node::ProgramNode
-          # @rbs memo_pad: MemoPad
+          # @rbs _root_node: Node::ProgramNode
+          # @rbs _memo_pad: MemoPad
           # @rbs return: bool
-          def perform(generation, root_node, memo_pad)
-            memo_pad.overloads_memo.each_value do |overload_memo|
-              overload_memo.correct_offset(root_node)
+          def perform(generation, _root_node, _memo_pad)
+            generation.memo_pad.overloads_memo.each_value do |overload_memo|
+              overload_memo.correct_offset(generation.root_node)
               offset = overload_memo.offset
-              def_node = root_node.def_node_at(offset) || raise(RubyModKit::Error)
+              def_node = generation.root_node.def_node_at(offset) || raise(RubyModKit::Error)
               start_line = def_node.location.start_line - 1
               indent = generation.lines[start_line][/\A */] || ""
               offset -= indent.length
@@ -31,7 +31,7 @@ module RubyModKit
                 annotation << " (#{parameter_types.join(", ")}) -> #{return_type}\n"
               end
               annotation.gsub!(/^/, indent)
-              memo_pad.flags[:rbs_annotated] = true
+              generation.memo_pad.flags[:rbs_annotated] = true
               generation[offset, 0] = annotation
             end
             true

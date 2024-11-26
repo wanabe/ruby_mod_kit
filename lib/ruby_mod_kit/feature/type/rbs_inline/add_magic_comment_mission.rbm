@@ -13,8 +13,8 @@ module RubyModKit
             @reloaded = false
           end
 
-          def perform(Generation => generation, Node::ProgramNode => _root_node, MemoPad => memo_pad): bool
-            return true unless memo_pad.flags[:rbs_annotated]
+          def perform(Generation => generation, Node::ProgramNode => _root_node, MemoPad => _memo_pad): bool
+            return true unless generation.memo_pad.flags[:rbs_annotated]
 
             unless @reloaded
               @reloaded = true

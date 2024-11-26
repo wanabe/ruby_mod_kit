@@ -16,16 +16,17 @@ module RubyModKit
         end
 
         # @rbs generation: Generation
-        # @rbs root_node: Node::ProgramNode
-        # @rbs memo_pad: MemoPad
+        # @rbs _root_node: Node::ProgramNode
+        # @rbs _memo_pad: MemoPad
         # @rbs return: bool
-        def perform(generation, root_node, memo_pad)
+        def perform(generation, _root_node, _memo_pad)
           return true if @modified
 
-          memo_pad.def_parents_memo.each_value do |def_parent_memo|
-            ivars_memo = def_parent_memo.ivars_memo.dup
-            def_parent_node = root_node.def_parent_node_at(def_parent_memo.offset) || raise(RubyModKit::Error)
+          generation.memo_pad.def_parents_memo.each_value do |def_parent_memo|
             attr_adding_line = 0
+            ivars_memo = def_parent_memo.ivars_memo.dup
+            def_parent_node = generation.root_node.def_parent_node_at(def_parent_memo.offset)
+            raise(RubyModKit::Error) unless def_parent_node
 
             ivars_memo.keep_if { |_, ivar_memo| ivar_memo.attr_kind }
             next if ivars_memo.empty?
