@@ -115,7 +115,7 @@ module RubyModKit
     end
 
     def perform_corrector: void
-      @corrector_manager.perform(self, @root_node, @memo_pad)
+      @corrector_manager.perform(self)
     end
 
     def perform_missions: void

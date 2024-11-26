@@ -14,17 +14,15 @@ module RubyModKit
 
         # @rbs parse_error: Prism::ParseError
         # @rbs generation: Generation
-        # @rbs root_node: Node::ProgramNode
-        # @rbs memo_pad: MemoPad
         # @rbs return: void
-        def correct(parse_error, generation, root_node, memo_pad)
+        def correct(parse_error, generation)
           case parse_error.type
           when :unexpected_token_ignore
             return if parse_error.location.slice != "=>"
 
-            remove_arrow_before_parameter(parse_error, generation, root_node, memo_pad)
+            remove_arrow_before_parameter(parse_error, generation)
           when :def_params_term_paren
-            remove_arrow_after_quailifier(parse_error, generation, root_node, memo_pad)
+            remove_arrow_after_quailifier(parse_error, generation)
           when :argument_formal_constant
             wrap_parameter_type_for_next_parse(parse_error, generation)
           end
@@ -32,10 +30,8 @@ module RubyModKit
 
         # @rbs parse_error: Prism::ParseError
         # @rbs generation: Generation
-        # @rbs _root_node: Node::ProgramNode
-        # @rbs _memo_pad: MemoPad
         # @rbs return: void
-        def remove_arrow_before_parameter(parse_error, generation, _root_node, _memo_pad)
+        def remove_arrow_before_parameter(parse_error, generation)
           def_node = generation.root_node.def_node_at(parse_error.location.start_offset) || return
           def_parent_node = def_node.parent
           parameters_node, body_node, = def_node.children
@@ -54,10 +50,8 @@ module RubyModKit
 
         # @rbs parse_error: Prism::ParseError
         # @rbs generation: Generation
-        # @rbs _root_node: Node::ProgramNode
-        # @rbs _memo_pad: MemoPad
         # @rbs return: void
-        def remove_arrow_after_quailifier(parse_error, generation, _root_node, _memo_pad)
+        def remove_arrow_after_quailifier(parse_error, generation)
           column = parse_error.location.start_column - 1
           return if column < 0
 

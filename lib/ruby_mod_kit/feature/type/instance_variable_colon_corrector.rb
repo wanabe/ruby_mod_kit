@@ -18,10 +18,8 @@ module RubyModKit
 
         # @rbs parse_error: Prism::ParseError
         # @rbs generation: Generation
-        # @rbs _root_node: Node::ProgramNode
-        # @rbs _memo_pad: MemoPad
         # @rbs return: void
-        def correct(parse_error, generation, _root_node, _memo_pad)
+        def correct(parse_error, generation)
           return if parse_error.location.slice != ":"
 
           def_parent_node = generation.root_node.statements_node_at(parse_error.location.start_offset)&.parent

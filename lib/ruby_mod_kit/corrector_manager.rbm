@@ -18,7 +18,7 @@ module RubyModKit
       end
     end
 
-    def perform(Generation => generation, Node::ProgramNode => root_node, MemoPad => memo_pad): bool
+    def perform(Generation => generation): bool
       return true if generation.errors.empty?
 
       check_prev_errors(generation)
@@ -27,7 +27,7 @@ module RubyModKit
       generation.errors.each do |parse_error|
         correctors = @correctors_error_map[parse_error.type] || next
         correctors.each do |corrector|
-          corrector.correct(parse_error, generation, root_node, memo_pad)
+          corrector.correct(parse_error, generation)
         end
       end
 

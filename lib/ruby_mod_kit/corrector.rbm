@@ -7,7 +7,7 @@ module RubyModKit
       []
     end
 
-    def correct(Prism::ParseError => _parse_error, Generation => _generation, Node::ProgramNode => _root_node, MemoPad => _memo_pad): void
+    def correct(Prism::ParseError => _parse_error, Generation => _generation): void
       raise RubyModKit::Error, "Unexpected type #{self.class}"
     end
   end

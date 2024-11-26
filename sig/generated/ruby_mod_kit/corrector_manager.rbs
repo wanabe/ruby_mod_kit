@@ -12,10 +12,8 @@ module RubyModKit
     def initialize: (Array[Feature] features) -> void
 
     # @rbs generation: Generation
-    # @rbs root_node: Node::ProgramNode
-    # @rbs memo_pad: MemoPad
     # @rbs return: bool
-    def perform: (Generation generation, Node::ProgramNode root_node, MemoPad memo_pad) -> bool
+    def perform: (Generation generation) -> bool
 
     # @rbs generation: Generation
     # @rbs return: void

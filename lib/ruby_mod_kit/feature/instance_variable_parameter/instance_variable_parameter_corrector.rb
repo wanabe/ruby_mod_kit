@@ -14,10 +14,8 @@ module RubyModKit
 
         # @rbs parse_error: Prism::ParseError
         # @rbs generation: Generation
-        # @rbs _root_node: Node::ProgramNode
-        # @rbs _memo_pad: MemoPad
         # @rbs return: void
-        def correct(parse_error, generation, _root_node, _memo_pad)
+        def correct(parse_error, generation)
           src_offset = parse_error.location.start_offset
 
           name = parse_error.location.slice[1..]

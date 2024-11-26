@@ -186,7 +186,7 @@ module RubyModKit
 
     # @rbs return: void
     def perform_corrector
-      @corrector_manager.perform(self, @root_node, @memo_pad)
+      @corrector_manager.perform(self)
     end
 
     # @rbs return: void
