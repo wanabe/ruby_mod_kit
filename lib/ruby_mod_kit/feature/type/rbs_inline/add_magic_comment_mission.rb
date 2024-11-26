@@ -17,10 +17,8 @@ module RubyModKit
           end
 
           # @rbs generation: Generation
-          # @rbs _root_node: Node::ProgramNode
-          # @rbs _memo_pad: MemoPad
           # @rbs return: bool
-          def perform(generation, _root_node, _memo_pad)
+          def perform(generation)
             return true unless generation.memo_pad.flags[:rbs_annotated]
 
             unless @reloaded

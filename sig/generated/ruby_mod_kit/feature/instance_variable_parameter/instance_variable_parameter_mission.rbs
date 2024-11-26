@@ -6,10 +6,8 @@ module RubyModKit
       # The mission for instance variable arguments
       class InstanceVariableParameterMission < Mission
         # @rbs generation: Generation
-        # @rbs _root_node: Node::ProgramNode
-        # @rbs _memo_pad: MemoPad
         # @rbs return: bool
-        def perform: (Generation generation, untyped _root_node, untyped _memo_pad) -> bool
+        def perform: (Generation generation) -> bool
       end
     end
   end

@@ -16,10 +16,8 @@ module RubyModKit
         end
 
         # @rbs generation: Generation
-        # @rbs _root_node: Node::ProgramNode
-        # @rbs _memo_pad: MemoPad
         # @rbs return: bool
-        def perform(generation, _root_node, _memo_pad)
+        def perform(generation)
           return true if @modified
 
           generation.memo_pad.def_parents_memo.each_value do |def_parent_memo|

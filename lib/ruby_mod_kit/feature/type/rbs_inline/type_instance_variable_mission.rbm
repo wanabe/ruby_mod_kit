@@ -6,7 +6,7 @@ module RubyModKit
       class RbsInline
         # The mission for instance variable types
         class TypeInstanceVariableMission < Mission
-          def perform(Generation => generation, Node::ProgramNode => _root_node, MemoPad => _memo_pad): bool
+          def perform(Generation => generation): bool
             generation.memo_pad.def_parents_memo.each_value do |def_parent_memo|
               def_parent_memo.ivars_memo.each do |name, ivar_memo|
                 offset = ivar_memo.offset || next

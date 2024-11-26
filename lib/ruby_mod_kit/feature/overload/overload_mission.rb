@@ -20,10 +20,8 @@ module RubyModKit
         end
 
         # @rbs generation: Generation
-        # @rbs _root_node: Node::ProgramNode
-        # @rbs _memo_pad: MemoPad
         # @rbs return: bool
-        def perform(generation, _root_node, _memo_pad)
+        def perform(generation)
           return true if @modified
 
           method_memo_groups = generation.memo_pad.methods_memo.each_value.group_by do |method_memo|

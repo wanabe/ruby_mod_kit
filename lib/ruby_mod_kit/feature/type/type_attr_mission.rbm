@@ -12,7 +12,7 @@ module RubyModKit
           @modified = false
         end
 
-        def perform(Generation => generation, Node::ProgramNode => _root_node, MemoPad => _memo_pad): bool
+        def perform(Generation => generation): bool
           return true if @modified
 
           generation.memo_pad.def_parents_memo.each_value do |def_parent_memo|

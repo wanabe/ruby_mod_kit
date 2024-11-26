@@ -8,10 +8,8 @@ module RubyModKit
       # The mission for instance variable arguments
       class InstanceVariableParameterMission < Mission
         # @rbs generation: Generation
-        # @rbs _root_node: Node::ProgramNode
-        # @rbs _memo_pad: MemoPad
         # @rbs return: bool
-        def perform(generation, _root_node, _memo_pad)
+        def perform(generation)
           generation.memo_pad.parameters_memo.each_value do |parameter_memo|
             next unless parameter_memo.ivar_parameter
 

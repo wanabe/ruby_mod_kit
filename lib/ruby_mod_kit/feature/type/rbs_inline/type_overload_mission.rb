@@ -9,10 +9,8 @@ module RubyModKit
         # The mission for parameter types
         class TypeOverloadMission < Mission
           # @rbs generation: Generation
-          # @rbs _root_node: Node::ProgramNode
-          # @rbs _memo_pad: MemoPad
           # @rbs return: bool
-          def perform(generation, _root_node, _memo_pad)
+          def perform(generation)
             generation.memo_pad.overloads_memo.each_value do |overload_memo|
               overload_memo.correct_offset(generation.root_node)
               offset = overload_memo.offset

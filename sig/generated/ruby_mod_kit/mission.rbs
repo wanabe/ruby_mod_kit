@@ -4,10 +4,8 @@ module RubyModKit
   # The base class of transpiler mission.
   class Mission
     # @rbs _generation: Generation
-    # @rbs _root_node: Node::ProgramNode
-    # @rbs _memo_pad: MemoPad
     # @rbs return: void
-    def perform: (untyped _generation, untyped _root_node, untyped _memo_pad) -> void
+    def perform: (untyped _generation) -> void
 
     # @rbs offset_diff: OffsetDiff
     # @rbs return: void

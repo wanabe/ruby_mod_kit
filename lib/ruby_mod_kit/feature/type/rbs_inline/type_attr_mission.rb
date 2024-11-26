@@ -9,10 +9,8 @@ module RubyModKit
         # The mission for parameter types
         class TypeAttrMission < Mission
           # @rbs generation: Generation
-          # @rbs _root_node: Node::ProgramNode
-          # @rbs _memo_pad: MemoPad
           # @rbs return: bool
-          def perform(generation, _root_node, _memo_pad)
+          def perform(generation)
             generation.memo_pad.def_parents_memo.each_value do |def_parent_memo|
               ivars_memo = def_parent_memo.ivars_memo.dup
               def_parent_node = generation.root_node.def_parent_node_at(def_parent_memo.offset)

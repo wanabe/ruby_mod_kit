@@ -6,7 +6,7 @@ module RubyModKit
       class RbsInline
         # The mission for parameter types
         class TypeReturnMission < Mission
-          def perform(Generation => generation, Node::ProgramNode => _root_node, MemoPad => _memo_pad): bool
+          def perform(Generation => generation): bool
             generation.memo_pad.methods_memo.each do |offset, method_memo|
               def_node = generation.root_node.def_node_at(offset)
               raise RubyModKit::Error, "DefNode not found" if !def_node || !def_node.is_a?(Node::DefNode)

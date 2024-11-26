@@ -9,10 +9,8 @@ module RubyModKit
         # The mission for parameter types
         class TypeParameterMission < Mission
           # @rbs generation: Generation
-          # @rbs _root_node: Node::ProgramNode
-          # @rbs _memo_pad: MemoPad
           # @rbs return: bool
-          def perform(generation, _root_node, _memo_pad)
+          def perform(generation)
             generation.memo_pad.parameters_memo.each do |offset, parameter_memo|
               next if parameter_memo.untyped?
 
