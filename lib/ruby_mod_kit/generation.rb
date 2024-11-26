@@ -18,11 +18,13 @@ module RubyModKit
     # @rbs @config: Config
     # @rbs @errors: Array[Prism::ParseError]
     # @rbs @lines: Array[String]
+    # @rbs @offsets: Array[Integer]
 
     attr_reader :parse_result #: Prism::ParseResult
     attr_reader :script #: String
     attr_reader :errors #: Array[Prism::ParseError]
     attr_reader :lines #: Array[String]
+    attr_reader :offsets #: Array[Integer]
 
     # @rbs script: String
     # @rbs missions: Array[Mission]
@@ -48,6 +50,7 @@ module RubyModKit
       @parse_result = Prism.parse(@script)
       @errors = @parse_result.errors
       @lines = @parse_result.source.lines
+      @offsets = @parse_result.source.offsets
       @root_node = Node::ProgramNode.new(@parse_result.value)
       init_missions
     end
@@ -143,7 +146,7 @@ module RubyModKit
     # @rbs line_num: Integer
     # @rbs return: String
     def line__overload0(line_num)
-      line_by_offset(@parse_result.source.offsets[line_num])
+      line_by_offset(@offsets[line_num])
     end
 
     # @rbs node: Node::BaseNode
@@ -172,7 +175,7 @@ module RubyModKit
     # @rbs line_num: Integer
     # @rbs return: Integer | nil
     def src_offset__overload0(line_num)
-      parse_result.source.offsets[line_num]
+      @offsets[line_num]
     end
 
     # @rbs parse_error: Prism::ParseError

@@ -6,7 +6,7 @@ module RubyModKit
       class RbsInline
         # The mission for parameter types
         class TypeParameterMission < Mission
-          def perform(Generation => generation, Node::ProgramNode => root_node, (Prism::ParseResult) => parse_result, MemoPad => memo_pad): bool
+          def perform(Generation => generation, Node::ProgramNode => root_node, (Prism::ParseResult) => _parse_result, MemoPad => memo_pad): bool
             memo_pad.parameters_memo.each do |offset, parameter_memo|
               next if parameter_memo.untyped?
 
@@ -17,7 +17,7 @@ module RubyModKit
               raise RubyModKit::Error, "ParameterNode not found" unless parameter_node
 
               type = parameter_memo.type
-              src_offset = parse_result.source.offsets[def_node.location.start_line - 1]
+              src_offset = generation.offsets[def_node.location.start_line - 1]
               indent = def_node.offset - src_offset
               qualified_name = "#{parameter_memo.qualifier}#{parameter_node.name}"
               memo_pad.flags[:rbs_annotated] = true

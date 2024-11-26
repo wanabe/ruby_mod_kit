@@ -29,6 +29,8 @@ module RubyModKit
 
     @lines: Array[String]
 
+    @offsets: Array[Integer]
+
     attr_reader parse_result: Prism::ParseResult
 
     attr_reader script: String
@@ -36,6 +38,8 @@ module RubyModKit
     attr_reader errors: Array[Prism::ParseError]
 
     attr_reader lines: Array[String]
+
+    attr_reader offsets: Array[Integer]
 
     # @rbs script: String
     # @rbs missions: Array[Mission]

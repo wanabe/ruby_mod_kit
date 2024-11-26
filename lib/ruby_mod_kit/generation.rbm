@@ -16,6 +16,7 @@ module RubyModKit
     @config: Config
     getter @errors: Array[Prism::ParseError]
     getter @lines: Array[String]
+    getter @offsets: Array[Integer]
 
     def initialize(@script, @missions: [], (MemoPad | nil) => memo_pad: nil, @generation_num: 0, (Config | nil) => config: nil,
                    @filename: nil, (CorrectorManager | nil) => corrector_manager: nil, (Array[Feature] | nil) => features: nil): void
@@ -28,6 +29,7 @@ module RubyModKit
       @parse_result = Prism.parse(@script)
       @errors = @parse_result.errors
       @lines = @parse_result.source.lines
+      @offsets = @parse_result.source.offsets
       @root_node = Node::ProgramNode.new(@parse_result.value)
       init_missions
     end
@@ -94,7 +96,7 @@ module RubyModKit
     end
 
     def line(Integer => line_num): String
-      line_by_offset(@parse_result.source.offsets[line_num])
+      line_by_offset(@offsets[line_num])
     end
 
     def line(Node::BaseNode => node): String
@@ -106,7 +108,7 @@ module RubyModKit
     end
 
     def src_offset(Integer => line_num): (Integer | nil)
-      parse_result.source.offsets[line_num]
+      @offsets[line_num]
     end
 
     def src_offset(Prism::ParseError => parse_error): (Integer | nil)

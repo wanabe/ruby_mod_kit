@@ -21,10 +21,10 @@ module RubyModKit
 
         # @rbs generation: Generation
         # @rbs root_node: Node::ProgramNode
-        # @rbs parse_result: Prism::ParseResult
+        # @rbs _parse_result: Prism::ParseResult
         # @rbs memo_pad: MemoPad
         # @rbs return: bool
-        def perform(generation, root_node, parse_result, memo_pad)
+        def perform(generation, root_node, _parse_result, memo_pad)
           return true if @modified
 
           method_memo_groups = memo_pad.methods_memo.each_value.group_by do |method_memo|
@@ -42,7 +42,7 @@ module RubyModKit
 
             start_line = first_def_node.location.start_line - 1
             indent = generation.lines[start_line][/\A */] || ""
-            src_offset = parse_result.source.offsets[start_line]
+            src_offset = generation.offsets[start_line]
             script = +""
 
             overload_memo = memo_pad.overload_memo(first_method_memo.offset, name)
