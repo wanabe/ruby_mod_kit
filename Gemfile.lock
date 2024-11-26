@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    ruby_mod_kit (0.0.4)
+    ruby_mod_kit (0.0.5)
       prism (~> 1.0)
       thor (~> 1.3)
 
