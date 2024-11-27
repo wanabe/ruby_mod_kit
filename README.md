@@ -15,6 +15,95 @@ If bundler is not being used to manage dependencies, install the gem by executin
 
 ## Usage
 
+### as library
+
+`RubyModKit.transpile` returns transpiled script.
+
+```
+require "ruby_mod_kit"
+eval(
+  RubyModKit.transpile(<<~RBM),
+    class Foo
+      getter @foo: Integer
+      def initialize(@foo)
+      end
+    end
+  RBM
+)
+p Foo.new(1).foo # => 1
+```
+
+`require "ruby_mod_kit/core_ext/eval"` gives `RubyModKit.eval`.
+
+```
+require "ruby_mod_kit/core_ext/eval"
+RubyModKit.eval(<<~RBM)
+  class Foo
+    getter @foo: Integer
+    def initialize(@foo)
+    end
+  end
+RBM
+p Foo.new(1).foo # => 1
+```
+
+`require "ruby_mod_kit/core_ext/load"` gives `RubyModKit.load` and `RubyModKit.require`.
+
+```
+require "ruby_mod_kit/core_ext/load"
+require "tmpdir"
+
+script = <<~RBM
+  class Foo
+    getter @foo: Integer
+    def initialize(@foo)
+    end
+  end
+RBM
+
+Dir.mktmpdir do |tmpdir|
+  File.write("#{tmpdir}/some_lib.rbm", script)
+  $LOAD_PATH << tmpdir
+  RubyModKit.require "some_lib"
+end
+
+p Foo.new(1).foo # => 1
+```
+
+And `require "ruby_mod_kit/core_ext"` is more powerfull but dangerous. It overwrites `eval`, `require` and `load`.
+
+```
+require "ruby_mod_kit/core_ext"
+eval(<<~RBM)
+  class Foo
+    getter @foo: Integer
+    def initialize(@foo)
+    end
+  end
+RBM
+p Foo.new(1).foo # => 1
+```
+
+```
+require "ruby_mod_kit/core_ext"
+require "tmpdir"
+
+script = <<~RBM
+  class Foo
+    getter @foo: Integer
+    def initialize(@foo)
+    end
+  end
+RBM
+
+Dir.mktmpdir do |tmpdir|
+  File.write("#{tmpdir}/some_lib.rbm", script)
+  $LOAD_PATH << tmpdir
+  require "some_lib"
+end
+
+p Foo.new(1).foo # => 1
+```
 ### as command line tool
 
 #### `transpile`
