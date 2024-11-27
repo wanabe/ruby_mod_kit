@@ -12,21 +12,15 @@ module RubyModKit
       module_function
 
       # @rbs expr: String
-      # @rbs *rest: Object
+      # @rbs binding: Binding
+      # @rbs fname: String
+      # @rbs lineno: Integer
       # @rbs transpile: bool
       # @rbs return: Object
-      def eval(expr, *rest, transpile: true)
-        if transpile
-          fname = rest[1].is_a?(String) ? rest[1] : "(eval)"
-          expr = RubyModKit.transpile(expr, filename: fname)
-        end
+      def eval(expr, binding = TOPLEVEL_BINDING, fname = "(eval)", lineno = 1, transpile: true)
+        expr = RubyModKit.transpile(expr, filename: fname) if transpile
 
-        case rest
-        in []
-          super(expr, TOPLEVEL_BINDING)
-        in [Binding] | [Binding, String] | [Binding, String, Integer]
-          super(expr, *rest)
-        end
+        super(expr, binding, fname, lineno)
       end
     end
   end

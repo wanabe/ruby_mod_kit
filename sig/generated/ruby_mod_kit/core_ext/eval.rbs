@@ -6,10 +6,12 @@ module RubyModKit
     # the extension for eval
     module Eval
       # @rbs expr: String
-      # @rbs *rest: Object
+      # @rbs binding: Binding
+      # @rbs fname: String
+      # @rbs lineno: Integer
       # @rbs transpile: bool
       # @rbs return: Object
-      def self?.eval: (String expr, *Object rest, ?transpile: bool) -> Object
+      def self?.eval: (String expr, ?Binding binding, ?String fname, ?Integer lineno, ?transpile: bool) -> Object
     end
   end
 

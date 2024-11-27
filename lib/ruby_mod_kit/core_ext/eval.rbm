@@ -9,18 +9,10 @@ module RubyModKit
     module Eval
       module_function
 
-      def eval(String => expr, *Object => rest, bool => transpile: true): Object
-        if transpile
-          fname = rest[1].is_a?(String) ? rest[1] : "(eval)"
-          expr = RubyModKit.transpile(expr, filename: fname)
-        end
+      def eval(String => expr, Binding => binding = TOPLEVEL_BINDING, String => fname = "(eval)", Integer => lineno = 1, bool => transpile: true): Object
+        expr = RubyModKit.transpile(expr, filename: fname) if transpile
 
-        case rest
-        in []
-          super(expr, TOPLEVEL_BINDING)
-        in [Binding] | [Binding, String] | [Binding, String, Integer]
-          super(expr, *rest)
-        end
+        super(expr, binding, fname, lineno)
       end
     end
   end

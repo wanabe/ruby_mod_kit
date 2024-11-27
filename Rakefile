@@ -42,7 +42,7 @@ task :rbs_typed do
   Dir.glob("sig/generated/**/*.rbs") do |path|
     File.open(path) do |f|
       f.each_line do |l|
-        if l =~ / untyped(?! _|\?)/
+        if l =~ / \??untyped(?! _|\?)/
           untyped_found = true
           warn "#{path}:#{l}"
         end
