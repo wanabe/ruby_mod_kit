@@ -10,5 +10,8 @@ module RubyModKit
     # @rbs _generation: Generation
     # @rbs return: void
     def correct: (untyped _parse_error, untyped _generation) -> void
+
+    # @rbs return: void
+    def setup: () -> void
   end
 end

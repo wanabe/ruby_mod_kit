@@ -16,5 +16,8 @@ module RubyModKit
     def correct(_parse_error, _generation)
       raise RubyModKit::Error, "Unexpected type #{self.class}"
     end
+
+    # @rbs return: void
+    def setup; end
   end
 end

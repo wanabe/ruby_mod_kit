@@ -252,6 +252,20 @@ describe RubyModKit::Generation do
           end
         RB
       end
+
+      it "supports optional argument types" do
+        expect(described_class.resolve(<<~RBM).script).to eq(<<~RB)
+          def foo(Integer => n = 1, String => s = "a")
+          end
+        RBM
+          # rbs_inline: enabled
+
+          # @rbs n: Integer
+          # @rbs s: String
+          def foo(n = 1, s = "a")
+          end
+        RB
+      end
     end
 
     describe "typed return value" do

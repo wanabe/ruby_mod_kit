@@ -7,9 +7,17 @@ module RubyModKit
     class Type
       # the class to correct `def foo(Bar => bar, *Buz => buz)` -> `def foo(bar, *buz)`
       class ParameterArrowCorrector < Corrector
+        # @rbs @last_parameter_offsets: Set[Integer]
+
         # @rbs return: Array[Symbol]
         def correctable_error_types
           %i[unexpected_token_ignore def_params_term_paren argument_formal_constant]
+        end
+
+        # @rbs return: void
+        def setup
+          super
+          @last_parameter_offsets = Set.new
         end
 
         # @rbs parse_error: Prism::ParseError
@@ -39,7 +47,9 @@ module RubyModKit
 
           last_parameter_node = parameters_node.children.max_by(&:offset) || return
           last_parameter_offset = last_parameter_node.offset
+          return if @last_parameter_offsets.include?(last_parameter_offset)
 
+          @last_parameter_offsets << last_parameter_offset
           right_node = body_node.children.find { _1.offset >= parse_error.location.end_offset } || return
           right_offset = right_node.offset
           parameter_type = generation[last_parameter_offset...right_offset] || raise(RubyModKit::Error)

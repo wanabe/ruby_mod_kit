@@ -24,6 +24,10 @@ module RubyModKit
       check_prev_errors(generation)
       @previous_error_messages = generation.errors.map(&:message)
 
+      @correctors_error_map.each_value do |correctors|
+        correctors.each(&:setup)
+      end
+
       generation.errors.each do |parse_error|
         correctors = @correctors_error_map[parse_error.type] || next
         correctors.each do |corrector|

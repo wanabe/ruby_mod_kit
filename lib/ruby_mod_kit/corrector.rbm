@@ -10,5 +10,7 @@ module RubyModKit
     def correct(Prism::ParseError => _parse_error, Generation => _generation): void
       raise RubyModKit::Error, "Unexpected type #{self.class}"
     end
+
+    def setup: void; end
   end
 end
