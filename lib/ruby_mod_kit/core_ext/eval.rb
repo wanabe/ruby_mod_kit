@@ -22,7 +22,9 @@ module RubyModKit
         end
 
         case rest
-        in [] | [Binding] | [Binding, String] | [Binding, String, Integer]
+        in []
+          super(expr, TOPLEVEL_BINDING)
+        in [Binding] | [Binding, String] | [Binding, String, Integer]
           super(expr, *rest)
         end
       end
