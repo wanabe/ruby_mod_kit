@@ -8,11 +8,13 @@ module RubyModKit
     class ParameterMemo < OffsetMemo
       # @rbs @type: String
       # @rbs @ivar_parameter: bool
-      # @rbs @qualifier: String
+      # @rbs @qualifier: String | nil
+      # @rbs @name: Symbol
 
       attr_reader :type #: String
       attr_accessor :ivar_parameter #: bool
-      attr_accessor :qualifier #: String
+      attr_accessor :qualifier #: String | nil
+      attr_accessor :name #: Symbol
 
       UNTYPED = "untyped"
 

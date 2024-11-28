@@ -52,10 +52,13 @@ module RubyModKit
           @last_parameter_offsets << last_parameter_offset
           right_node = body_node.children.find { _1.offset >= parse_error.location.end_offset } || return
           right_offset = right_node.offset
+          name = right_node.slice[/\A\w+/]
           parameter_type = generation[last_parameter_offset...right_offset] || raise(RubyModKit::Error)
           parameter_type = parameter_type.sub(/\s*=>\s*\z/, "")
           generation[last_parameter_offset, right_offset - last_parameter_offset] = ""
-          generation.memo_pad.parameter_memo(last_parameter_node).type = parameter_type
+          parameter_memo = generation.memo_pad.parameter_memo(last_parameter_node)
+          parameter_memo.name = name.to_sym if name
+          parameter_memo.type = parameter_type
         end
 
         # @rbs parse_error: Prism::ParseError
@@ -66,15 +69,17 @@ module RubyModKit
           return if column < 0
 
           line = generation.line(parse_error)[column..] || return
-          line =~ /\A\*(.*?)\s*=>\s*/
-          length = ::Regexp.last_match(0)&.length || return
-          type = ::Regexp.last_match(1) || return
+          line =~ /(\A\*(.*?)\s*=>\s*)(\w*)/
+          length = ::Regexp.last_match(1)&.length || return
+          type = ::Regexp.last_match(2) || return
+          name = ::Regexp.last_match(3)
           offset = parse_error.location.start_offset - 1
           parameter_position_node = generation.root_node.node_at(offset + length) || return
 
           generation[parse_error.location.start_offset, length - 1] = ""
           parameter_memo = generation.memo_pad.parameter_memo(parameter_position_node)
           parameter_memo.type = type
+          parameter_memo.name = name.to_sym if name
           parameter_memo.qualifier = "*"
         end
 

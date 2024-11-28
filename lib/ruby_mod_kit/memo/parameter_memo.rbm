@@ -6,7 +6,8 @@ module RubyModKit
     class ParameterMemo < OffsetMemo
       getter @type: String
       property @ivar_parameter: bool
-      property @qualifier: String
+      property @qualifier: String | nil
+      property @name: Symbol
 
       UNTYPED = "untyped"
 
