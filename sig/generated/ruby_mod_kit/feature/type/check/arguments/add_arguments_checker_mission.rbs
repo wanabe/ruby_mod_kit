@@ -1,0 +1,16 @@
+# Generated from lib/ruby_mod_kit/feature/type/check/arguments/add_arguments_checker_mission.rb with RBS::Inline
+
+module RubyModKit
+  class Feature
+    class Type
+      module Check
+        # The mission to add magic comment
+        class AddArgumentsCheckerMission < Mission
+          # @rbs generation: Generation
+          # @rbs return: bool
+          def perform: (Generation generation) -> bool
+        end
+      end
+    end
+  end
+end

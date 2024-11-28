@@ -421,5 +421,44 @@ describe RubyModKit::Generation do
         RB
       end
     end
+
+    context "with type/check/arguments feature" do
+      let(:config) { RubyModKit::Config.new(features: %w[type type/check/arguments]) }
+
+      it "generates pattern matching" do
+        expect(described_class.resolve(<<~RBM, config: config).script).to eq(<<~RB)
+          class Foo
+            def foo(Bar => bar)
+              p bar
+            end
+          end
+        RBM
+          class Foo
+            def foo(bar)
+              bar => Bar
+              p bar
+            end
+          end
+        RB
+      end
+
+      it "supports same line def ... end" do
+        expect(described_class.resolve(<<~RBM, config: config).script).to eq(<<~RB)
+          class Foo
+            def foo(Bar => bar); end
+            def bar(Buz => buz): void; end
+          end
+        RBM
+          class Foo
+            def foo(bar)
+              bar => Bar
+            end
+            def bar(buz)
+              buz => Buz
+            end
+          end
+        RB
+      end
+    end
   end
 end
