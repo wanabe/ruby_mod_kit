@@ -112,6 +112,11 @@ module RubyModKit
       end
 
       # @rbs return: String
+      def slice
+        location.slice
+      end
+
+      # @rbs return: String
       def inspect
         str = +"#<#{self.class} "
         first = true

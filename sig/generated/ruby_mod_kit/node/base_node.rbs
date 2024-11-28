@@ -62,6 +62,9 @@ module RubyModKit
       def offset: () -> Integer
 
       # @rbs return: String
+      def slice: () -> String
+
+      # @rbs return: String
       def inspect: () -> String
 
       private

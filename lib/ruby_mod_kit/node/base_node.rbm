@@ -86,6 +86,10 @@ module RubyModKit
         location.start_offset
       end
 
+      def slice: String
+        location.slice
+      end
+
       def inspect: String
         str = +"#<#{self.class} "
         first = true
