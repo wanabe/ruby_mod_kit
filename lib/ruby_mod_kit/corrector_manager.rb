@@ -5,13 +5,13 @@
 module RubyModKit
   # the class to manege parse error correctors
   class CorrectorManager
-    # @rbs @previous_error_messages: Array[String]
+    # @rbs @previous_source: String
     # @rbs @correctors_error_map: Hash[Symbol, Array[Corrector]]
 
     # @rbs features: Array[Feature]
     # @rbs return: void
     def initialize(features)
-      @previous_error_messages = []
+      @previous_source = +""
       @correctors_error_map = {}
       features.each do |feature|
         feature.create_correctors.each do |corrector|
@@ -28,7 +28,7 @@ module RubyModKit
       return true if generation.errors.empty?
 
       check_prev_errors(generation)
-      @previous_error_messages = generation.errors.map(&:message)
+      @previous_source = generation.script.dup
 
       @correctors_error_map.each_value do |correctors|
         correctors.each(&:setup)
@@ -47,9 +47,9 @@ module RubyModKit
     # @rbs generation: Generation
     # @rbs return: void
     def check_prev_errors(generation)
-      return if @previous_error_messages.empty?
+      return if @previous_source.empty?
       return if generation.errors.empty?
-      return if @previous_error_messages != generation.errors.map(&:message)
+      return if @previous_source != generation.script
 
       message = +""
       generation.errors.each do |parse_error|
