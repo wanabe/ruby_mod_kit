@@ -53,9 +53,6 @@ module RubyModKit
       else
         perform_corrector
       end
-      @missions.each do |mission|
-        mission.succ(@offset_diff)
-      end
       @memo_pad.succ(@offset_diff)
 
       Generation.new(

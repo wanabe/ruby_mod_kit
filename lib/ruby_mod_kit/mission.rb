@@ -10,9 +10,5 @@ module RubyModKit
     def perform(_generation)
       raise RubyModKit::Error, "Unexpected type #{self.class}"
     end
-
-    # @rbs offset_diff: OffsetDiff
-    # @rbs return: void
-    def succ(offset_diff); end
   end
 end

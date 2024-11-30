@@ -6,9 +6,5 @@ module RubyModKit
     # @rbs _generation: Generation
     # @rbs return: void
     def perform: (untyped _generation) -> void
-
-    # @rbs offset_diff: OffsetDiff
-    # @rbs return: void
-    def succ: (OffsetDiff offset_diff) -> void
   end
 end

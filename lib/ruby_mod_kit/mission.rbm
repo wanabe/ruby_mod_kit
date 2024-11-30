@@ -6,7 +6,5 @@ module RubyModKit
     def perform(Generation => _generation): void
       raise RubyModKit::Error, "Unexpected type #{self.class}"
     end
-
-    def succ(OffsetDiff => offset_diff): void; end
   end
 end
