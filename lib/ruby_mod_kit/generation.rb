@@ -150,6 +150,8 @@ module RubyModKit
     # @rbs return: String
     def line__overload2(parse_error)
       line(parse_error.location.start_line - 1)
+    rescue RubyModKit::Error
+      ""
     end
 
     # @rbs (Integer) -> (Integer | nil)

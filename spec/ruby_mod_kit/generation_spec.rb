@@ -12,6 +12,11 @@ describe RubyModKit::Generation do
       expect { described_class.resolve("@") }.to raise_error(RubyModKit::SyntaxError)
     end
 
+    it "raises error with unterminated begi" do
+      expect { described_class.resolve("class Foo\n") }.to raise_error(RubyModKit::SyntaxError)
+        .with_message(/:2:unexpected end-of-input.*\n\n\^\n/)
+    end
+
     describe "for instance variable parameter" do
       it "converts an instance variable parameter into an assignment" do
         expect(described_class.resolve(<<~RBM).script).to eq(<<~RB)

@@ -97,6 +97,8 @@ module RubyModKit
 
     def line(Prism::ParseError => parse_error): String
       line(parse_error.location.start_line - 1)
+    rescue RubyModKit::Error
+      ""
     end
 
     def line_offset(Integer => line_num): (Integer | nil)
