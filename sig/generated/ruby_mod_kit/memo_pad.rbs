@@ -46,5 +46,9 @@ module RubyModKit
     # @rbs node: Node::BaseNode
     # @rbs return: Memo::ParameterMemo
     def parameter_memo: (Node::BaseNode node) -> Memo::ParameterMemo
+
+    # @rbs &block: (Memo::ParameterMemo) -> void
+    # @rbs return: void
+    def each_parameter_memo: () { (Memo::ParameterMemo) -> void } -> void
   end
 end

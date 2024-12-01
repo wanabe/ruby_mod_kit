@@ -10,7 +10,7 @@ module RubyModKit
         # @rbs generation: Generation
         # @rbs return: bool
         def perform(generation)
-          generation.memo_pad.parameters_memo.each_value do |parameter_memo|
+          generation.memo_pad.each_parameter_memo do |parameter_memo|
             next unless parameter_memo.ivar_parameter
 
             offset = parameter_memo.offset

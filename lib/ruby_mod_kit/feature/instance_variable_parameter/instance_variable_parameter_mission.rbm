@@ -6,7 +6,7 @@ module RubyModKit
       # The mission for instance variable arguments
       class InstanceVariableParameterMission < Mission
         def perform(Generation => generation): bool
-          generation.memo_pad.parameters_memo.each_value do |parameter_memo|
+          generation.memo_pad.each_parameter_memo do |parameter_memo|
             next unless parameter_memo.ivar_parameter
 
             offset = parameter_memo.offset

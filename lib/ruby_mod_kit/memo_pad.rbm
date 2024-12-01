@@ -48,5 +48,9 @@ module RubyModKit
 
       method_memo(def_node).add_parameter(memo)
     end
+
+    def each_parameter_memo(&((Memo::ParameterMemo): void) => block): void
+      parameters_memo.each_value(&block)
+    end
   end
 end
