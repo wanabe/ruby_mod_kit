@@ -9,7 +9,7 @@ module RubyModKit
       class InstanceVariableColonCorrector < Corrector
         VISIBILITIES = %i[private public protected].freeze #: Array[Symbol]
         ATTR_PATTERNS = %i[attr_reader reader getter attr_writer writer setter attr_accessor accessor property].freeze #: Array[Symbol]
-        REGEXP = /(\A\s*)(?:(#{VISIBILITIES.join("|")}) )?(?:(#{ATTR_PATTERNS.join("|")}) )?@(\w*)\s*:\s*(.*)\n/.freeze #: Regexp
+        REGEXP = /(\A\s*)(?:(#{VISIBILITIES.join("|")}) )?(?:(#{ATTR_PATTERNS.join("|")}) )?@(\w*)\s*:\s*(.*)\n(\n+)?/.freeze #: Regexp
 
         # @rbs return: Array[Symbol]
         def correctable_error_types
@@ -28,8 +28,8 @@ module RubyModKit
           )
           return unless def_parent_node.is_a?(Node::DefParentNode)
 
-          line = generation.line(parse_error)
           line_offset = generation.line_offset(parse_error) || return
+          line = generation[line_offset..]
           return if line !~ REGEXP
 
           length = ::Regexp.last_match(0)&.length
@@ -38,6 +38,7 @@ module RubyModKit
           attr_kind = ::Regexp.last_match(3)
           ivar_name = ::Regexp.last_match(4)
           type = ::Regexp.last_match(5)
+          separator = ::Regexp.last_match(6)
           return if !length || !indent || !ivar_name || !type
 
           ivar_memo = generation.memo_pad.def_parent_memo(def_parent_node).ivar_memo(ivar_name.to_sym)
@@ -46,6 +47,7 @@ module RubyModKit
           ivar_memo.indent = indent
           ivar_memo.attr_kind = attr_kind if attr_kind
           ivar_memo.visibility = visibility.to_sym if visibility
+          ivar_memo.separator = separator if separator
 
           generation[line_offset, length] = ""
         end

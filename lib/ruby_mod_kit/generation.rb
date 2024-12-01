@@ -114,7 +114,7 @@ module RubyModKit
       @offset_diff.insert(src_offset, diff)
     end
 
-    # @rbs src_range: Range[Integer]
+    # @rbs src_range: Range[Integer | nil]
     # @rbs return: String
     def [](src_range)
       @source[src_range] || raise(RubyModKit::Error, "Invalid range")

@@ -29,15 +29,9 @@ module RubyModKit
             ivars_memo.keep_if { |_, ivar_memo| ivar_memo.attr_kind }
             next if ivars_memo.empty?
 
-            add_first_separator_line = false
             if attr_adding_line == 0
               attr_adding_line = def_parent_node.location.start_line
-              prev_line = nil
-              while generation.line(attr_adding_line) =~ /\A\s*#.*|\A$/
-                prev_line = ::Regexp.last_match(0)
-                attr_adding_line += 1
-              end
-              add_first_separator_line = prev_line != ""
+              attr_adding_line += 1 while generation.line(attr_adding_line) =~ /\A\s*#.*|\A$/
             end
             line = generation.line(attr_adding_line) || next
             add_separator_line = line != "\n" && line !~ /\A\s*end$/
@@ -50,9 +44,9 @@ module RubyModKit
             else
               def_parent_line = generation.line(def_parent_node)
               indent = "  #{def_parent_line[/\A\s*/]}"
+              generation[offset, 0] = "\n"
             end
 
-            generation[offset, 0] = "\n" if add_first_separator_line
             ivars_memo.each do |name, ivar_memo|
               attr = ivar_memo.attr_kind
               attr = "#{ivar_memo.visibility} #{attr}" if ivar_memo.visibility

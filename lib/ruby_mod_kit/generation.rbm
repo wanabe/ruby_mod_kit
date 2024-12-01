@@ -83,7 +83,7 @@ module RubyModKit
       @offset_diff.insert(src_offset, diff)
     end
 
-    def [](Range[Integer] => src_range): String
+    def [](Range[Integer | nil] => src_range): String
       @source[src_range] || raise(RubyModKit::Error, "Invalid range")
     end
 

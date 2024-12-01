@@ -75,9 +75,9 @@ module RubyModKit
     # @rbs return: String
     def []=: (Integer src_offset, Integer length, String str) -> String
 
-    # @rbs src_range: Range[Integer]
+    # @rbs src_range: Range[Integer | nil]
     # @rbs return: String
-    def []: (Range[Integer] src_range) -> String
+    def []: (Range[Integer | nil] src_range) -> String
 
     # @rbs (Integer) -> String
     #    | (Node::BaseNode) -> String
