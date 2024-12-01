@@ -10,7 +10,7 @@ module RubyModKit
 
       @prev: Node::BaseNode | nil
 
-      type prism_node = Prism::RequiredParameterNode | Prism::OptionalKeywordParameterNode | Prism::OptionalParameterNode | Prism::RequiredKeywordParameterNode | Prism::RestParameterNode
+      type prism_node = Prism::RequiredParameterNode | Prism::OptionalKeywordParameterNode | Prism::OptionalParameterNode | Prism::RequiredKeywordParameterNode | Prism::RestParameterNode | Prism::BlockParameterNode
 
       attr_reader prism_node: prism_node
 

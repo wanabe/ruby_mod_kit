@@ -55,10 +55,16 @@ module RubyModKit
           name = right_node.slice[/\A\w+/]
           parameter_type = generation[last_parameter_offset...right_offset] || raise(RubyModKit::Error)
           parameter_type = parameter_type.sub(/\s*=>\s*\z/, "")
-          generation[last_parameter_offset, right_offset - last_parameter_offset] = ""
+          qualifier = nil
+          parameter_type = parameter_type.sub(/\A&\(\((.*)\) *: +(.*)\)\z/) do
+            qualifier = "&"
+            "(#{::Regexp.last_match(1)}) -> #{::Regexp.last_match(2)}"
+          end
+          generation[last_parameter_offset, right_offset - last_parameter_offset] = qualifier.to_s
           parameter_memo = generation.memo_pad.parameter_memo(last_parameter_node)
           parameter_memo.name = name.to_sym if name
           parameter_memo.type = parameter_type
+          parameter_memo.qualifier = qualifier if qualifier
         end
 
         # @rbs parse_error: Prism::ParseError

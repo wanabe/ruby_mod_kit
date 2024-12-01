@@ -13,7 +13,7 @@ module RubyModKit
       # @rbs!
       #   type prism_node = Prism::RequiredParameterNode | Prism::OptionalKeywordParameterNode
       #                   | Prism::OptionalParameterNode | Prism::RequiredKeywordParameterNode
-      #                   | Prism::RestParameterNode
+      #                   | Prism::RestParameterNode | Prism::BlockParameterNode
 
       private attr_reader :prism_node #: prism_node
       attr_reader :parent #: Node::BaseNode
@@ -30,7 +30,7 @@ module RubyModKit
         case prism_node
         when Prism::RequiredParameterNode, Prism::OptionalKeywordParameterNode,
              Prism::OptionalParameterNode, Prism::RequiredKeywordParameterNode,
-             Prism::RestParameterNode
+             Prism::RestParameterNode, Prism::BlockParameterNode
           super()
         else
           raise RubyModKit::Error, "unexpected prism node #{prism_node.class}"

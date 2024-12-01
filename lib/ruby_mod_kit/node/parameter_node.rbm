@@ -11,13 +11,13 @@ module RubyModKit
       # @rbs!
       #   type prism_node = Prism::RequiredParameterNode | Prism::OptionalKeywordParameterNode
       #                   | Prism::OptionalParameterNode | Prism::RequiredKeywordParameterNode
-      #                   | Prism::RestParameterNode
+      #                   | Prism::RestParameterNode | Prism::BlockParameterNode
 
       def initialize(@prism_node, @parent:, @prev: nil): void
         case prism_node
         when Prism::RequiredParameterNode, Prism::OptionalKeywordParameterNode,
              Prism::OptionalParameterNode, Prism::RequiredKeywordParameterNode,
-             Prism::RestParameterNode
+             Prism::RestParameterNode, Prism::BlockParameterNode
           super()
         else
           raise RubyModKit::Error, "unexpected prism node #{prism_node.class}"

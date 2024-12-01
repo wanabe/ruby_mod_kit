@@ -160,6 +160,19 @@ describe RubyModKit::Generation do
         RB
       end
 
+      it "allows block parameter" do
+        expect(described_class.resolve(<<~RBM).script).to eq(<<~RB)
+          def foo(&((Foo): void) => block)
+          end
+        RBM
+          # rbs_inline: enabled
+
+          # @rbs &block: (Foo) -> void
+          def foo(&block)
+          end
+        RB
+      end
+
       it "converts correctly with ivar and namespaced type" do
         expect(described_class.resolve(<<~RBM).script).to eq(<<~RB)
           class Foo
