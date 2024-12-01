@@ -16,6 +16,7 @@ module RubyModKit
     getter @errors: Array[Prism::ParseError]
     getter @lines: Array[String]
     getter @offsets: Array[Integer]
+    @source: String
 
     def initialize(@script, @missions: [], (MemoPad | nil) => memo_pad: nil, @generation_num: 0, (Config | nil) => config: nil,
                    @filename: nil, (CorrectorManager | nil) => corrector_manager: nil, (Array[Feature] | nil) => features: nil): void
@@ -29,6 +30,7 @@ module RubyModKit
       @errors = parse_result.errors
       @lines = parse_result.source.lines
       @offsets = parse_result.source.offsets
+      @source = @script.dup
       @root_node = Node::ProgramNode.new(parse_result.value)
       init_missions
     end
@@ -82,8 +84,7 @@ module RubyModKit
     end
 
     def [](Range[Integer] => src_range): String
-      dst_range = Range.new(@offset_diff[src_range.first], @offset_diff[src_range.last], src_range.exclude_end?)
-      @script[dst_range] || raise(RubyModKit::Error, "Invalid range")
+      @source[src_range] || raise(RubyModKit::Error, "Invalid range")
     end
 
     def line(Integer => line_num): String

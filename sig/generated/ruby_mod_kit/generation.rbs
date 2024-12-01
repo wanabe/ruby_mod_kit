@@ -29,6 +29,8 @@ module RubyModKit
 
     @offsets: Array[Integer]
 
+    @source: String
+
     attr_reader script: String
 
     attr_reader memo_pad: MemoPad
