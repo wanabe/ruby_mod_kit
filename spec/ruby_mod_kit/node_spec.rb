@@ -53,11 +53,11 @@ describe RubyModKit::Node do
     let(:script) { "def foo(bar); end" }
     let(:prism_node) { prism_root_node }
 
-    it do
+    it "returns parameter node with inside offset" do
       expect(node.parameter_node_at(8)).to be_a(RubyModKit::Node::ParameterNode)
     end
 
-    it do
+    it "returns nil with outside offset" do
       expect(node.parameter_node_at(0)).to be_nil
     end
   end
