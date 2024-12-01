@@ -1,0 +1,18 @@
+# frozen_string_literal: true
+
+module RubyModKit
+  module Node
+    # Transpiler program node
+    class BeginNode < Node::BaseNode
+      private getter @prism_node: Prism::BeginNode
+      getter @parent: (Node::BaseNode)
+      getter @prev: (Node::BaseNode | nil)
+
+      def initialize(@prism_node, @parent:, @prev: nil): void
+        raise RubyModKit::Error unless prism_node.is_a?(Prism::BeginNode)
+
+        super()
+      end
+    end
+  end
+end

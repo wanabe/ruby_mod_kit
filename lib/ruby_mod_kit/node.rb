@@ -7,6 +7,7 @@ module RubyModKit
 end
 
 require_relative "node/base_node"
+require_relative "node/begin_node"
 require_relative "node/symbol_node"
 require_relative "node/def_parent_node"
 require_relative "node/call_node"

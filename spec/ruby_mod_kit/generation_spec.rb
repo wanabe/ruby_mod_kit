@@ -308,6 +308,26 @@ describe RubyModKit::Generation do
           end
         RB
       end
+
+      it "supports def ... rescue ... end" do
+        expect(described_class.resolve(<<~RBM).script).to eq(<<~RB)
+          def foo(Bar => bar): void
+            foo
+          rescue
+            bar
+          end
+        RBM
+          # rbs_inline: enabled
+
+          # @rbs bar: Bar
+          # @rbs return: void
+          def foo(bar)
+            foo
+          rescue
+            bar
+          end
+        RB
+      end
     end
 
     describe "for instance variable type" do

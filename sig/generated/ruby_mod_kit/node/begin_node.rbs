@@ -1,0 +1,26 @@
+# Generated from lib/ruby_mod_kit/node/begin_node.rb with RBS::Inline
+
+module RubyModKit
+  module Node
+    # Transpiler program node
+    class BeginNode < Node::BaseNode
+      @prism_node: Prism::BeginNode
+
+      @parent: Node::BaseNode
+
+      @prev: Node::BaseNode | nil
+
+      attr_reader prism_node: Prism::BeginNode
+
+      attr_reader parent: Node::BaseNode
+
+      attr_reader prev: Node::BaseNode | nil
+
+      # @rbs prism_node: Prism::BeginNode
+      # @rbs parent: Node::BaseNode
+      # @rbs prev: Node::BaseNode | nil
+      # @rbs return: void
+      def initialize: (Prism::BeginNode prism_node, parent: Node::BaseNode, ?prev: Node::BaseNode | nil) -> void
+    end
+  end
+end

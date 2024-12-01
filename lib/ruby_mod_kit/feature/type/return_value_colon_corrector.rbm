@@ -13,6 +13,7 @@ module RubyModKit
           return if parse_error.location.slice != ":"
 
           def_node = generation.root_node.statements_node_at(parse_error.location.start_offset)&.parent
+          def_node = def_node.parent if def_node.is_a?(Node::BeginNode)
           return unless def_node.is_a?(Node::DefNode)
 
           lparen_loc = def_node.lparen_loc

@@ -14,6 +14,8 @@ module RubyModKit
     class << self
       def wrap(Prism::Node => prism_node, Node::BaseNode => parent:, (Node::BaseNode | nil) => prev: nil): (Node::BaseNode)
         case prism_node
+        when Prism::BeginNode
+          Node::BeginNode.new(prism_node, parent: parent, prev: prev)
         when Prism::CallNode
           Node::CallNode.new(prism_node, parent: parent, prev: prev)
         when Prism::DefNode

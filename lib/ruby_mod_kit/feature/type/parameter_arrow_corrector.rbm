@@ -33,6 +33,7 @@ module RubyModKit
           def_node = generation.root_node.def_node_at(parse_error.location.start_offset) || return
           def_parent_node = def_node.parent
           parameters_node, body_node, = def_node.children
+          body_node = body_node.children[0] if body_node.is_a?(Node::BeginNode)
           return if !def_parent_node || !parameters_node || !body_node
 
           last_parameter_node = parameters_node.children.max_by(&:offset) || return
