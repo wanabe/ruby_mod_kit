@@ -51,8 +51,9 @@ module RubyModKit
       def parameter_node_at: (Integer offset) -> (Node::ParameterNode | nil)
 
       # @rbs offset: Integer
+      # @rbs allowed: Array[Class] | nil
       # @rbs return: Node::DefParentNode | nil
-      def def_parent_node_at: (Integer offset) -> (Node::DefParentNode | nil)
+      def def_parent_node_at: (Integer offset, ?allowed: Array[Class] | nil) -> (Node::DefParentNode | nil)
 
       # @rbs offset: Integer
       # @rbs return: bool

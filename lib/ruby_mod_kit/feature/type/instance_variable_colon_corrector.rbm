@@ -16,7 +16,10 @@ module RubyModKit
         def correct(Prism::ParseError => parse_error, Generation => generation): void
           return if parse_error.location.slice != ":"
 
-          def_parent_node = generation.root_node.statements_node_at(parse_error.location.start_offset)&.parent
+          def_parent_node = generation.root_node.def_parent_node_at(
+            parse_error.location.start_offset,
+            allowed: [Node::CallNode, Node::UntypedNode, Node::StatementsNode],
+          )
           return unless def_parent_node.is_a?(Node::DefParentNode)
 
           line = generation.line(parse_error)

@@ -93,10 +93,14 @@ module RubyModKit
       end
 
       # @rbs offset: Integer
+      # @rbs allowed: Array[Class] | nil
       # @rbs return: Node::DefParentNode | nil
-      def def_parent_node_at(offset)
+      def def_parent_node_at(offset, allowed: nil)
         node = node_at(offset) || return
-        [node, *node.ancestors].each { return _1 if _1.is_a?(Node::DefParentNode) }
+        [node, *node.ancestors].each do |ancestor_node|
+          return ancestor_node if ancestor_node.is_a?(Node::DefParentNode)
+          return nil if allowed && !allowed.include?(ancestor_node.class)
+        end
         nil
       end
 
