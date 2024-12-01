@@ -56,7 +56,7 @@ module RubyModKit
         message << "\n" unless message.empty?
         message << "#{generation.name}:#{parse_error.location.start_line}:#{parse_error.message} "
         message << "(#{parse_error.type})"
-        line = generation.lines[parse_error.location.start_line - 1]
+        line = generation.line(parse_error)
         if line
           message << "\n#{line.chomp}\n"
           message << "#{" " * parse_error.location.start_column}^#{"~" * [parse_error.location.length - 1, 0].max}"

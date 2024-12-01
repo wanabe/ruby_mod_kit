@@ -20,12 +20,12 @@ module RubyModKit
               parameter_node = generation.root_node.parameter_node_at(offset)
               raise RubyModKit::Error, "ParameterNode not found" unless parameter_node
 
+              line_offset = generation.line_offset(def_node) || raise(RubyModKit::Error)
               type = parameter_memo.type
-              src_offset = generation.offsets[def_node.location.start_line - 1]
-              indent = def_node.offset - src_offset
+              indent = generation.line_indent(def_node)
               qualified_name = "#{parameter_memo.qualifier}#{parameter_node.name}"
               generation.memo_pad.flags[:rbs_annotated] = true
-              generation[src_offset, 0] = "#{" " * indent}# @rbs #{qualified_name}: #{type}\n"
+              generation[line_offset, 0] = "#{indent}# @rbs #{qualified_name}: #{type}\n"
             end
             true
           end

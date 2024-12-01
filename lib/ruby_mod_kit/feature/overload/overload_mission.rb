@@ -37,9 +37,8 @@ module RubyModKit
             raise RubyModKit::Error unless first_def_node.is_a?(Node::DefNode)
             raise RubyModKit::Error unless name.is_a?(Symbol)
 
-            start_line = first_def_node.location.start_line - 1
-            indent = generation.lines[start_line][/\A */] || ""
-            src_offset = generation.offsets[start_line]
+            indent = generation.line_indent(first_def_node)
+            src_offset = generation.line_offset(first_def_node) || raise(RubyModKit::Error)
             script = +""
 
             overload_memo = generation.memo_pad.overload_memo(first_method_memo.offset, name)

@@ -153,26 +153,68 @@ module RubyModKit
     end
 
     # @rbs (Integer) -> (Integer | nil)
+    #    | (Node::BaseNode) -> (Integer | nil)
+    #    | (Node::BaseNode, Integer) -> (Integer | nil)
     #    | (Prism::ParseError) -> (Integer | nil)
-    def src_offset(*args)
+    def line_offset(*args)
       case args
       in [Integer]
-        src_offset__overload0(*args)
+        line_offset__overload0(*args)
+      in [Node::BaseNode]
+        line_offset__overload1(*args)
+      in [Node::BaseNode, Integer]
+        line_offset__overload2(*args)
       in [Prism::ParseError]
-        src_offset__overload1(*args)
+        line_offset__overload3(*args)
       end
     end
 
     # @rbs line_num: Integer
     # @rbs return: Integer | nil
-    def src_offset__overload0(line_num)
+    def line_offset__overload0(line_num)
       @offsets[line_num]
+    end
+
+    # @rbs node: Node::BaseNode
+    # @rbs return: Integer | nil
+    def line_offset__overload1(node)
+      line_offset(node, 0)
+    end
+
+    # @rbs node: Node::BaseNode
+    # @rbs line_offset: Integer
+    # @rbs return: Integer | nil
+    def line_offset__overload2(node, line_offset)
+      line_offset(node.location.start_line - 1 + line_offset)
     end
 
     # @rbs parse_error: Prism::ParseError
     # @rbs return: Integer | nil
-    def src_offset__overload1(parse_error)
-      src_offset(parse_error.location.start_line - 1)
+    def line_offset__overload3(parse_error)
+      line_offset(parse_error.location.start_line - 1)
+    end
+
+    # @rbs (Integer) -> String
+    #    | (Node::BaseNode) -> String
+    def line_indent(*args)
+      case args
+      in [Integer]
+        line_indent__overload0(*args)
+      in [Node::BaseNode]
+        line_indent__overload1(*args)
+      end
+    end
+
+    # @rbs line_num: Integer
+    # @rbs return: String
+    def line_indent__overload0(line_num)
+      line(line_num)[/\A[ \t]*/] || ""
+    end
+
+    # @rbs node: Node::BaseNode
+    # @rbs return: String
+    def line_indent__overload1(node)
+      line_indent(node.location.start_line - 1)
     end
 
     # @rbs return: void

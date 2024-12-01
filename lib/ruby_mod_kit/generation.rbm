@@ -99,12 +99,28 @@ module RubyModKit
       line(parse_error.location.start_line - 1)
     end
 
-    def src_offset(Integer => line_num): (Integer | nil)
+    def line_offset(Integer => line_num): (Integer | nil)
       @offsets[line_num]
     end
 
-    def src_offset(Prism::ParseError => parse_error): (Integer | nil)
-      src_offset(parse_error.location.start_line - 1)
+    def line_offset(Node::BaseNode => node): (Integer | nil)
+      line_offset(node, 0)
+    end
+
+    def line_offset(Node::BaseNode => node, Integer => line_offset): (Integer | nil)
+      line_offset(node.location.start_line - 1 + line_offset)
+    end
+
+    def line_offset(Prism::ParseError => parse_error): (Integer | nil)
+      line_offset(parse_error.location.start_line - 1)
+    end
+
+    def line_indent(Integer => line_num): String
+      line(line_num)[/\A[ \t]*/] || ""
+    end
+
+    def line_indent(Node::BaseNode => node): String
+      line_indent(node.location.start_line - 1)
     end
 
     def perform_corrector: void

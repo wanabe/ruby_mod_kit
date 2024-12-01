@@ -11,8 +11,7 @@ module RubyModKit
               overload_memo.correct_offset(generation.root_node)
               offset = overload_memo.offset
               def_node = generation.root_node.def_node_at(offset) || raise(RubyModKit::Error)
-              start_line = def_node.location.start_line - 1
-              indent = generation.lines[start_line][/\A */] || ""
+              indent = generation.line_indent(def_node)
               offset -= indent.length
 
               annotation = +""

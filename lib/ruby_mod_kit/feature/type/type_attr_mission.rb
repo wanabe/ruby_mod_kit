@@ -41,7 +41,7 @@ module RubyModKit
             end
             line = generation.line(attr_adding_line) || next
             add_separator_line = line != "\n" && line !~ /\A\s*end$/
-            offset = generation.src_offset(attr_adding_line) || next
+            offset = generation.line_offset(attr_adding_line) || next
 
             body_node = def_parent_node.body_node
             if body_node

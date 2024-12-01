@@ -16,7 +16,7 @@ module RubyModKit
               raise RubyModKit::Error, "DefNode not found" if !def_node || !def_node.is_a?(Node::DefNode)
               next if method_memo.untyped?
 
-              src_offset = generation.offsets[def_node.location.start_line - 1]
+              src_offset = generation.line_offset(def_node) || raise(RubyModKit::Error)
               indent = offset - src_offset
               generation.memo_pad.flags[:rbs_annotated] = true
               generation[src_offset, 0] = "#{" " * indent}# @rbs return: #{method_memo.type}\n"

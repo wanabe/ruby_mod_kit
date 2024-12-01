@@ -11,7 +11,7 @@ module RubyModKit
               def_parent_memo.ivars_memo.each do |name, ivar_memo|
                 offset = ivar_memo.offset || next
                 def_parent_node = generation.root_node.def_parent_node_at(offset) || next
-                body_line_offset = generation.offsets[def_parent_node.location.start_line]
+                body_line_offset = generation.line_offset(def_parent_node, 1) || next
                 generation.memo_pad.flags[:rbs_annotated] = true
                 generation[body_line_offset, 0] = "#{ivar_memo.indent}# @rbs @#{name}: #{ivar_memo.type}\n"
               end

@@ -29,7 +29,7 @@ module RubyModKit
           return unless def_parent_node.is_a?(Node::DefParentNode)
 
           line = generation.line(parse_error)
-          line_offset = generation.src_offset(parse_error) || return
+          line_offset = generation.line_offset(parse_error) || return
           return if line !~ REGEXP
 
           length = ::Regexp.last_match(0)&.length
