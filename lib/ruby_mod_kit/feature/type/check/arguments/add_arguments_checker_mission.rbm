@@ -15,7 +15,7 @@ module RubyModKit
               raise RubyModKit::Error, "DefNode not found" unless def_node
               next if method_memo.parameters.empty?
 
-              def_line = generation.line_by_offset(def_node.location.start_offset - def_node.location.start_column)
+              def_line = generation.line(def_node.location.start_line - 1)
               def_indent = def_line[/\A\s*/] || ""
 
               location = def_node.body_location || def_node.end_keyword_loc

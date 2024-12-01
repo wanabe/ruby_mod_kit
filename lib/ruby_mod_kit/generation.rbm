@@ -86,13 +86,8 @@ module RubyModKit
       @script[dst_range] || raise(RubyModKit::Error, "Invalid range")
     end
 
-    def line_by_offset(Integer => offset): String
-      offset = @offset_diff[offset]
-      (@script.match(/.*\n?/, offset) && Regexp.last_match(0)) || raise(RubyModKit::Error)
-    end
-
     def line(Integer => line_num): String
-      line_by_offset(@offsets[line_num])
+      @lines[line_num] || raise(RubyModKit::Error)
     end
 
     def line(Node::BaseNode => node): String
