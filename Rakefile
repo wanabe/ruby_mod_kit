@@ -72,8 +72,17 @@ file gem_file => :tag do
 end
 
 desc "Push gem file to rubygems.org"
-task push: gem_file do
+task push_gem: gem_file do
   system("gem push #{gem_file}") || raise
 end
+
+desc "Push git branches and tags"
+task :push_git do
+  puts "pushing: #{`git branch --show`.chomp}"
+  raise "Unexpected diff detected" unless system("git diff --exit-code")
+
+  system("git push --follow-tags")
+end
+task push: %i[push_gem push_git]
 
 task default: %i[lib spec clean_rbs rbs_inline rbs_typed rubocop:autocorrect_all steep:check]
