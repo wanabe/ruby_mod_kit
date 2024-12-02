@@ -1,0 +1,26 @@
+# frozen_string_literal: true
+
+module RubyModKit
+  class Feature
+    class Type
+      # namespace for type with rbs-line feature
+      class Yard < Feature
+        def create_missions: (Array[Mission])
+          [
+            TypeParameterMission.new,
+            TypeReturnMission.new,
+          ]
+        end
+
+        class << self
+          def rbs2yard(String => type): String
+            type.gsub(/\s*\|\s*/, ", ").tr("[]", "<>").gsub(/(?<=^|\W)bool(?=$|\W)/, "Boolean")
+          end
+        end
+      end
+    end
+  end
+end
+
+require_relative "yard/type_parameter_mission"
+require_relative "yard/type_return_mission"

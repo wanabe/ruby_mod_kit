@@ -19,6 +19,10 @@ group :lint do
   gem "steep"
 end
 
+group :yard do
+  gem "yard"
+end
+
 group :test do
   gem "rspec", "~> 3.13"
   gem "simplecov"

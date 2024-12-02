@@ -1,0 +1,16 @@
+# Generated from lib/ruby_mod_kit/feature/type/yard/type_return_mission.rb with RBS::Inline
+
+module RubyModKit
+  class Feature
+    class Type
+      class Yard
+        # The mission for return value type
+        class TypeReturnMission < Mission
+          # @rbs generation: Generation
+          # @rbs return: bool
+          def perform: (Generation generation) -> bool
+        end
+      end
+    end
+  end
+end

@@ -498,5 +498,27 @@ describe RubyModKit::Generation do
         RB
       end
     end
+
+    context "with type/yard feature" do
+      let(:config) { RubyModKit::Config.new(features: %w[type type/yard]) }
+
+      it "adds yard params and returns" do
+        expect(described_class.resolve(<<~RBM, config: config).script).to eq(<<~RB)
+          class Foo
+            def foo(Bar => bar): bool
+              p bar
+            end
+          end
+        RBM
+          class Foo
+            # @param bar [Bar]
+            # @return [Boolean]
+            def foo(bar)
+              p bar
+            end
+          end
+        RB
+      end
+    end
   end
 end
