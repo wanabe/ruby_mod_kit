@@ -7,6 +7,7 @@ module RubyModKit
       private getter @prism_node: Prism::DefNode
       getter @parent: (Node::BaseNode)
       getter @prev: (Node::BaseNode | nil)
+      @body_node: (Node::StatementsNode | Node::BeginNode | nil)
 
       def initialize(@prism_node, @parent:, @prev: nil): void
         raise RubyModKit::Error unless prism_node.is_a?(Prism::DefNode)
@@ -36,6 +37,23 @@ module RubyModKit
 
       def end_keyword_loc: (Prism::Location | nil)
         @prism_node.end_keyword_loc
+      end
+
+      def wrap(Prism::Node => prism_child_node, (Node::BaseNode | nil) => prev: nil): (Node::BaseNode)
+        child_node = super
+        if prism_child_node == @prism_node.body
+          case child_node
+          when Node::StatementsNode, Node::BeginNode
+            @body_node = child_node
+          end
+        end
+        child_node
+      end
+
+      def body_node: (Node::StatementsNode | Node::BeginNode | nil)
+        # body_node will be set in #children
+        children
+        @body_node
       end
     end
   end

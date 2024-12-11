@@ -115,43 +115,6 @@ describe RubyModKit::Generation do
         RB
       end
 
-      it "treats same name method definitions as overloading" do
-        expect(described_class.resolve(<<~RBM).script).to eq(<<~RB)
-          def foo(Bar => bar): (Foo | Bar)
-            p :bar, bar
-          end
-
-          def foo(Buz => buz): void
-            p :buz, buz
-          end
-        RBM
-          # rbs_inline: enabled
-
-          # @rbs (Bar) -> (Foo | Bar)
-          #    | (Buz) -> void
-          def foo(*args)
-            case args
-            in [Bar]
-              foo__overload0(*args)
-            in [Buz]
-              foo__overload1(*args)
-            end
-          end
-
-          # @rbs bar: Bar
-          # @rbs return: Foo | Bar
-          def foo__overload0(bar)
-            p :bar, bar
-          end
-
-          # @rbs buz: Buz
-          # @rbs return: void
-          def foo__overload1(buz)
-            p :buz, buz
-          end
-        RB
-      end
-
       it "receives rest parameter" do
         expect(described_class.resolve(<<~RBM).script).to eq(<<~RB)
           def foo(*Bar::Buz => bar)
@@ -174,99 +137,6 @@ describe RubyModKit::Generation do
 
           # @rbs &block: (Foo) -> void
           def foo(&block)
-          end
-        RB
-      end
-
-      it "converts correctly with ivar and namespaced type" do
-        expect(described_class.resolve(<<~RBM).script).to eq(<<~RB)
-          class Foo
-            @bar: Bar
-
-            def buz(Foo => foo): Buz
-            end
-
-            def buz(Foo::Bar => bar): Buz
-            end
-          end
-        RBM
-          # rbs_inline: enabled
-
-          class Foo
-            # @rbs @bar: Bar
-
-            # @rbs (Foo) -> Buz
-            #    | (Foo::Bar) -> Buz
-            def buz(*args)
-              case args
-              in [Foo]
-                buz__overload0(*args)
-              in [Foo::Bar]
-                buz__overload1(*args)
-              end
-            end
-
-            # @rbs foo: Foo
-            # @rbs return: Buz
-            def buz__overload0(foo)
-            end
-
-            # @rbs bar: Foo::Bar
-            # @rbs return: Buz
-            def buz__overload1(bar)
-            end
-          end
-        RB
-      end
-
-      it "can separate with modules" do
-        expect(described_class.resolve(<<~RBM).script).to eq(<<~RB)
-          class Foo
-            module Bar
-              def buz: Buz
-              end
-
-              def buz(Integer => n): Buz
-              end
-            end
-
-            module Buz
-              def buz(String => s): Buz
-              end
-            end
-          end
-        RBM
-          # rbs_inline: enabled
-
-          class Foo
-            module Bar
-              # @rbs () -> Buz
-              #    | (Integer) -> Buz
-              def buz(*args)
-                case args
-                in []
-                  buz__overload0(*args)
-                in [Integer]
-                  buz__overload1(*args)
-                end
-              end
-
-              # @rbs return: Buz
-              def buz__overload0
-              end
-
-              # @rbs n: Integer
-              # @rbs return: Buz
-              def buz__overload1(n)
-              end
-            end
-
-            module Buz
-              # @rbs s: String
-              # @rbs return: Buz
-              def buz(s)
-              end
-            end
           end
         RB
       end
@@ -330,6 +200,169 @@ describe RubyModKit::Generation do
             foo
           rescue
             bar
+          end
+        RB
+      end
+    end
+
+    describe "overload" do
+      it "treats same name method definitions as overloading" do
+        expect(described_class.resolve(<<~RBM).script).to eq(<<~RB)
+          def foo(Bar => bar): (Foo | Bar)
+            p :bar, bar
+          end
+
+          def foo(Buz => buz): void
+            p :buz, buz
+          end
+        RBM
+          # rbs_inline: enabled
+
+          # @rbs (Bar) -> (Foo | Bar)
+          #    | (Buz) -> void
+          def foo(*args)
+            case args
+            in [Bar => bar]
+              p :bar, bar
+            in [Buz => buz]
+              p :buz, buz
+            end
+          end
+        RB
+      end
+
+      it "adds line separator between overload method and other" do
+        expect(described_class.resolve(<<~RBM).script).to eq(<<~RB)
+          def foo(Bar => bar): (Foo | Bar)
+          end
+
+          def foo(Buz => buz): void
+          end
+
+          def bar
+          end
+        RBM
+          # rbs_inline: enabled
+
+          # @rbs (Bar) -> (Foo | Bar)
+          #    | (Buz) -> void
+          def foo(*args)
+            case args
+            in [Bar => bar]
+            in [Buz => buz]
+            end
+          end
+
+          def bar
+          end
+        RB
+      end
+
+      it "supports rescue/ensure" do
+        expect(described_class.resolve(<<~RBM).script).to eq(<<~RB)
+          def foo(Bar => bar): (Foo | Bar)
+            1
+          rescue FooError
+            2
+          ensure
+            3
+          end
+
+          def foo(Buz => buz): void
+            4
+          rescue IgnoreError
+          end
+        RBM
+          # rbs_inline: enabled
+
+          # @rbs (Bar) -> (Foo | Bar)
+          #    | (Buz) -> void
+          def foo(*args)
+            case args
+            in [Bar => bar]
+              begin
+                1
+              rescue FooError
+                2
+              ensure
+                3
+              end
+            in [Buz => buz]
+              begin
+                4
+              rescue IgnoreError
+              end
+            end
+          end
+        RB
+      end
+
+      it "converts correctly with ivar and namespaced type" do
+        expect(described_class.resolve(<<~RBM).script).to eq(<<~RB)
+          class Foo
+            @bar: Bar
+
+            def buz(Foo => foo): Buz
+            end
+
+            def buz(Foo::Bar => bar): Buz
+            end
+          end
+        RBM
+          # rbs_inline: enabled
+
+          class Foo
+            # @rbs @bar: Bar
+
+            # @rbs (Foo) -> Buz
+            #    | (Foo::Bar) -> Buz
+            def buz(*args)
+              case args
+              in [Foo => foo]
+              in [Foo::Bar => bar]
+              end
+            end
+          end
+        RB
+      end
+
+      it "can separate with modules" do
+        expect(described_class.resolve(<<~RBM).script).to eq(<<~RB)
+          class Foo
+            module Bar
+              def buz: Buz
+              end
+
+              def buz(Integer => n): Buz
+              end
+            end
+
+            module Buz
+              def buz(String => s): Buz
+              end
+            end
+          end
+        RBM
+          # rbs_inline: enabled
+
+          class Foo
+            module Bar
+              # @rbs () -> Buz
+              #    | (Integer) -> Buz
+              def buz(*args)
+                case args
+                in []
+                in [Integer => n]
+                end
+              end
+            end
+
+            module Buz
+              # @rbs s: String
+              # @rbs return: Buz
+              def buz(s)
+              end
+            end
           end
         RB
       end

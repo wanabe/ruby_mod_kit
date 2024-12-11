@@ -9,6 +9,7 @@ module RubyModKit
       # @rbs @prism_node: Prism::DefNode
       # @rbs @parent: Node::BaseNode
       # @rbs @prev: Node::BaseNode | nil
+      # @rbs @body_node: Node::StatementsNode | Node::BeginNode | nil
 
       private attr_reader :prism_node #: Prism::DefNode
       attr_reader :parent #: Node::BaseNode
@@ -55,6 +56,27 @@ module RubyModKit
       # @rbs return: Prism::Location | nil
       def end_keyword_loc
         @prism_node.end_keyword_loc
+      end
+
+      # @rbs prism_child_node: Prism::Node
+      # @rbs prev: Node::BaseNode | nil
+      # @rbs return: Node::BaseNode
+      def wrap(prism_child_node, prev: nil)
+        child_node = super
+        if prism_child_node == @prism_node.body
+          case child_node
+          when Node::StatementsNode, Node::BeginNode
+            @body_node = child_node
+          end
+        end
+        child_node
+      end
+
+      # @rbs return: Node::StatementsNode | Node::BeginNode | nil
+      def body_node
+        # body_node will be set in #children
+        children
+        @body_node
       end
     end
   end

@@ -62,6 +62,9 @@ module RubyModKit
       # @rbs return: Integer
       def offset: () -> Integer
 
+      # @rbs return: Integer
+      def end_offset: () -> Integer
+
       # @rbs return: String
       def slice: () -> String
 

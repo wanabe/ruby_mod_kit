@@ -125,33 +125,17 @@ module RubyModKit
     #    | (Prism::ParseError) -> String
     def line(*args)
       case args
-      in [Integer]
-        line__overload0(*args)
-      in [Node::BaseNode]
-        line__overload1(*args)
-      in [Prism::ParseError]
-        line__overload2(*args)
+      in [Integer => line_num]
+        @lines[line_num] || raise(RubyModKit::Error)
+      in [Node::BaseNode => node]
+        line(node.location.start_line - 1)
+      in [Prism::ParseError => parse_error]
+        begin
+          line(parse_error.location.start_line - 1)
+        rescue RubyModKit::Error
+          ""
+        end
       end
-    end
-
-    # @rbs line_num: Integer
-    # @rbs return: String
-    def line__overload0(line_num)
-      @lines[line_num] || raise(RubyModKit::Error)
-    end
-
-    # @rbs node: Node::BaseNode
-    # @rbs return: String
-    def line__overload1(node)
-      line(node.location.start_line - 1)
-    end
-
-    # @rbs parse_error: Prism::ParseError
-    # @rbs return: String
-    def line__overload2(parse_error)
-      line(parse_error.location.start_line - 1)
-    rescue RubyModKit::Error
-      ""
     end
 
     # @rbs (Integer) -> (Integer | nil)
@@ -160,63 +144,32 @@ module RubyModKit
     #    | (Prism::ParseError) -> (Integer | nil)
     def line_offset(*args)
       case args
-      in [Integer]
-        line_offset__overload0(*args)
-      in [Node::BaseNode]
-        line_offset__overload1(*args)
-      in [Node::BaseNode, Integer]
-        line_offset__overload2(*args)
-      in [Prism::ParseError]
-        line_offset__overload3(*args)
+      in [Integer => line_num]
+        @offsets[line_num]
+      in [Node::BaseNode => node]
+        line_offset(node, 0)
+      in [Node::BaseNode => node, Integer => line_offset]
+        line_offset(node.location.start_line - 1 + line_offset)
+      in [Prism::ParseError => parse_error]
+        line_offset(parse_error.location.start_line - 1)
       end
     end
 
-    # @rbs line_num: Integer
-    # @rbs return: Integer | nil
-    def line_offset__overload0(line_num)
-      @offsets[line_num]
-    end
-
     # @rbs node: Node::BaseNode
     # @rbs return: Integer | nil
-    def line_offset__overload1(node)
-      line_offset(node, 0)
-    end
-
-    # @rbs node: Node::BaseNode
-    # @rbs line_offset: Integer
-    # @rbs return: Integer | nil
-    def line_offset__overload2(node, line_offset)
-      line_offset(node.location.start_line - 1 + line_offset)
-    end
-
-    # @rbs parse_error: Prism::ParseError
-    # @rbs return: Integer | nil
-    def line_offset__overload3(parse_error)
-      line_offset(parse_error.location.start_line - 1)
+    def end_line_offset(node)
+      line_offset(node.location.end_line - 1)
     end
 
     # @rbs (Integer) -> String
     #    | (Node::BaseNode) -> String
     def line_indent(*args)
       case args
-      in [Integer]
-        line_indent__overload0(*args)
-      in [Node::BaseNode]
-        line_indent__overload1(*args)
+      in [Integer => line_num]
+        line(line_num)[/\A[ \t]*/] || ""
+      in [Node::BaseNode => node]
+        line_indent(node.location.start_line - 1)
       end
-    end
-
-    # @rbs line_num: Integer
-    # @rbs return: String
-    def line_indent__overload0(line_num)
-      line(line_num)[/\A[ \t]*/] || ""
-    end
-
-    # @rbs node: Node::BaseNode
-    # @rbs return: String
-    def line_indent__overload1(node)
-      line_indent(node.location.start_line - 1)
     end
 
     # @rbs return: void

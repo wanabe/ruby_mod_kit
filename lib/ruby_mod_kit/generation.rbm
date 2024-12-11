@@ -117,6 +117,10 @@ module RubyModKit
       line_offset(parse_error.location.start_line - 1)
     end
 
+    def end_line_offset(Node::BaseNode => node): (Integer | nil)
+      line_offset(node.location.end_line - 1)
+    end
+
     def line_indent(Integer => line_num): String
       line(line_num)[/\A[ \t]*/] || ""
     end

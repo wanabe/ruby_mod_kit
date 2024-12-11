@@ -69,6 +69,20 @@ module RubyModKit
       method_memo(def_node).add_parameter(memo)
     end
 
+    # @rbs (Memo::ParameterMemo) -> void
+    #    | (Memo::MethodMemo) -> void
+    def delete(*args)
+      case args
+      in [Memo::ParameterMemo => parameter_memo]
+        @parameters_memo.delete(parameter_memo.offset)
+      in [Memo::MethodMemo => method_memo]
+        method_memo.parameters.each do |parameter_memo| # rubocop:disable Lint/ShadowingOuterLocalVariable
+          delete(parameter_memo)
+        end
+        @methods_memo.delete(method_memo.offset)
+      end
+    end
+
     # @rbs &block: (Memo::ParameterMemo) -> void
     # @rbs return: void
     def each_parameter_memo(&block)

@@ -89,6 +89,10 @@ module RubyModKit
         location.start_offset
       end
 
+      def end_offset: Integer
+        location.end_offset
+      end
+
       def slice: String
         location.slice
       end

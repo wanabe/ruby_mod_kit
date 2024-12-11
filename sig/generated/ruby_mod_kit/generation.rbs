@@ -86,18 +86,6 @@ module RubyModKit
             | (Node::BaseNode) -> String
             | (Prism::ParseError) -> String
 
-    # @rbs line_num: Integer
-    # @rbs return: String
-    def line__overload0: (Integer line_num) -> String
-
-    # @rbs node: Node::BaseNode
-    # @rbs return: String
-    def line__overload1: (Node::BaseNode node) -> String
-
-    # @rbs parse_error: Prism::ParseError
-    # @rbs return: String
-    def line__overload2: (Prism::ParseError parse_error) -> String
-
     # @rbs (Integer) -> (Integer | nil)
     #    | (Node::BaseNode) -> (Integer | nil)
     #    | (Node::BaseNode, Integer) -> (Integer | nil)
@@ -107,35 +95,14 @@ module RubyModKit
                    | (Node::BaseNode, Integer) -> (Integer | nil)
                    | (Prism::ParseError) -> (Integer | nil)
 
-    # @rbs line_num: Integer
-    # @rbs return: Integer | nil
-    def line_offset__overload0: (Integer line_num) -> (Integer | nil)
-
     # @rbs node: Node::BaseNode
     # @rbs return: Integer | nil
-    def line_offset__overload1: (Node::BaseNode node) -> (Integer | nil)
-
-    # @rbs node: Node::BaseNode
-    # @rbs line_offset: Integer
-    # @rbs return: Integer | nil
-    def line_offset__overload2: (Node::BaseNode node, Integer line_offset) -> (Integer | nil)
-
-    # @rbs parse_error: Prism::ParseError
-    # @rbs return: Integer | nil
-    def line_offset__overload3: (Prism::ParseError parse_error) -> (Integer | nil)
+    def end_line_offset: (Node::BaseNode node) -> (Integer | nil)
 
     # @rbs (Integer) -> String
     #    | (Node::BaseNode) -> String
     def line_indent: (Integer) -> String
                    | (Node::BaseNode) -> String
-
-    # @rbs line_num: Integer
-    # @rbs return: String
-    def line_indent__overload0: (Integer line_num) -> String
-
-    # @rbs node: Node::BaseNode
-    # @rbs return: String
-    def line_indent__overload1: (Node::BaseNode node) -> String
 
     # @rbs return: void
     def perform_corrector: () -> void

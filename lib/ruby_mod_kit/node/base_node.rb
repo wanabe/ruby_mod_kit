@@ -115,6 +115,11 @@ module RubyModKit
         location.start_offset
       end
 
+      # @rbs return: Integer
+      def end_offset
+        location.end_offset
+      end
+
       # @rbs return: String
       def slice
         location.slice

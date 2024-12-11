@@ -50,23 +50,11 @@ class Pos
   #    | (Integer) -> Pos
   def *(*args)
     case args
-    in [Pos]
-      _mul__overload0(*args)
-    in [Integer]
-      _mul__overload1(*args)
+    in [Pos => other]
+      (@x * other.x) + (@y * other.y) + (@z * other.z)
+    in [Integer => n]
+      Pos.new(@x * n, @y * n, @z * n)
     end
-  end
-
-  # @rbs other: Pos
-  # @rbs return: Integer
-  def _mul__overload0(other)
-    (@x * other.x) + (@y * other.y) + (@z * other.z)
-  end
-
-  # @rbs n: Integer
-  # @rbs return: Pos
-  def _mul__overload1(n)
-    Pos.new(@x * n, @y * n, @z * n)
   end
 
   # @rbs return: String
