@@ -10,11 +10,13 @@ module RubyModKit
         # @rbs @last_parameter_offsets: Set[Integer]
 
         # @rbs return: Array[Symbol]
+        # @return [Array<Symbol>]
         def correctable_error_types
           %i[unexpected_token_ignore def_params_term_paren argument_formal_constant]
         end
 
         # @rbs return: void
+        # @return [void]
         def setup
           super
           @last_parameter_offsets = Set.new
@@ -23,6 +25,9 @@ module RubyModKit
         # @rbs parse_error: Prism::ParseError
         # @rbs generation: Generation
         # @rbs return: void
+        # @param parse_error [Prism::ParseError]
+        # @param generation [Generation]
+        # @return [void]
         def correct(parse_error, generation)
           case parse_error.type
           when :unexpected_token_ignore
@@ -39,6 +44,9 @@ module RubyModKit
         # @rbs parse_error: Prism::ParseError
         # @rbs generation: Generation
         # @rbs return: void
+        # @param parse_error [Prism::ParseError]
+        # @param generation [Generation]
+        # @return [void]
         def remove_arrow_before_parameter(parse_error, generation)
           def_node = generation.root_node.def_node_at(parse_error.location.start_offset) || return
           def_parent_node = def_node.parent
@@ -71,6 +79,9 @@ module RubyModKit
         # @rbs parse_error: Prism::ParseError
         # @rbs generation: Generation
         # @rbs return: void
+        # @param parse_error [Prism::ParseError]
+        # @param generation [Generation]
+        # @return [void]
         def remove_arrow_after_quailifier(parse_error, generation)
           column = parse_error.location.start_column - 1
           return if column < 0
@@ -93,6 +104,9 @@ module RubyModKit
         # @rbs parse_error: Prism::ParseError
         # @rbs generation: Generation
         # @rbs return: void
+        # @param parse_error [Prism::ParseError]
+        # @param generation [Generation]
+        # @return [void]
         def wrap_parameter_type_for_next_parse(parse_error, generation)
           line = generation.line(parse_error)
           line = line[parse_error.location.start_column..] || return

@@ -23,6 +23,8 @@ module RubyModKit
 
       # @rbs name: Symbol
       # @rbs return: void
+      # @param name [Symbol]
+      # @return [void]
       def initialize(name)
         @name = name
         @indent = ""
@@ -30,12 +32,16 @@ module RubyModKit
 
       # @rbs type: String
       # @rbs return: void
+      # @param type [String]
+      # @return [void]
       def type=(type)
         @type = RubyModKit.unify_type(type)
       end
 
       # @rbs kind: Symbol | String
       # @rbs return: void
+      # @param kind [Symbol, String]
+      # @return [void]
       def attr_kind=(kind)
         case kind.to_sym
         when :attr_reader, :reader, :getter
@@ -49,6 +55,8 @@ module RubyModKit
 
       # @rbs offset_diff: OffsetDiff
       # @rbs return: void
+      # @param offset_diff [OffsetDiff]
+      # @return [void]
       def succ(offset_diff)
         offset = @offset
         return unless offset

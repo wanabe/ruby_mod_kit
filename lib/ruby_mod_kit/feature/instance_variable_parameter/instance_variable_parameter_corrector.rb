@@ -8,6 +8,7 @@ module RubyModKit
       # the class to correct `def foo(@bar) ...` -> `def foo(bar) ...`
       class InstanceVariableParameterCorrector < Corrector
         # @rbs return: Array[Symbol]
+        # @return [Array<Symbol>]
         def correctable_error_types
           %i[argument_formal_ivar]
         end
@@ -15,6 +16,9 @@ module RubyModKit
         # @rbs parse_error: Prism::ParseError
         # @rbs generation: Generation
         # @rbs return: void
+        # @param parse_error [Prism::ParseError]
+        # @param generation [Generation]
+        # @return [void]
         def correct(parse_error, generation)
           src_offset = parse_error.location.start_offset
 

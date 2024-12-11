@@ -6,6 +6,7 @@ require "ruby_mod_kit"
 
 # Define RubyMotKit.eval
 module RubyModKit
+  # the namespace for language core extensions
   module CoreExt
     # the extension for eval
     module Eval
@@ -17,6 +18,12 @@ module RubyModKit
       # @rbs lineno: Integer
       # @rbs transpile: bool
       # @rbs return: Object
+      # @param expr [String]
+      # @param binding [Binding]
+      # @param fname [String]
+      # @param lineno [Integer]
+      # @param transpile [Boolean]
+      # @return [Object]
       def eval(expr, binding = TOPLEVEL_BINDING, fname = "(eval)", lineno = 1, transpile: true)
         expr = RubyModKit.transpile(expr, filename: fname) if transpile
 

@@ -5,7 +5,10 @@ require "prism"
 
 # The root namespace for ruby_mod_kit.
 module RubyModKit
+  # An internal error because of RubyModKit implementation
   class Error < StandardError; end
+
+  # A SyntaxError of rbm script
   class SyntaxError < ::SyntaxError; end
 
   class << self

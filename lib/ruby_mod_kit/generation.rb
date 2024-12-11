@@ -36,6 +36,15 @@ module RubyModKit
     # @rbs corrector_manager: CorrectorManager | nil
     # @rbs features: Array[Feature] | nil
     # @rbs return: void
+    # @param script [String]
+    # @param missions [Array<Mission>]
+    # @param memo_pad [MemoPad, nil]
+    # @param generation_num [Integer]
+    # @param config [Config, nil]
+    # @param filename [String, nil]
+    # @param corrector_manager [CorrectorManager, nil]
+    # @param features [Array<Feature>, nil]
+    # @return [void]
     def initialize(script, missions: [], memo_pad: nil, generation_num: 0, config: nil,
                    filename: nil, corrector_manager: nil, features: nil)
       @script = script
@@ -58,6 +67,7 @@ module RubyModKit
     end
 
     # @rbs return: void
+    # @return [void]
     def init_missions
       return unless first_generation?
 
@@ -69,11 +79,13 @@ module RubyModKit
     end
 
     # @rbs return: bool
+    # @return [Boolean]
     def first_generation?
       @generation_num == 0
     end
 
     # @rbs return: Generation
+    # @return [Generation]
     def succ
       if @errors.empty?
         perform_missions
@@ -95,11 +107,13 @@ module RubyModKit
     end
 
     # @rbs return: String
+    # @return [String]
     def name
       "#{@filename || "(eval)"}[gen #{@generation_num}]"
     end
 
     # @rbs return: bool
+    # @return [Boolean]
     def completed?
       @errors.empty? && @missions.empty?
     end
@@ -108,6 +122,10 @@ module RubyModKit
     # @rbs length: Integer
     # @rbs str: String
     # @rbs return: String
+    # @param src_offset [Integer]
+    # @param length [Integer]
+    # @param str [String]
+    # @return [String]
     def []=(src_offset, length, str)
       diff = str.length - length
       @script[@offset_diff[src_offset], length] = str
@@ -116,6 +134,8 @@ module RubyModKit
 
     # @rbs src_range: Range[Integer | nil]
     # @rbs return: String
+    # @param src_range [Range<Integer, nil>]
+    # @return [String]
     def [](src_range)
       @source[src_range] || raise(RubyModKit::Error, "Invalid range")
     end
@@ -157,6 +177,8 @@ module RubyModKit
 
     # @rbs node: Node::BaseNode
     # @rbs return: Integer | nil
+    # @param node [Node::BaseNode]
+    # @return [Integer, nil]
     def end_line_offset(node)
       line_offset(node.location.end_line - 1)
     end
@@ -173,11 +195,13 @@ module RubyModKit
     end
 
     # @rbs return: void
+    # @return [void]
     def perform_corrector
       @corrector_manager.perform(self)
     end
 
     # @rbs return: void
+    # @return [void]
     def perform_missions
       @missions.delete_if do |mission|
         mission.perform(self) || break
@@ -186,6 +210,8 @@ module RubyModKit
 
     # @rbs mission: Mission
     # @rbs return: void
+    # @param mission [Mission]
+    # @return [void]
     def add_mission(mission)
       @missions << mission
     end
@@ -195,6 +221,10 @@ module RubyModKit
       # @rbs filename: String | nil
       # @rbs config: Config | nil
       # @rbs return: Generation
+      # @param src [String]
+      # @param filename [String, nil]
+      # @param config [Config, nil]
+      # @return [Generation]
       def resolve(src, filename: nil, config: nil)
         generation = Generation.new(src.dup, filename: filename, config: config)
         generation = generation.succ until generation.completed?

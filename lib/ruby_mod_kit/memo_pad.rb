@@ -18,6 +18,7 @@ module RubyModKit
     attr_accessor :flags #: Hash[Symbol, bool]
 
     # @rbs return: void
+    # @return [void]
     def initialize
       @def_parents_memo = {}
       @methods_memo = {}
@@ -28,6 +29,8 @@ module RubyModKit
 
     # @rbs offset_diff: OffsetDiff
     # @rbs return: void
+    # @param offset_diff [OffsetDiff]
+    # @return [void]
     def succ(offset_diff)
       [@methods_memo, @parameters_memo, @def_parents_memo, @overloads_memo].each do |offset_node_memo|
         new_offset_node_memo = {}
@@ -42,12 +45,16 @@ module RubyModKit
 
     # @rbs def_parent_node: Node::DefParentNode
     # @rbs return: Memo::DefParentMemo
+    # @param def_parent_node [Node::DefParentNode]
+    # @return [Memo::DefParentMemo]
     def def_parent_memo(def_parent_node)
       @def_parents_memo[def_parent_node.offset] ||= Memo::DefParentMemo.new(def_parent_node)
     end
 
     # @rbs def_node: Node::DefNode
     # @rbs return: Memo::MethodMemo
+    # @param def_node [Node::DefNode]
+    # @return [Memo::MethodMemo]
     def method_memo(def_node)
       @methods_memo[def_node.offset] ||= Memo::MethodMemo.new(def_node)
     end
@@ -55,12 +62,17 @@ module RubyModKit
     # @rbs offset: Integer
     # @rbs name: Symbol
     # @rbs return: Memo::OverloadMemo
+    # @param offset [Integer]
+    # @param name [Symbol]
+    # @return [Memo::OverloadMemo]
     def overload_memo(offset, name)
       @overloads_memo[offset] ||= Memo::OverloadMemo.new(offset, name)
     end
 
     # @rbs node: Node::BaseNode
     # @rbs return: Memo::ParameterMemo
+    # @param node [Node::BaseNode]
+    # @return [Memo::ParameterMemo]
     def parameter_memo(node)
       memo = @parameters_memo[node.offset] ||= Memo::ParameterMemo.new(node.offset)
       def_node = node.def_node_at(node.offset)
@@ -85,6 +97,8 @@ module RubyModKit
 
     # @rbs &block: (Memo::ParameterMemo) -> void
     # @rbs return: void
+    # @param block [(Memo::ParameterMemo) -> void]
+    # @return [void]
     def each_parameter_memo(&block)
       parameters_memo.each_value(&block)
     end

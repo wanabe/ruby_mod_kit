@@ -12,12 +12,16 @@ module RubyModKit
 
       # @rbs offset: Integer
       # @rbs return: void
+      # @param offset [Integer]
+      # @return [void]
       def initialize(offset)
         @offset = offset
       end
 
       # @rbs offset_diff: OffsetDiff
       # @rbs return: void
+      # @param offset_diff [OffsetDiff]
+      # @return [void]
       def succ(offset_diff)
         @offset = offset_diff[@offset]
       end

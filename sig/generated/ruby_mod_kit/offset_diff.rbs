@@ -8,15 +8,21 @@ module RubyModKit
     @offsets: Array[Integer]
 
     # @rbs return: void
+    # @return [void]
     def initialize: () -> void
 
     # @rbs src_offset: Integer
     # @rbs return: Integer
+    # @param src_offset [Integer]
+    # @return [Integer]
     def []: (Integer src_offset) -> Integer
 
     # @rbs src_offset: Integer
     # @rbs new_diff: Integer
     # @rbs return: void
+    # @param src_offset [Integer]
+    # @param new_diff [Integer]
+    # @return [void]
     def insert: (Integer src_offset, Integer new_diff) -> void
   end
 end

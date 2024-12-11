@@ -7,7 +7,10 @@ require "prism"
 
 # The root namespace for ruby_mod_kit.
 module RubyModKit
+  # An internal error because of RubyModKit implementation
   class Error < StandardError; end
+
+  # A SyntaxError of rbm script
   class SyntaxError < ::SyntaxError; end
 
   class << self
@@ -16,6 +19,11 @@ module RubyModKit
     # @rbs output: String | nil
     # @rbs config: Config | nil
     # @rbs return: void
+    # @param file [String]
+    # @param args [String]
+    # @param output [String, nil]
+    # @param config [Config, nil]
+    # @return [void]
     def execute_file(file, *args, output: nil, config: nil)
       rb_script = transpile_file(file, output: output, config: config)
       if output
@@ -29,6 +37,10 @@ module RubyModKit
     # @rbs output: String | IO | nil
     # @rbs config: Config | nil
     # @rbs return: String
+    # @param file [String]
+    # @param output [String, IO, nil]
+    # @param config [Config, nil]
+    # @return [String]
     def transpile_file(file, output: nil, config: nil)
       rb_script = transpile(File.read(file), filename: file, config: config)
       case output
@@ -44,6 +56,10 @@ module RubyModKit
     # @rbs filename: String | nil
     # @rbs config: Config | nil
     # @rbs return: String
+    # @param src [String]
+    # @param filename [String, nil]
+    # @param config [Config, nil]
+    # @return [String]
     def transpile(src, filename: nil, config: nil)
       Generation.resolve(src, filename: filename, config: config).script
     end
@@ -51,12 +67,17 @@ module RubyModKit
     # @rbs file: String
     # @rbs *args: String
     # @rbs return: void
+    # @param file [String]
+    # @param args [String]
+    # @return [void]
     def execute_rb_file(file, *args)
       system(RbConfig.ruby, file, *args)
     end
 
     # @rbs path: String
     # @rbs return: String
+    # @param path [String]
+    # @return [String]
     def rb_path(path)
       path.sub(/(?:\.rbm)?$/, ".rb")
     end
@@ -64,6 +85,9 @@ module RubyModKit
     # @rbs rb_script: String
     # @rbs *args: String
     # @rbs return: void
+    # @param rb_script [String]
+    # @param args [String]
+    # @return [void]
     def execute_rb(rb_script, *args)
       ARGV.replace(args)
       eval(rb_script, TOPLEVEL_BINDING) # rubocop:disable Security/Eval
@@ -71,6 +95,8 @@ module RubyModKit
 
     # @rbs type: String
     # @rbs return: String
+    # @param type [String]
+    # @return [String]
     def unify_type(type)
       type[/\A\(([^()]*)\)\z/, 1] || type
     end

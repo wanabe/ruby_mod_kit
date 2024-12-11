@@ -22,32 +22,46 @@ module RubyModKit
       # @rbs parent: Node::BaseNode
       # @rbs prev: Node::BaseNode | nil
       # @rbs return: void
+      # @param prism_node [Prism::DefNode]
+      # @param parent [Node::BaseNode]
+      # @param prev [Node::BaseNode, nil]
+      # @return [void]
       def initialize: (Prism::DefNode prism_node, parent: Node::BaseNode, ?prev: Node::BaseNode | nil) -> void
 
       # @rbs return: Symbol
+      # @return [Symbol]
       def name: () -> Symbol
 
       # @rbs return: Prism::Location | nil
+      # @return [Prism::Location, nil]
       def body_location: () -> (Prism::Location | nil)
 
       # @rbs return: Prism::Location | nil
+      # @return [Prism::Location, nil]
       def lparen_loc: () -> (Prism::Location | nil)
 
       # @rbs return: Prism::Location | nil
+      # @return [Prism::Location, nil]
       def rparen_loc: () -> (Prism::Location | nil)
 
       # @rbs return: Prism::Location
+      # @return [Prism::Location]
       def name_loc: () -> Prism::Location
 
       # @rbs return: Prism::Location | nil
+      # @return [Prism::Location, nil]
       def end_keyword_loc: () -> (Prism::Location | nil)
 
       # @rbs prism_child_node: Prism::Node
       # @rbs prev: Node::BaseNode | nil
       # @rbs return: Node::BaseNode
+      # @param prism_child_node [Prism::Node]
+      # @param prev [Node::BaseNode, nil]
+      # @return [Node::BaseNode]
       def wrap: (Prism::Node prism_child_node, ?prev: Node::BaseNode | nil) -> Node::BaseNode
 
       # @rbs return: Node::StatementsNode | Node::BeginNode | nil
+      # @return [Node::StatementsNode, Node::BeginNode, nil]
       def body_node: () -> (Node::StatementsNode | Node::BeginNode | nil)
     end
   end

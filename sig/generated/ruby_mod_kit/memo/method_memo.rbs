@@ -16,21 +16,28 @@ module RubyModKit
 
       attr_reader type: String
 
-      UNTYPED: ::String
+      UNTYPED: String
 
       # @rbs node: Node::DefNode
       # @rbs return: void
+      # @param node [Node::DefNode]
+      # @return [void]
       def initialize: (Node::DefNode node) -> void
 
       # @rbs parameter_memo: Memo::ParameterMemo
       # @rbs return: Memo::ParameterMemo
+      # @param parameter_memo [Memo::ParameterMemo]
+      # @return [Memo::ParameterMemo]
       def add_parameter: (Memo::ParameterMemo parameter_memo) -> Memo::ParameterMemo
 
       # @rbs return: bool
+      # @return [Boolean]
       def untyped?: () -> bool
 
       # @rbs type: String
       # @rbs return: void
+      # @param type [String]
+      # @return [void]
       def type=: (String type) -> void
     end
   end

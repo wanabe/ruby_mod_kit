@@ -15,6 +15,8 @@ module RubyModKit
 
     # @rbs features: Array[String]
     # @rbs return: void
+    # @param features [Array<String>]
+    # @return [void]
     def initialize(features: DEFAULT_FEATURES)
       @features = features.sort.map do |feature_name|
         raise ArgumentError, "invalid feature: #{feature_name}" if feature_name.include?(".")
@@ -31,6 +33,9 @@ module RubyModKit
       # @rbs path: String
       # @rbs if_none: Symbol | nil
       # @rbs return: Config | nil
+      # @param path [String]
+      # @param if_none [Symbol, nil]
+      # @return [Config, nil]
       def load(path, if_none: nil)
         return load(File.join(path, ".ruby_mod_kit.yml"), if_none: if_none) if File.directory?(path)
 

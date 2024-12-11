@@ -7,6 +7,7 @@ module RubyModKit
     # namespace for type feature
     class Type < Feature
       # @rbs return: Array[Corrector]
+      # @return [Array<Corrector>]
       def create_correctors
         [
           InstanceVariableColonCorrector.new,
@@ -16,6 +17,7 @@ module RubyModKit
       end
 
       # @rbs return: Array[Mission]
+      # @return [Array<Mission>]
       def create_missions
         [
           TypeAttrMission.new,

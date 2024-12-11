@@ -14,6 +14,7 @@ module RubyModKit
         }.freeze #: Hash[Symbol, String]
 
         # @rbs return: void
+        # @return [void]
         def initialize
           super
           @modified = false
@@ -21,6 +22,8 @@ module RubyModKit
 
         # @rbs generation: Generation
         # @rbs return: bool
+        # @param generation [Generation]
+        # @return [Boolean]
         def perform(generation)
           if @modified
             generation.memo_pad.overloads_memo.each_value do |overload_memo|

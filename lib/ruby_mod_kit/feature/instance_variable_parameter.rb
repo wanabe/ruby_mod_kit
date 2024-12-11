@@ -7,6 +7,7 @@ module RubyModKit
     # namespace for instance_variable parameter feature
     class InstanceVariableParameter < Feature
       # @rbs return: Array[Corrector]
+      # @return [Array<Corrector>]
       def create_correctors
         [
           InstanceVariableParameterCorrector.new,
@@ -14,6 +15,7 @@ module RubyModKit
       end
 
       # @rbs return: Array[Mission]
+      # @return [Array<Mission>]
       def create_missions
         [
           InstanceVariableParameterMission.new,

@@ -11,11 +11,16 @@ module RubyModKit
 
     # @rbs features: Array[String]
     # @rbs return: void
+    # @param features [Array<String>]
+    # @return [void]
     def initialize: (?features: Array[String]) -> void
 
     # @rbs path: String
     # @rbs if_none: Symbol | nil
     # @rbs return: Config | nil
+    # @param path [String]
+    # @param if_none [Symbol, nil]
+    # @return [Config, nil]
     def self.load: (String path, ?if_none: Symbol | nil) -> (Config | nil)
   end
 end

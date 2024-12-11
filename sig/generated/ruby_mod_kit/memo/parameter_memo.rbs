@@ -20,17 +20,22 @@ module RubyModKit
 
       attr_accessor name: Symbol
 
-      UNTYPED: ::String
+      UNTYPED: String
 
       # @rbs offset: Integer
       # @rbs return: void
+      # @param offset [Integer]
+      # @return [void]
       def initialize: (Integer offset) -> void
 
       # @rbs return: bool
+      # @return [Boolean]
       def untyped?: () -> bool
 
       # @rbs type: String
       # @rbs return: void
+      # @param type [String]
+      # @return [void]
       def type=: (String type) -> void
     end
   end

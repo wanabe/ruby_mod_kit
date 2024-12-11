@@ -11,6 +11,8 @@ module RubyModKit
     desc "exec", "execute rbm file"
     # @rbs *args: String
     # @rbs return: void
+    # @param args [String]
+    # @return [void]
     def exec(*args)
       RubyModKit.execute_file(*args, config: config)
     end
@@ -19,6 +21,8 @@ module RubyModKit
     method_option :output, type: :string
     # @rbs *args: String
     # @rbs return: void
+    # @param args [String]
+    # @return [void]
     def transpile(*args)
       output = case options[:output]
       when nil, "-", "/dev/stdout"
@@ -37,6 +41,7 @@ module RubyModKit
     private
 
     # @rbs return: Config | nil
+    # @return [Config, nil]
     def config
       if options[:config]
         config_path = options[:config]

@@ -10,6 +10,8 @@ module RubyModKit
 
     # @rbs features: Array[Feature]
     # @rbs return: void
+    # @param features [Array<Feature>]
+    # @return [void]
     def initialize(features)
       @previous_source = +""
       @correctors_error_map = {}
@@ -24,6 +26,8 @@ module RubyModKit
 
     # @rbs generation: Generation
     # @rbs return: bool
+    # @param generation [Generation]
+    # @return [Boolean]
     def perform(generation)
       return true if generation.errors.empty?
 
@@ -46,6 +50,8 @@ module RubyModKit
 
     # @rbs generation: Generation
     # @rbs return: void
+    # @param generation [Generation]
+    # @return [void]
     def check_prev_errors(generation)
       return if @previous_source.empty?
       return if generation.errors.empty?

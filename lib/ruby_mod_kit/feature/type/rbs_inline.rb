@@ -8,6 +8,7 @@ module RubyModKit
       # namespace for type with rbs-line feature
       class RbsInline < Feature
         # @rbs return: Array[Mission]
+        # @return [Array<Mission>]
         def create_missions
           [
             TypeInstanceVariableMission.new,

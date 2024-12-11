@@ -12,6 +12,8 @@ module RubyModKit
 
       # @rbs def_parent_node: Node::DefParentNode
       # @rbs return: void
+      # @param def_parent_node [Node::DefParentNode]
+      # @return [void]
       def initialize(def_parent_node)
         @ivars_memo = {}
         super(def_parent_node.offset)
@@ -19,12 +21,16 @@ module RubyModKit
 
       # @rbs name: Symbol
       # @rbs return: Memo::IvarMemo
+      # @param name [Symbol]
+      # @return [Memo::IvarMemo]
       def ivar_memo(name)
         @ivars_memo[name] ||= Memo::IvarMemo.new(name)
       end
 
       # @rbs offset_diff: OffsetDiff
       # @rbs return: void
+      # @param offset_diff [OffsetDiff]
+      # @return [void]
       def succ(offset_diff)
         @ivars_memo.each_value do |ivar_memo|
           ivar_memo.succ(offset_diff)

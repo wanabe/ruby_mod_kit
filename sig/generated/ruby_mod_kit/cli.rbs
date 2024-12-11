@@ -5,15 +5,20 @@ module RubyModKit
   class CLI < Thor
     # @rbs *args: String
     # @rbs return: void
+    # @param args [String]
+    # @return [void]
     def exec: (*String args) -> void
 
     # @rbs *args: String
     # @rbs return: void
+    # @param args [String]
+    # @return [void]
     def transpile: (*String args) -> void
 
     private
 
     # @rbs return: Config | nil
+    # @return [Config, nil]
     def config: () -> (Config | nil)
   end
 end

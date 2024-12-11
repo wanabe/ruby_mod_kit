@@ -17,6 +17,9 @@ module RubyModKit
       # @rbs path: String
       # @rbs wrap: bool
       # @rbs return: bool
+      # @param path [String]
+      # @param wrap [Boolean]
+      # @return [Boolean]
       def load(path, wrap = false) # rubocop:disable Style/OptionalBooleanParameter
         return super unless path.end_with?(".rbm")
 
@@ -27,6 +30,8 @@ module RubyModKit
 
       # @rbs path: String
       # @rbs return: bool
+      # @param path [String]
+      # @return [Boolean]
       def require(path)
         require_path = Load.require_path(path)
         return super unless require_path&.end_with?(".rbm")
@@ -39,11 +44,13 @@ module RubyModKit
 
       class << self
         # @rbs return: Array[String]
+        # @return [Array<String>]
         def loaded_features
           $LOADED_FEATURES
         end
 
         # @rbs return: Array[String]
+        # @return [Array<String>]
         def load_path
           $LOAD_PATH
         end
@@ -51,6 +58,9 @@ module RubyModKit
         # @rbs path: String
         # @rbs expanded: bool
         # @rbs return: String | nil
+        # @param path [String]
+        # @param expanded [Boolean]
+        # @return [String, nil]
         def require_path(path, expanded: false)
           if !expanded && !File.absolute_path?(path)
             return load_path.each.lazy.map { require_path(File.join(_1, path), expanded: true) }.find(&:itself)

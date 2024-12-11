@@ -52,31 +52,51 @@ module RubyModKit
     # @rbs corrector_manager: CorrectorManager | nil
     # @rbs features: Array[Feature] | nil
     # @rbs return: void
+    # @param script [String]
+    # @param missions [Array<Mission>]
+    # @param memo_pad [MemoPad, nil]
+    # @param generation_num [Integer]
+    # @param config [Config, nil]
+    # @param filename [String, nil]
+    # @param corrector_manager [CorrectorManager, nil]
+    # @param features [Array<Feature>, nil]
+    # @return [void]
     def initialize: (String script, ?missions: Array[Mission], ?memo_pad: MemoPad | nil, ?generation_num: Integer, ?config: Config | nil, ?filename: String | nil, ?corrector_manager: CorrectorManager | nil, ?features: Array[Feature] | nil) -> void
 
     # @rbs return: void
+    # @return [void]
     def init_missions: () -> void
 
     # @rbs return: bool
+    # @return [Boolean]
     def first_generation?: () -> bool
 
     # @rbs return: Generation
+    # @return [Generation]
     def succ: () -> Generation
 
     # @rbs return: String
+    # @return [String]
     def name: () -> String
 
     # @rbs return: bool
+    # @return [Boolean]
     def completed?: () -> bool
 
     # @rbs src_offset: Integer
     # @rbs length: Integer
     # @rbs str: String
     # @rbs return: String
+    # @param src_offset [Integer]
+    # @param length [Integer]
+    # @param str [String]
+    # @return [String]
     def []=: (Integer src_offset, Integer length, String str) -> String
 
     # @rbs src_range: Range[Integer | nil]
     # @rbs return: String
+    # @param src_range [Range<Integer, nil>]
+    # @return [String]
     def []: (Range[Integer | nil] src_range) -> String
 
     # @rbs (Integer) -> String
@@ -97,6 +117,8 @@ module RubyModKit
 
     # @rbs node: Node::BaseNode
     # @rbs return: Integer | nil
+    # @param node [Node::BaseNode]
+    # @return [Integer, nil]
     def end_line_offset: (Node::BaseNode node) -> (Integer | nil)
 
     # @rbs (Integer) -> String
@@ -105,19 +127,27 @@ module RubyModKit
                    | (Node::BaseNode) -> String
 
     # @rbs return: void
+    # @return [void]
     def perform_corrector: () -> void
 
     # @rbs return: void
+    # @return [void]
     def perform_missions: () -> void
 
     # @rbs mission: Mission
     # @rbs return: void
+    # @param mission [Mission]
+    # @return [void]
     def add_mission: (Mission mission) -> void
 
     # @rbs src: String
     # @rbs filename: String | nil
     # @rbs config: Config | nil
     # @rbs return: Generation
+    # @param src [String]
+    # @param filename [String, nil]
+    # @param config [Config, nil]
+    # @return [Generation]
     def self.resolve: (String src, ?filename: String | nil, ?config: Config | nil) -> Generation
   end
 end

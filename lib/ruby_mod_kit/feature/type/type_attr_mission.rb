@@ -10,6 +10,7 @@ module RubyModKit
         # @rbs @modified: bool
 
         # @rbs return: void
+        # @return [void]
         def initialize
           super
           @modified = false
@@ -17,6 +18,8 @@ module RubyModKit
 
         # @rbs generation: Generation
         # @rbs return: bool
+        # @param generation [Generation]
+        # @return [Boolean]
         def perform(generation)
           return true if @modified
 

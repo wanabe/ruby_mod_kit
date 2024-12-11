@@ -10,6 +10,8 @@ module RubyModKit
         class TypeParameterMission < Mission
           # @rbs generation: Generation
           # @rbs return: bool
+          # @param generation [Generation]
+          # @return [Boolean]
           def perform(generation)
             generation.memo_pad.each_parameter_memo do |parameter_memo|
               next if parameter_memo.untyped?

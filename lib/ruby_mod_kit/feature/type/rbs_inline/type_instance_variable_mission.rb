@@ -10,6 +10,8 @@ module RubyModKit
         class TypeInstanceVariableMission < Mission
           # @rbs generation: Generation
           # @rbs return: bool
+          # @param generation [Generation]
+          # @return [Boolean]
           def perform(generation)
             generation.memo_pad.def_parents_memo.each_value do |def_parent_memo|
               def_parent_memo.ivars_memo.each do |name, ivar_memo|

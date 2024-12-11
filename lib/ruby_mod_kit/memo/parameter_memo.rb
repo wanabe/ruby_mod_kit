@@ -16,10 +16,12 @@ module RubyModKit
       attr_accessor :qualifier #: String | nil
       attr_accessor :name #: Symbol
 
-      UNTYPED = "untyped"
+      UNTYPED = "untyped" #: String
 
       # @rbs offset: Integer
       # @rbs return: void
+      # @param offset [Integer]
+      # @return [void]
       def initialize(offset)
         @type = UNTYPED
         @ivar_parameter = false
@@ -27,12 +29,15 @@ module RubyModKit
       end
 
       # @rbs return: bool
+      # @return [Boolean]
       def untyped?
         @type == UNTYPED
       end
 
       # @rbs type: String
       # @rbs return: void
+      # @param type [String]
+      # @return [void]
       def type=(type)
         @type = RubyModKit.unify_type(type)
       end

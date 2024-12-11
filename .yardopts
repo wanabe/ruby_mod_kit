@@ -1,0 +1,3 @@
+--tag rbs:rbs
+--exclude lib/ruby_mod_kit/core_ext.rb
+--exclude lib/internal/

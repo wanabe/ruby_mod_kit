@@ -4,14 +4,19 @@ module RubyModKit
   # the base class of corrector
   class Corrector
     # @rbs return: Array[Symbol]
+    # @return [Array<Symbol>]
     def correctable_error_types: () -> Array[Symbol]
 
     # @rbs _parse_error: Prism::ParseError
     # @rbs _generation: Generation
     # @rbs return: void
+    # @param _parse_error [Prism::ParseError]
+    # @param _generation [Generation]
+    # @return [void]
     def correct: (untyped _parse_error, untyped _generation) -> void
 
     # @rbs return: void
+    # @return [void]
     def setup: () -> void
   end
 end

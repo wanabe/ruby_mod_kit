@@ -10,6 +10,8 @@ module RubyModKit
         class AddArgumentsCheckerMission < Mission
           # @rbs generation: Generation
           # @rbs return: bool
+          # @param generation [Generation]
+          # @return [Boolean]
           def perform(generation)
             # reload if line break is added
             line_break_added = false

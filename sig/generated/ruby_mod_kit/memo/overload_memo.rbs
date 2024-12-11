@@ -19,15 +19,23 @@ module RubyModKit
       # @rbs offset: Integer
       # @rbs name: Symbol
       # @rbs return: void
+      # @param offset [Integer]
+      # @param name [Symbol]
+      # @return [void]
       def initialize: (Integer offset, Symbol name) -> void
 
       # @rbs root_node: Node::ProgramNode
       # @rbs return: Integer
+      # @param root_node [Node::ProgramNode]
+      # @return [Integer]
       def correct_offset: (Node::ProgramNode root_node) -> Integer
 
       # @rbs parameter_types: Array[String]
       # @rbs return_value_type: String
       # @rbs return: void
+      # @param parameter_types [Array<String>]
+      # @param return_value_type [String]
+      # @return [void]
       def add_overload_type: (Array[String] parameter_types, String return_value_type) -> void
     end
   end

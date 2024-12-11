@@ -12,6 +12,7 @@ module RubyModKit
         REGEXP = /(\A\s*)(?:(#{VISIBILITIES.join("|")}) )?(?:(#{ATTR_PATTERNS.join("|")}) )?@(\w*)\s*:\s*(.*)\n(\n+)?/.freeze #: Regexp
 
         # @rbs return: Array[Symbol]
+        # @return [Array<Symbol>]
         def correctable_error_types
           %i[unexpected_token_ignore]
         end
@@ -19,6 +20,9 @@ module RubyModKit
         # @rbs parse_error: Prism::ParseError
         # @rbs generation: Generation
         # @rbs return: void
+        # @param parse_error [Prism::ParseError]
+        # @param generation [Generation]
+        # @return [void]
         def correct(parse_error, generation)
           return if parse_error.location.slice != ":"
 

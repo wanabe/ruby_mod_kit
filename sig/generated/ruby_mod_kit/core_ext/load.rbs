@@ -10,21 +10,31 @@ module RubyModKit
       # @rbs path: String
       # @rbs wrap: bool
       # @rbs return: bool
+      # @param path [String]
+      # @param wrap [Boolean]
+      # @return [Boolean]
       def self?.load: (String path, ?bool wrap) -> bool
 
       # @rbs path: String
       # @rbs return: bool
+      # @param path [String]
+      # @return [Boolean]
       def self?.require: (String path) -> bool
 
       # @rbs return: Array[String]
+      # @return [Array<String>]
       def self.loaded_features: () -> Array[String]
 
       # @rbs return: Array[String]
+      # @return [Array<String>]
       def self.load_path: () -> Array[String]
 
       # @rbs path: String
       # @rbs expanded: bool
       # @rbs return: String | nil
+      # @param path [String]
+      # @param expanded [Boolean]
+      # @return [String, nil]
       def self.require_path: (String path, ?expanded: bool) -> (String | nil)
     end
   end

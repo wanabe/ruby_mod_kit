@@ -20,6 +20,10 @@ module RubyModKit
       # @rbs parent: Node::BaseNode
       # @rbs prev: Node::BaseNode | nil
       # @rbs return: void
+      # @param prism_node [Prism::Node]
+      # @param parent [Node::BaseNode]
+      # @param prev [Node::BaseNode, nil]
+      # @return [void]
       def initialize: (Prism::Node prism_node, parent: Node::BaseNode, ?prev: Node::BaseNode | nil) -> void
     end
   end

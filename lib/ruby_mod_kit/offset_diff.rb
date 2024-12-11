@@ -9,6 +9,7 @@ module RubyModKit
     # @rbs @offsets: Array[Integer]
 
     # @rbs return: void
+    # @return [void]
     def initialize
       @diffs = {}
       @offsets = []
@@ -16,6 +17,8 @@ module RubyModKit
 
     # @rbs src_offset: Integer
     # @rbs return: Integer
+    # @param src_offset [Integer]
+    # @return [Integer]
     def [](src_offset)
       dst_offset = src_offset
       @offsets.each do |offset|
@@ -31,6 +34,9 @@ module RubyModKit
     # @rbs src_offset: Integer
     # @rbs new_diff: Integer
     # @rbs return: void
+    # @param src_offset [Integer]
+    # @param new_diff [Integer]
+    # @return [void]
     def insert(src_offset, new_diff)
       if @diffs[src_offset]
         @diffs[src_offset] += new_diff

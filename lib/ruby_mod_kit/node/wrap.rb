@@ -18,6 +18,10 @@ module RubyModKit
       # @rbs parent: Node::BaseNode
       # @rbs prev: Node::BaseNode | nil
       # @rbs return: Node::BaseNode
+      # @param prism_node [Prism::Node]
+      # @param parent [Node::BaseNode]
+      # @param prev [Node::BaseNode, nil]
+      # @return [Node::BaseNode]
       def wrap(prism_node, parent:, prev: nil)
         case prism_node
         when Prism::BeginNode

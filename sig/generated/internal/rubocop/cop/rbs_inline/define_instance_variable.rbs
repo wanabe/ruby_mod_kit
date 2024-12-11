@@ -11,17 +11,24 @@ module RuboCop
 
         # @rbs node: RuboCop::AST::AsgnNode
         # @rbs return: void
+        # @param node [RuboCop::AST::AsgnNode]
+        # @return [void]
         def on_ivasgn: (RuboCop::AST::AsgnNode node) -> void
 
         # @rbs node: RuboCop::AST::Node
         # @rbs return: void
+        # @param node [RuboCop::AST::Node]
+        # @return [void]
         def on_ivar: (RuboCop::AST::Node node) -> void
 
         # @rbs return: Set[Symbol]
+        # @return [Set<Symbol>]
         def instance_variable_names: () -> Set[Symbol]
 
         # @rbs name: Symbol
         # @rbs return: bool
+        # @param name [Symbol]
+        # @return [Boolean]
         def instance_variable_missing?: (Symbol name) -> bool
       end
     end

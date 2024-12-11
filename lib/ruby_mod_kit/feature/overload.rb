@@ -7,6 +7,7 @@ module RubyModKit
     # namespace for overload feature
     class Overload < Feature
       # @rbs return: Array[Mission]
+      # @return [Array<Mission>]
       def create_missions
         [
           OverloadMission.new,

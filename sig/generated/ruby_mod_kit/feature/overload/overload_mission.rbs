@@ -10,10 +10,13 @@ module RubyModKit
         OVERLOAD_METHOD_MAP: Hash[Symbol, String]
 
         # @rbs return: void
+        # @return [void]
         def initialize: () -> void
 
         # @rbs generation: Generation
         # @rbs return: bool
+        # @param generation [Generation]
+        # @return [Boolean]
         def perform: (Generation generation) -> bool
       end
     end

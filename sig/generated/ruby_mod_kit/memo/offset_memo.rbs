@@ -10,10 +10,14 @@ module RubyModKit
 
       # @rbs offset: Integer
       # @rbs return: void
+      # @param offset [Integer]
+      # @return [void]
       def initialize: (Integer offset) -> void
 
       # @rbs offset_diff: OffsetDiff
       # @rbs return: void
+      # @param offset_diff [OffsetDiff]
+      # @return [void]
       def succ: (OffsetDiff offset_diff) -> void
     end
   end

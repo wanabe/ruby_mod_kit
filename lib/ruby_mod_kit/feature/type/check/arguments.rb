@@ -5,10 +5,12 @@
 module RubyModKit
   class Feature
     class Type
+      # namespace for type checker
       module Check
         # namespace for arguments type checker
         class Arguments < Feature
           # @rbs return: Array[Mission]
+          # @return [Array<Mission>]
           def create_missions
             [
               AddArgumentsCheckerMission.new,

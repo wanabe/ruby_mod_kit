@@ -9,7 +9,7 @@ module RubyModKit
       property @qualifier: String | nil
       property @name: Symbol
 
-      UNTYPED = "untyped"
+      UNTYPED = "untyped" #: String
 
       def initialize(Integer => offset): void
         @type = UNTYPED

@@ -2,9 +2,11 @@
 
 # The root namespace for ruby_mod_kit.
 module RubyModKit
+  # An internal error because of RubyModKit implementation
   class Error < StandardError
   end
 
+  # A SyntaxError of rbm script
   class SyntaxError < ::SyntaxError
   end
 
@@ -13,35 +15,58 @@ module RubyModKit
   # @rbs output: String | nil
   # @rbs config: Config | nil
   # @rbs return: void
+  # @param file [String]
+  # @param args [String]
+  # @param output [String, nil]
+  # @param config [Config, nil]
+  # @return [void]
   def self.execute_file: (String file, *String args, ?output: String | nil, ?config: Config | nil) -> void
 
   # @rbs file: String
   # @rbs output: String | IO | nil
   # @rbs config: Config | nil
   # @rbs return: String
+  # @param file [String]
+  # @param output [String, IO, nil]
+  # @param config [Config, nil]
+  # @return [String]
   def self.transpile_file: (String file, ?output: String | IO | nil, ?config: Config | nil) -> String
 
   # @rbs src: String
   # @rbs filename: String | nil
   # @rbs config: Config | nil
   # @rbs return: String
+  # @param src [String]
+  # @param filename [String, nil]
+  # @param config [Config, nil]
+  # @return [String]
   def self.transpile: (String src, ?filename: String | nil, ?config: Config | nil) -> String
 
   # @rbs file: String
   # @rbs *args: String
   # @rbs return: void
+  # @param file [String]
+  # @param args [String]
+  # @return [void]
   def self.execute_rb_file: (String file, *String args) -> void
 
   # @rbs path: String
   # @rbs return: String
+  # @param path [String]
+  # @return [String]
   def self.rb_path: (String path) -> String
 
   # @rbs rb_script: String
   # @rbs *args: String
   # @rbs return: void
+  # @param rb_script [String]
+  # @param args [String]
+  # @return [void]
   def self.execute_rb: (String rb_script, *String args) -> void
 
   # @rbs type: String
   # @rbs return: String
+  # @param type [String]
+  # @return [String]
   def self.unify_type: (String type) -> String
 end

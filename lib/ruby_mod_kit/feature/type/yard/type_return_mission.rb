@@ -10,6 +10,8 @@ module RubyModKit
         class TypeReturnMission < Mission
           # @rbs generation: Generation
           # @rbs return: bool
+          # @param generation [Generation]
+          # @return [Boolean]
           def perform(generation)
             generation.memo_pad.methods_memo.each do |offset, method_memo|
               def_node = generation.root_node.def_node_at(offset)

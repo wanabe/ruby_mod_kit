@@ -5,6 +5,8 @@ module RubyModKit
   class Mission
     # @rbs _generation: Generation
     # @rbs return: void
+    # @param _generation [Generation]
+    # @return [void]
     def perform: (untyped _generation) -> void
   end
 end

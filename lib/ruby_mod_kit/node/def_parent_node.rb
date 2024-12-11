@@ -19,6 +19,10 @@ module RubyModKit
       # @rbs parent: Node::BaseNode
       # @rbs prev: Node::BaseNode | nil
       # @rbs return: void
+      # @param prism_node [Prism::ClassNode, Prism::ModuleNode]
+      # @param parent [Node::BaseNode]
+      # @param prev [Node::BaseNode, nil]
+      # @return [void]
       def initialize(prism_node, parent:, prev: nil)
         @prism_node = prism_node
         @parent = parent
@@ -31,6 +35,9 @@ module RubyModKit
       # @rbs prism_child_node: Prism::Node
       # @rbs prev: Node::BaseNode | nil
       # @rbs return: Node::BaseNode
+      # @param prism_child_node [Prism::Node]
+      # @param prev [Node::BaseNode, nil]
+      # @return [Node::BaseNode]
       def wrap(prism_child_node, prev: nil)
         child_node = super
         @body_node = child_node if prism_child_node == @prism_node.body && child_node.is_a?(Node::StatementsNode)
@@ -38,6 +45,7 @@ module RubyModKit
       end
 
       # @rbs return: Node::StatementsNode | nil
+      # @return [Node::StatementsNode, nil]
       def body_node
         # body_node will be set in #children
         children

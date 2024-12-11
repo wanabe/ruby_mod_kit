@@ -32,18 +32,26 @@ module RubyModKit
 
       # @rbs name: Symbol
       # @rbs return: void
+      # @param name [Symbol]
+      # @return [void]
       def initialize: (Symbol name) -> void
 
       # @rbs type: String
       # @rbs return: void
+      # @param type [String]
+      # @return [void]
       def type=: (String type) -> void
 
       # @rbs kind: Symbol | String
       # @rbs return: void
+      # @param kind [Symbol, String]
+      # @return [void]
       def attr_kind=: (Symbol | String kind) -> void
 
       # @rbs offset_diff: OffsetDiff
       # @rbs return: void
+      # @param offset_diff [OffsetDiff]
+      # @return [void]
       def succ: (OffsetDiff offset_diff) -> void
     end
   end

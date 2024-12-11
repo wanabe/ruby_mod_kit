@@ -13,12 +13,16 @@ module RuboCop
 
         # @rbs node: RuboCop::AST::AsgnNode
         # @rbs return: void
+        # @param node [RuboCop::AST::AsgnNode]
+        # @return [void]
         def on_ivasgn(node)
           add_offense(node) if instance_variable_missing?(node.name)
         end
 
         # @rbs node: RuboCop::AST::Node
         # @rbs return: void
+        # @param node [RuboCop::AST::Node]
+        # @return [void]
         def on_ivar(node)
           name = node.children[0]
           return unless name.is_a?(Symbol)
@@ -27,6 +31,7 @@ module RuboCop
         end
 
         # @rbs return: Set[Symbol]
+        # @return [Set<Symbol>]
         def instance_variable_names
           @instance_variable_names_map ||= {}
           file_content = @instance_variable_names_map[processed_source.file_path]
@@ -43,6 +48,8 @@ module RuboCop
 
         # @rbs name: Symbol
         # @rbs return: bool
+        # @param name [Symbol]
+        # @return [Boolean]
         def instance_variable_missing?(name)
           return false if instance_variable_names.include?(name)
 

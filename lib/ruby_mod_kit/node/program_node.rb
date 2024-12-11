@@ -12,6 +12,8 @@ module RubyModKit
 
       # @rbs prism_node: Prism::ProgramNode
       # @rbs return: void
+      # @param prism_node [Prism::ProgramNode]
+      # @return [void]
       def initialize(prism_node)
         @prism_node = prism_node
         raise RubyModKit::Error unless prism_node.is_a?(Prism::ProgramNode)
@@ -20,6 +22,7 @@ module RubyModKit
       end
 
       # @rbs return: nil
+      # @return [nil]
       def parent
         nil
       end

@@ -8,29 +8,43 @@ module RubyModKit
         @last_parameter_offsets: Set[Integer]
 
         # @rbs return: Array[Symbol]
+        # @return [Array<Symbol>]
         def correctable_error_types: () -> Array[Symbol]
 
         # @rbs return: void
+        # @return [void]
         def setup: () -> void
 
         # @rbs parse_error: Prism::ParseError
         # @rbs generation: Generation
         # @rbs return: void
+        # @param parse_error [Prism::ParseError]
+        # @param generation [Generation]
+        # @return [void]
         def correct: (Prism::ParseError parse_error, Generation generation) -> void
 
         # @rbs parse_error: Prism::ParseError
         # @rbs generation: Generation
         # @rbs return: void
+        # @param parse_error [Prism::ParseError]
+        # @param generation [Generation]
+        # @return [void]
         def remove_arrow_before_parameter: (Prism::ParseError parse_error, Generation generation) -> void
 
         # @rbs parse_error: Prism::ParseError
         # @rbs generation: Generation
         # @rbs return: void
+        # @param parse_error [Prism::ParseError]
+        # @param generation [Generation]
+        # @return [void]
         def remove_arrow_after_quailifier: (Prism::ParseError parse_error, Generation generation) -> void
 
         # @rbs parse_error: Prism::ParseError
         # @rbs generation: Generation
         # @rbs return: void
+        # @param parse_error [Prism::ParseError]
+        # @param generation [Generation]
+        # @return [void]
         def wrap_parameter_type_for_next_parse: (Prism::ParseError parse_error, Generation generation) -> void
       end
     end

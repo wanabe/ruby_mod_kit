@@ -8,7 +8,7 @@ module RubyModKit
       getter @parameters: Set[Memo::ParameterMemo]
       getter @type: String
 
-      UNTYPED = "untyped"
+      UNTYPED = "untyped" #: String
 
       def initialize(Node::DefNode => node): void
         @type = UNTYPED

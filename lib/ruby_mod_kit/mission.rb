@@ -7,6 +7,8 @@ module RubyModKit
   class Mission
     # @rbs _generation: Generation
     # @rbs return: void
+    # @param _generation [Generation]
+    # @return [void]
     def perform(_generation)
       raise RubyModKit::Error, "Unexpected type #{self.class}"
     end

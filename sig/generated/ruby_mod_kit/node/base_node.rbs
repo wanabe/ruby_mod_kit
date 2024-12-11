@@ -15,60 +15,85 @@ module RubyModKit
       attr_reader prev: Node::BaseNode | nil
 
       # @rbs return: Prism::Location
+      # @return [Prism::Location]
       def location: () -> Prism::Location
 
       # @rbs return: Array[Node::BaseNode]
+      # @return [Array<Node::BaseNode>]
       def children: () -> Array[Node::BaseNode]
 
       # @rbs prism_node: Prism::Node
       # @rbs prev: Node::BaseNode | nil
       # @rbs return: Node::BaseNode
+      # @param prism_node [Prism::Node]
+      # @param prev [Node::BaseNode, nil]
+      # @return [Node::BaseNode]
       def wrap: (Prism::Node prism_node, ?prev: Node::BaseNode | nil) -> Node::BaseNode
 
       # @rbs return: Array[Node::BaseNode]
+      # @return [Array<Node::BaseNode>]
       def ancestors: () -> Array[Node::BaseNode]
 
       # @rbs return: BaseNode | nil
+      # @return [BaseNode, nil]
       def parent: () -> (BaseNode | nil)
 
       # @rbs return: Symbol
+      # @return [Symbol]
       def name: () -> Symbol
 
       # @rbs offset: Integer
       # @rbs return: Node::BaseNode | nil
+      # @param offset [Integer]
+      # @return [Node::BaseNode, nil]
       def node_at: (Integer offset) -> (Node::BaseNode | nil)
 
       # @rbs offset: Integer
       # @rbs return: Node::StatementsNode | nil
+      # @param offset [Integer]
+      # @return [Node::StatementsNode, nil]
       def statements_node_at: (Integer offset) -> (Node::StatementsNode | nil)
 
       # @rbs offset: Integer
       # @rbs return: Node::DefNode | nil
+      # @param offset [Integer]
+      # @return [Node::DefNode, nil]
       def def_node_at: (Integer offset) -> (Node::DefNode | nil)
 
       # @rbs offset: Integer
       # @rbs return: Node::ParameterNode | nil
+      # @param offset [Integer]
+      # @return [Node::ParameterNode, nil]
       def parameter_node_at: (Integer offset) -> (Node::ParameterNode | nil)
 
       # @rbs offset: Integer
       # @rbs allowed: Array[Class] | nil
       # @rbs return: Node::DefParentNode | nil
+      # @param offset [Integer]
+      # @param allowed [Array<Class>, nil]
+      # @return [Node::DefParentNode, nil]
       def def_parent_node_at: (Integer offset, ?allowed: Array[Class] | nil) -> (Node::DefParentNode | nil)
 
       # @rbs offset: Integer
       # @rbs return: bool
+      # @param offset [Integer]
+      # @return [Boolean]
       def include?: (Integer offset) -> bool
 
       # @rbs return: Integer
+      # @return [Integer]
       def offset: () -> Integer
 
       # @rbs return: Integer
+      # @return [Integer]
       def end_offset: () -> Integer
 
       # @rbs return: String
+      # @return [String]
       def slice: () -> String
 
       # @rbs return: String
+      # @return [String]
       def inspect: () -> String
 
       private
@@ -76,6 +101,7 @@ module RubyModKit
       # :nocov:
       # This is just for interface definition, must not be called
       # @rbs return: Prism::Node & Prism::_Node
+      # @return [Prism::Node & Prism::_Node]
       def prism_node: () -> (Prism::Node & Prism::_Node)
     end
   end

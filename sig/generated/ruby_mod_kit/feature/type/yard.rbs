@@ -6,10 +6,13 @@ module RubyModKit
       # namespace for type with rbs-line feature
       class Yard < Feature
         # @rbs return: Array[Mission]
+        # @return [Array<Mission>]
         def create_missions: () -> Array[Mission]
 
         # @rbs type: String
         # @rbs return: String
+        # @param type [String]
+        # @return [String]
         def self.rbs2yard: (String type) -> String
       end
     end

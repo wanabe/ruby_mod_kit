@@ -8,6 +8,7 @@ module RubyModKit
       # namespace for type with rbs-line feature
       class Yard < Feature
         # @rbs return: Array[Mission]
+        # @return [Array<Mission>]
         def create_missions
           [
             TypeParameterMission.new,
@@ -18,6 +19,8 @@ module RubyModKit
         class << self
           # @rbs type: String
           # @rbs return: String
+          # @param type [String]
+          # @return [String]
           def rbs2yard(type)
             type.gsub(/\s*\|\s*/, ", ").tr("[]", "<>").gsub(/(?<=^|\W)bool(?=$|\W)/, "Boolean")
           end

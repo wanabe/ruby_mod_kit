@@ -4,6 +4,7 @@ require "ruby_mod_kit"
 
 # Define RubyMotKit.eval
 module RubyModKit
+  # the namespace for language core extensions
   module CoreExt
     # the extension for eval
     module Eval

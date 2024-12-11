@@ -3,3 +3,4 @@ features:
   - overload
   - type
   - type/rbs_inline
+  - type/yard

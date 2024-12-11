@@ -10,6 +10,8 @@ module RubyModKit
         class TypeOverloadMission < Mission
           # @rbs generation: Generation
           # @rbs return: bool
+          # @param generation [Generation]
+          # @return [Boolean]
           def perform(generation)
             generation.memo_pad.overloads_memo.each_value do |overload_memo|
               overload_memo.correct_offset(generation.root_node)

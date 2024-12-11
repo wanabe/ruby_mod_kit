@@ -11,6 +11,7 @@ module RubyModKit
           # @rbs @reloaded: bool
 
           # @rbs return: void
+          # @return [void]
           def initialize
             super
             @reloaded = false
@@ -18,6 +19,8 @@ module RubyModKit
 
           # @rbs generation: Generation
           # @rbs return: bool
+          # @param generation [Generation]
+          # @return [Boolean]
           def perform(generation)
             return true unless generation.memo_pad.flags[:rbs_annotated]
 

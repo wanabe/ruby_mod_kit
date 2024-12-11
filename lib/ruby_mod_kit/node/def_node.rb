@@ -19,6 +19,10 @@ module RubyModKit
       # @rbs parent: Node::BaseNode
       # @rbs prev: Node::BaseNode | nil
       # @rbs return: void
+      # @param prism_node [Prism::DefNode]
+      # @param parent [Node::BaseNode]
+      # @param prev [Node::BaseNode, nil]
+      # @return [void]
       def initialize(prism_node, parent:, prev: nil)
         @prism_node = prism_node
         @parent = parent
@@ -29,31 +33,37 @@ module RubyModKit
       end
 
       # @rbs return: Symbol
+      # @return [Symbol]
       def name
         @prism_node.name
       end
 
       # @rbs return: Prism::Location | nil
+      # @return [Prism::Location, nil]
       def body_location
         prism_node.body&.location
       end
 
       # @rbs return: Prism::Location | nil
+      # @return [Prism::Location, nil]
       def lparen_loc
         @prism_node.lparen_loc
       end
 
       # @rbs return: Prism::Location | nil
+      # @return [Prism::Location, nil]
       def rparen_loc
         @prism_node.rparen_loc
       end
 
       # @rbs return: Prism::Location
+      # @return [Prism::Location]
       def name_loc
         @prism_node.name_loc
       end
 
       # @rbs return: Prism::Location | nil
+      # @return [Prism::Location, nil]
       def end_keyword_loc
         @prism_node.end_keyword_loc
       end
@@ -61,6 +71,9 @@ module RubyModKit
       # @rbs prism_child_node: Prism::Node
       # @rbs prev: Node::BaseNode | nil
       # @rbs return: Node::BaseNode
+      # @param prism_child_node [Prism::Node]
+      # @param prev [Node::BaseNode, nil]
+      # @return [Node::BaseNode]
       def wrap(prism_child_node, prev: nil)
         child_node = super
         if prism_child_node == @prism_node.body
@@ -73,6 +86,7 @@ module RubyModKit
       end
 
       # @rbs return: Node::StatementsNode | Node::BeginNode | nil
+      # @return [Node::StatementsNode, Node::BeginNode, nil]
       def body_node
         # body_node will be set in #children
         children

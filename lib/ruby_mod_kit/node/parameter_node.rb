@@ -23,6 +23,10 @@ module RubyModKit
       # @rbs parent: Node::BaseNode
       # @rbs prev: Node::BaseNode | nil
       # @rbs return: void
+      # @param prism_node [prism_node]
+      # @param parent [Node::BaseNode]
+      # @param prev [Node::BaseNode, nil]
+      # @return [void]
       def initialize(prism_node, parent:, prev: nil)
         @prism_node = prism_node
         @parent = parent
@@ -38,6 +42,7 @@ module RubyModKit
       end
 
       # @rbs return: Symbol | nil
+      # @return [Symbol, nil]
       def name
         @prism_node.name
       end

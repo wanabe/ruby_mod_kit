@@ -24,27 +24,39 @@ module RubyModKit
     attr_accessor flags: Hash[Symbol, bool]
 
     # @rbs return: void
+    # @return [void]
     def initialize: () -> void
 
     # @rbs offset_diff: OffsetDiff
     # @rbs return: void
+    # @param offset_diff [OffsetDiff]
+    # @return [void]
     def succ: (OffsetDiff offset_diff) -> void
 
     # @rbs def_parent_node: Node::DefParentNode
     # @rbs return: Memo::DefParentMemo
+    # @param def_parent_node [Node::DefParentNode]
+    # @return [Memo::DefParentMemo]
     def def_parent_memo: (Node::DefParentNode def_parent_node) -> Memo::DefParentMemo
 
     # @rbs def_node: Node::DefNode
     # @rbs return: Memo::MethodMemo
+    # @param def_node [Node::DefNode]
+    # @return [Memo::MethodMemo]
     def method_memo: (Node::DefNode def_node) -> Memo::MethodMemo
 
     # @rbs offset: Integer
     # @rbs name: Symbol
     # @rbs return: Memo::OverloadMemo
+    # @param offset [Integer]
+    # @param name [Symbol]
+    # @return [Memo::OverloadMemo]
     def overload_memo: (Integer offset, Symbol name) -> Memo::OverloadMemo
 
     # @rbs node: Node::BaseNode
     # @rbs return: Memo::ParameterMemo
+    # @param node [Node::BaseNode]
+    # @return [Memo::ParameterMemo]
     def parameter_memo: (Node::BaseNode node) -> Memo::ParameterMemo
 
     # @rbs (Memo::ParameterMemo) -> void
@@ -54,6 +66,8 @@ module RubyModKit
 
     # @rbs &block: (Memo::ParameterMemo) -> void
     # @rbs return: void
+    # @param block [(Memo::ParameterMemo) -> void]
+    # @return [void]
     def each_parameter_memo: () { (Memo::ParameterMemo) -> void } -> void
   end
 end

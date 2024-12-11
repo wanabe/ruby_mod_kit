@@ -12,11 +12,15 @@ module RubyModKit
         REGEXP: Regexp
 
         # @rbs return: Array[Symbol]
+        # @return [Array<Symbol>]
         def correctable_error_types: () -> Array[Symbol]
 
         # @rbs parse_error: Prism::ParseError
         # @rbs generation: Generation
         # @rbs return: void
+        # @param parse_error [Prism::ParseError]
+        # @param generation [Generation]
+        # @return [void]
         def correct: (Prism::ParseError parse_error, Generation generation) -> void
       end
     end

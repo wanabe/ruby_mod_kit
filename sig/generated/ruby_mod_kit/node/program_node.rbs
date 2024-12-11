@@ -10,9 +10,12 @@ module RubyModKit
 
       # @rbs prism_node: Prism::ProgramNode
       # @rbs return: void
+      # @param prism_node [Prism::ProgramNode]
+      # @return [void]
       def initialize: (Prism::ProgramNode prism_node) -> void
 
       # @rbs return: nil
+      # @return [nil]
       def parent: () -> nil
     end
   end
