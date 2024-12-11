@@ -22,7 +22,7 @@ module RubyModKit
     end
 
     class << self
-      def load(String => path, (nil | Symbol) => if_none: nil): (Config | nil)
+      def load(String => path, (Symbol | nil) => if_none: nil): (Config | nil)
         return load(File.join(path, ".ruby_mod_kit.yml"), if_none: if_none) if File.directory?(path)
 
         unless File.exist?(path)

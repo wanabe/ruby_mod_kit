@@ -4,29 +4,29 @@ module RubyModKit
   module Memo
     # The memo for parameter type
     class IvarMemo
-      @type: nil | String
+      @type: String | nil
 
-      @attr_kind: nil | Symbol
+      @attr_kind: Symbol | nil
 
-      @offset: nil | Integer
+      @offset: Integer | nil
 
       @indent: String
 
       @name: Symbol
 
-      @visibility: nil | Symbol
+      @visibility: Symbol | nil
 
       @separator: String
 
-      attr_reader type: nil | String
+      attr_reader type: String | nil
 
-      attr_reader attr_kind: nil | Symbol
+      attr_reader attr_kind: Symbol | nil
 
-      attr_accessor offset: nil | Integer
+      attr_accessor offset: Integer | nil
 
       attr_accessor indent: String
 
-      attr_accessor visibility: nil | Symbol
+      attr_accessor visibility: Symbol | nil
 
       attr_accessor separator: String
 

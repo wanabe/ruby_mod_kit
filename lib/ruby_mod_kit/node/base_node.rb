@@ -49,7 +49,7 @@ module RubyModKit
         end
       end
 
-      # @rbs return: nil | BaseNode
+      # @rbs return: BaseNode | nil
       def parent
         raise(RubyModKit::Error)
       end

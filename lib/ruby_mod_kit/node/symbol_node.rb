@@ -9,7 +9,7 @@ module RubyModKit
       # @rbs @prism_node: Prism::SymbolNode
       # @rbs @parent: Node::BaseNode
       # @rbs @prev: Node::BaseNode | nil
-      # @rbs @value: nil | Symbol
+      # @rbs @value: Symbol | nil
 
       private attr_reader :prism_node #: Prism::SymbolNode
       attr_reader :parent #: Node::BaseNode
@@ -28,7 +28,7 @@ module RubyModKit
         super()
       end
 
-      # @rbs return: nil | Symbol
+      # @rbs return: Symbol | nil
       def value
         return @value if defined?(@value)
 

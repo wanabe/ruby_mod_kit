@@ -29,7 +29,7 @@ module RubyModKit
 
     class << self
       # @rbs path: String
-      # @rbs if_none: nil | Symbol
+      # @rbs if_none: Symbol | nil
       # @rbs return: Config | nil
       def load(path, if_none: nil)
         return load(File.join(path, ".ruby_mod_kit.yml"), if_none: if_none) if File.directory?(path)

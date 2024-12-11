@@ -28,8 +28,8 @@ module RubyModKit
       # @rbs return: Array[Node::BaseNode]
       def ancestors: () -> Array[Node::BaseNode]
 
-      # @rbs return: nil | BaseNode
-      def parent: () -> (nil | BaseNode)
+      # @rbs return: BaseNode | nil
+      def parent: () -> (BaseNode | nil)
 
       # @rbs return: Symbol
       def name: () -> Symbol

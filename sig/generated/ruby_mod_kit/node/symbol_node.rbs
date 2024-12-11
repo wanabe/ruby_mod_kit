@@ -10,7 +10,7 @@ module RubyModKit
 
       @prev: Node::BaseNode | nil
 
-      @value: nil | Symbol
+      @value: Symbol | nil
 
       attr_reader prism_node: Prism::SymbolNode
 
@@ -24,8 +24,8 @@ module RubyModKit
       # @rbs return: void
       def initialize: (Prism::SymbolNode prism_node, parent: Node::BaseNode, ?prev: Node::BaseNode | nil) -> void
 
-      # @rbs return: nil | Symbol
-      def value: () -> (nil | Symbol)
+      # @rbs return: Symbol | nil
+      def value: () -> (Symbol | nil)
     end
   end
 end

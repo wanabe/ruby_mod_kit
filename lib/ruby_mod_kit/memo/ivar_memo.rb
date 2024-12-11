@@ -6,19 +6,19 @@ module RubyModKit
   module Memo
     # The memo for parameter type
     class IvarMemo
-      # @rbs @type: nil | String
-      # @rbs @attr_kind: nil | Symbol
-      # @rbs @offset: nil | Integer
+      # @rbs @type: String | nil
+      # @rbs @attr_kind: Symbol | nil
+      # @rbs @offset: Integer | nil
       # @rbs @indent: String
       # @rbs @name: Symbol
-      # @rbs @visibility: nil | Symbol
+      # @rbs @visibility: Symbol | nil
       # @rbs @separator: String
 
-      attr_reader :type #: nil | String
-      attr_reader :attr_kind #: nil | Symbol
-      attr_accessor :offset #: nil | Integer
+      attr_reader :type #: String | nil
+      attr_reader :attr_kind #: Symbol | nil
+      attr_accessor :offset #: Integer | nil
       attr_accessor :indent #: String
-      attr_accessor :visibility #: nil | Symbol
+      attr_accessor :visibility #: Symbol | nil
       attr_accessor :separator #: String
 
       # @rbs name: Symbol

@@ -7,7 +7,7 @@ module RubyModKit
     # Transpiler program node
     class DefParentNode < Node::BaseNode
       # @rbs @prism_node: Prism::ClassNode | Prism::ModuleNode
-      # @rbs @body_node: nil | Node::StatementsNode
+      # @rbs @body_node: Node::StatementsNode | nil
       # @rbs @parent: Node::BaseNode
       # @rbs @prev: Node::BaseNode | nil
 
@@ -37,7 +37,7 @@ module RubyModKit
         child_node
       end
 
-      # @rbs return: nil | Node::StatementsNode
+      # @rbs return: Node::StatementsNode | nil
       def body_node
         # body_node will be set in #children
         children

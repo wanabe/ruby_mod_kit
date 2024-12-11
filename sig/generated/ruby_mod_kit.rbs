@@ -11,21 +11,21 @@ module RubyModKit
   # @rbs file: String
   # @rbs *args: String
   # @rbs output: String | nil
-  # @rbs config: nil | Config
+  # @rbs config: Config | nil
   # @rbs return: void
-  def self.execute_file: (String file, *String args, ?output: String | nil, ?config: nil | Config) -> void
+  def self.execute_file: (String file, *String args, ?output: String | nil, ?config: Config | nil) -> void
 
   # @rbs file: String
   # @rbs output: String | IO | nil
-  # @rbs config: nil | Config
+  # @rbs config: Config | nil
   # @rbs return: String
-  def self.transpile_file: (String file, ?output: String | IO | nil, ?config: nil | Config) -> String
+  def self.transpile_file: (String file, ?output: String | IO | nil, ?config: Config | nil) -> String
 
   # @rbs src: String
   # @rbs filename: String | nil
-  # @rbs config: nil | Config
+  # @rbs config: Config | nil
   # @rbs return: String
-  def self.transpile: (String src, ?filename: String | nil, ?config: nil | Config) -> String
+  def self.transpile: (String src, ?filename: String | nil, ?config: Config | nil) -> String
 
   # @rbs file: String
   # @rbs *args: String

@@ -4,12 +4,12 @@ module RubyModKit
   module Memo
     # The memo for parameter type
     class IvarMemo
-      getter @type: (nil | String)
-      getter @attr_kind: (nil | Symbol)
-      accessor @offset: (nil | Integer)
+      getter @type: (String | nil)
+      getter @attr_kind: (Symbol | nil)
+      accessor @offset: (Integer | nil)
       accessor @indent: String
       @name: Symbol
-      accessor @visibility: (nil | Symbol)
+      accessor @visibility: (Symbol | nil)
       accessor @separator: String
 
       def initialize(@name): void

@@ -7,7 +7,7 @@ module RubyModKit
       private getter @prism_node: Prism::SymbolNode
       getter @parent: (Node::BaseNode)
       getter @prev: (Node::BaseNode | nil)
-      @value: nil | Symbol
+      @value: Symbol | nil
 
       def initialize(@prism_node, @parent:, @prev: nil): void
         raise RubyModKit::Error unless prism_node.is_a?(Prism::SymbolNode)
@@ -15,7 +15,7 @@ module RubyModKit
         super()
       end
 
-      def value: (nil | Symbol)
+      def value: (Symbol | nil)
         return @value if defined?(@value)
 
         @value = @prism_node.value&.to_sym

@@ -14,8 +14,8 @@ module RubyModKit
     def initialize: (?features: Array[String]) -> void
 
     # @rbs path: String
-    # @rbs if_none: nil | Symbol
+    # @rbs if_none: Symbol | nil
     # @rbs return: Config | nil
-    def self.load: (String path, ?if_none: nil | Symbol) -> (Config | nil)
+    def self.load: (String path, ?if_none: Symbol | nil) -> (Config | nil)
   end
 end

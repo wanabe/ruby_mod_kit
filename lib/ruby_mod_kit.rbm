@@ -9,7 +9,7 @@ module RubyModKit
   class SyntaxError < ::SyntaxError; end
 
   class << self
-    def execute_file(String => file, *String => args, (String | nil) => output: nil, (nil | Config) => config: nil): void
+    def execute_file(String => file, *String => args, (String | nil) => output: nil, (Config | nil) => config: nil): void
       rb_script = transpile_file(file, output: output, config: config)
       if output
         execute_rb_file(output, *args)
@@ -18,7 +18,7 @@ module RubyModKit
       end
     end
 
-    def transpile_file(String => file, (String | IO | nil) => output: nil, (nil | Config) => config: nil): String
+    def transpile_file(String => file, (String | IO | nil) => output: nil, (Config | nil) => config: nil): String
       rb_script = transpile(File.read(file), filename: file, config: config)
       case output
       when IO
@@ -29,7 +29,7 @@ module RubyModKit
       rb_script
     end
 
-    def transpile(String => src, (String | nil) => filename: nil, (nil | Config) => config: nil): String
+    def transpile(String => src, (String | nil) => filename: nil, (Config | nil) => config: nil): String
       Generation.resolve(src, filename: filename, config: config).script
     end
 

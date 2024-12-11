@@ -6,7 +6,7 @@ module RubyModKit
     class DefParentNode < Node::BaseNode
       @prism_node: Prism::ClassNode | Prism::ModuleNode
 
-      @body_node: nil | Node::StatementsNode
+      @body_node: Node::StatementsNode | nil
 
       @parent: Node::BaseNode
 
@@ -29,8 +29,8 @@ module RubyModKit
       # @rbs return: Node::BaseNode
       def wrap: (Prism::Node prism_child_node, ?prev: Node::BaseNode | nil) -> Node::BaseNode
 
-      # @rbs return: nil | Node::StatementsNode
-      def body_node: () -> (nil | Node::StatementsNode)
+      # @rbs return: Node::StatementsNode | nil
+      def body_node: () -> (Node::StatementsNode | nil)
     end
   end
 end
