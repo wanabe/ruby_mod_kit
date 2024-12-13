@@ -85,4 +85,11 @@ task :push_git do
 end
 task push: %i[push_gem push_git]
 
+desc "Bump up teeny version"
+task :bump do
+  version = RubyModKit::VERSION.sub(/\d+$/, &:succ)
+  path = "lib/ruby_mod_kit/version.rbm"
+  File.write(path, File.read(path).sub(/(?<=VERSION = ")[^"]*(?=")/, version))
+end
+
 task default: %i[lib spec clean_rbs rbs_inline rbs_typed rubocop:autocorrect_all steep:check]
